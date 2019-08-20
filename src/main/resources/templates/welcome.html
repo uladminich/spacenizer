@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Welcome - Sudoku Solver</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/main.css}"  />
+    </head>
+    <body>
+        <div class="main">
+            <h1 class="text-horizontal-center">Sudoku solver</h1>
+            <th:block th:each="i: ${#numbers.sequence(0, 8)}">
+                <div class="wrapper block-horizontal-center">
+                    <th:block th:each="j: ${#numbers.sequence(0, 8)}">
+                        <input type="text" th:attr="name=${i + '_' + j},id=${i + '_' + j}">
+                    </th:block>
+                </div>
+            </th:block>
+            <div class="text-horizontal-center">
+                <input type="submit" value="Submit" onclick="submit()">
+                <input type="submit" value="Clear" onclick="clearInputs()">
+            </div>
+
+            <script type="text/javascript" th:src="@{/js/main.js}"></script>
+        </div>
+    </body>
+</html>
