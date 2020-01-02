@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Alpha - Spacenizer</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/spacenizer/main.css}"  />
+    </head>
+    <body>
+        <!-- [start] Chat socket demo -->
+        <div class="main chat-demo">
+            <h1 class="text-horizontal-center">Spacenizer</h1>
+            <div id="join-wrapper">
+                <input type="text" id="chat-name">
+                <input type="submit" value="Присоединиться" onclick="joinToChat();">
+            </div>
+            <div class="chat hidden" id="chat-wrapper">
+                <span>Chat:</span><br>
+            </div>
+            <div class="hidden" id="chat-editor">
+                <input type="text" id="chat-new-message">
+                <input type="submit" value="Отправить" onclick="CLIENT.sendMessage();">
+                <input type="submit" value="Отключиться" onclick="CLIENT.disconnect();">
+            </div>
+        </div>
+        <!--  [end] Chat socket demo -->
+
+    </body>
+    <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
+    <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
+
+</html>

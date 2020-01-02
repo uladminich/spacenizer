@@ -1,0 +1,82 @@
+.main {
+    margin: auto;
+    margin-top: 100px;
+    width: 50%;
+}
+
+/*input[type="text"] {
+  display:inline-block;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}*/
+
+.wrapper {
+  background-color: grey;
+  width: 390px;
+}
+
+.sudoku-solved-item {
+  color: green;
+  background-color: #8FFE9E; /* light green */
+}
+
+.block-horizontal-center {
+    margin: 0 auto;
+}
+
+.text-horizontal-center {
+    text-align: center;
+}
+
+input[name="2_0"], input[name="2_1"], input[name="2_2"],
+input[name="2_3"], input[name="2_4"], input[name="2_5"],
+input[name="2_6"], input[name="2_7"], input[name="2_8"],
+input[name="5_0"], input[name="5_1"], input[name="5_2"],
+input[name="5_3"], input[name="5_4"], input[name="5_5"],
+input[name="5_6"], input[name="5_7"], input[name="5_8"] {
+    border-bottom: 3px solid black;
+}
+
+input[name="0_2"], input[name="1_2"], input[name="2_2"],
+input[name="3_2"], input[name="4_2"], input[name="5_2"],
+input[name="6_2"], input[name="7_2"], input[name="8_2"],
+input[name="0_5"], input[name="1_5"], input[name="2_5"],
+input[name="3_5"], input[name="4_5"], input[name="5_5"],
+input[name="6_5"], input[name="7_5"], input[name="8_5"] {
+    border-right: 3px solid black;
+}
+
+input[type="submit"] {
+    outline: none;
+    display: inline-block;
+    width: 140px;
+    height: 45px;
+    margin: 10px 20px;
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 3px;
+    font-weight: 600;
+    color: #524f4e;
+    background: white;
+    box-shadow: 0 8px 15px rgba(0,0,0,.1);
+    transition: .3s;
+}
+
+input[type="submit"]:hover {
+    background: #2EE59D;
+    box-shadow: 0 15px 20px rgba(46,229,157,.4);
+    color: white;
+    transform: translateY(-7px);
+}
+
+.hidden {
+    display: none;
+}
+
+.chat-demo {
+    display: none;
+}
