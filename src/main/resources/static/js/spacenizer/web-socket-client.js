@@ -3,7 +3,10 @@ let CLIENT = {};
 CLIENT.initConnection = function () {
     console.log("initConnection start ");
 
-    CLIENT.socket = new WebSocket("ws://localhost:8080/chat");
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    CLIENT.socket = new WebSocket("ws://localhost:8080/board/" + id);
 
     CLIENT.socket.onmessage = function(event) {
       $('#chat-wrapper').append( '<span>' + event.data + '</span><br>');
