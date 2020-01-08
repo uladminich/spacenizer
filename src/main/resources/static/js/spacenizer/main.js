@@ -4,13 +4,13 @@ function joinToChat() {
         if (!CLIENT) {
             return;
         };
-        CLIENT.name = "[" + value + "]";
-        $('#chat-wrapper').removeClass('hidden');
-        $('#chat-editor').removeClass('hidden');
+        CLIENT.name = value;
         $('#join-wrapper').addClass('hidden');
         if (!CLIENT.socket) {
             CLIENT.initConnection();
         }
+
+        //$('#section-user-cards_player-name').text(CLIENT.name);
     }
 }
 
@@ -30,7 +30,7 @@ function createBoard() {
             if (response) {
                 let jsonResponse = JSON.parse(response);
                 console.log(jsonResponse.id);
-                window.location.href = '/alpha?id=' + jsonResponse.id;
+                window.location.href = '/board?id=' + jsonResponse.id;
             }
         }
     });

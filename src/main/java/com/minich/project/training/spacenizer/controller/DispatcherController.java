@@ -7,14 +7,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class DispatcherController {
 
-    @RequestMapping(value = {"/alpha"}, method = RequestMethod.GET)
-    public String toHome() {
-        return "alpha";
+    @RequestMapping(value = {"/board"}, method = RequestMethod.GET)
+    public String toBoard() {
+        return "board";
     }
 
-    @RequestMapping(value = {"/", "/board"}, method = RequestMethod.GET)
-    public String toBoad() {
-        return "board";
+    @RequestMapping(value = {"/", "/lobby"}, method = RequestMethod.GET)
+    public String toHome() {
+        return "lobby";
+    }
+
+    @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
+    public String toTestPage() {
+        return "test";
     }
 
     @RequestMapping(value = "/test-error", method = RequestMethod.GET)

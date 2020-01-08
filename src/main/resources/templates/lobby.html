@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Board</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <link rel="stylesheet" th:href="@{/css/spacenizer/main.css}"/>
+    </head>
+    <body>
+        <div class="main">
+            <div class="board-create-form">
+                <span> Придумайте логин и пароль, чтобы создать комнату для вас с друзьями.</span>
+                <br>
+                <span>Название: </span><input type="text" id="board-form-login">
+                <br>
+                <span>Пароль: </span><input type="text" id="board-name-password">
+                <br>
+                <input type="submit" value="Создать" onclick="createBoard();">
+            </div>
+        </div>
+
+    </body>
+
+    <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
+    <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
+</html>

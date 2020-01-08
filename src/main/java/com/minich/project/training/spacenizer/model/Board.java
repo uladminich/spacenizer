@@ -14,7 +14,8 @@ import java.util.List;
 public class Board implements Serializable {
     private String boardId;
     private List<Player> players;
-    private String lastMessage;
+    private String action;
+    private int redResourceCount;
 
     public void addPlayer(Player player) {
         if (players != null && player != null && player.getBoardId().equals(boardId)) {

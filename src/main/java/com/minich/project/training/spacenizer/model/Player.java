@@ -1,11 +1,13 @@
 package com.minich.project.training.spacenizer.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.minich.project.training.spacenizer.model.cards.Card;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,5 +16,11 @@ import java.io.Serializable;
 public class Player implements Serializable {
     private String boardId;
     private String name;
-    private String message;
+    private boolean isCreator;
+    private List<Card> availableCards;
+    private List<Card> activeCards;
+    private int redAmount;
+    private int redConsumption;
+    private int redProduction;
+
 }

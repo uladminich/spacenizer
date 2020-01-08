@@ -4,21 +4,39 @@
         <title>Board</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <link rel="stylesheet" th:href="@{/css/spacenizer/main.css}"/>
+        <link rel="stylesheet" th:href="@{/css/spacenizer/structure.css}"/>
     </head>
     <body>
-        <div class="main">
-            <div class="board-create-form">
-                <span> Придумайте логин и пароль, чтобы создать комнату для вас с друзьями.</span>
-                <br>
-                <span>Название: </span><input type="text" id="board-form-login">
-                <br>
-                <span>Пароль: </span><input type="text" id="board-name-password">
-                <br>
-                <input type="submit" value="Создать" onclick="createBoard();">
+        <div class="main-wrapper clearfix">
+            <div class="section-header">
+                <span class="hidden">
+                    <span>Ходит </span>
+                    <span id="current-player-turn"></span>
+                </span>
+            </div>
+            <div class="section-main-board clearfix" >
+                <div id="main-board-zone-0" class="main-board-player-zone"></div>
+                <div id="main-board-zone-1" class="main-board-player-zone"></div>
+                <div id="main-board-zone-2"class="main-board-player-zone"></div>
+                <div id="main-board-zone-3" class="main-board-player-zone"></div>
+            </div>
+            <div class="section-game-stat">
+                <span>Количество игроков: </span><span id="game-stat-player-count">0</span>
+                <div id="game-stat-red-amount-wrapper" class="hidden">
+                    Общий запас КР: <span id="game-stat-red-count">0</span>
+                </div>
+                <input type="submit" value="Начать" class="hidden" id="start-game-button" onclick="CLIENT.startGame()">
+            </div>
+            <div class="section-user-cards" id="section-user-cards">
+                <div id="join-wrapper">
+                    <span>Введите имя:</span>
+                    <input type="text" id="chat-name">
+                    <input type="submit" value="Присоединиться" onclick="joinToChat();">
+                </div>
             </div>
         </div>
-
     </body>
+
     <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
     <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
 </html>
