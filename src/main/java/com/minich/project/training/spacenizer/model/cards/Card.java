@@ -10,11 +10,12 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Card {
+
+    private String id;
     private String name;
     private String description;
     private int redProduction;
     private int redConsumption;
-    private String cardId;
 
     public Card(CardType type) {
         name = type.getName();
