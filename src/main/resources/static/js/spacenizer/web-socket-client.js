@@ -10,7 +10,7 @@ CLIENT.initConnection = function () {
 
     CLIENT.socket.onmessage = function(event) {
         CLIENT.state = JSON.parse(event.data);
-        if (CLIENT.state.action === 'start_completed') {
+        if (CLIENT.state.action && CLIENT.state.action.name === 'start_completed') {
 
             // init game stat
             $('#start-game-button').addClass('hidden');
@@ -22,7 +22,7 @@ CLIENT.initConnection = function () {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
             for (let i = 0; i < currentPlayer.availableCards.length; i++) {
                 let card =  currentPlayer.availableCards[i];
-                $('#section-user-cards').append(`<span title="${card.description}" class="card-available">${card.name}</span>`)
+                $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.id}" onclick="chooseAvailableCard(this);">${card.name}</span>`)
             }
 
             // init board zone
@@ -40,10 +40,17 @@ CLIENT.initConnection = function () {
                 </div>`);
 
                 for(let i = 0; i < playerForZone.activeCards.length; i++) {
-                    zone.append(`<div class="active-card-item" title="${playerForZone.activeCards[i].description}">S</div>`)
+                    let currentActiveCard = playerForZone.activeCards[i];
+                    zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.id}">S</div>`)
                 }
             }
-
+            let availCards = $('.card-available');
+            for (let i = 0; i < availCards.length; i++) {
+                availCards[i].addEventListener("blur", function( event ) {
+                     $(event.target).removeClass('available-card-clicked');
+                }, true);
+            }
+            return;
         }
 
         let playerCount = CLIENT.state.players.length;
@@ -73,9 +80,11 @@ CLIENT.disconnect = function() {
 }
 
 CLIENT.startGame = function() {
-    CLIENT.state.action = 'start';
+    CLIENT.state.action = {};
+    CLIENT.state.action.name = 'start';
     CLIENT.socket.send(JSON.stringify(CLIENT.state));
 }
+
 function isCreator(players) {
     return players.some(el => el.name == CLIENT.name && el.creator);
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class Board implements Serializable {
     private String boardId;
     private List<Player> players;
-    private String action;
+    private Action action;
     private int redResourceCount;
 
     public void addPlayer(Player player) {

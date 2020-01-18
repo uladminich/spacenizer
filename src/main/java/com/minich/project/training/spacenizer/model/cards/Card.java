@@ -18,6 +18,7 @@ public class Card {
     private int redConsumption;
 
     public Card(CardType type) {
+        id = type.getId();
         name = type.getName();
         description = type.getDescription();
         redProduction = type.getRedProduction();

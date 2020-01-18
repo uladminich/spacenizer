@@ -35,3 +35,18 @@ function createBoard() {
         }
     });
 }
+
+$(document).click(function(e) {
+    let $target = $(e.target);
+    if (!$target.is(".available-card-clicked")) {
+        $('.available-card-clicked').removeClass('available-card-clicked');
+        $('.section-main-board').removeClass('available-card-clicked-js');
+    }
+});
+
+function chooseAvailableCard(el) {
+    let currentElement = $(el);
+    $('.available-card-clicked').removeClass('available-card-clicked');
+    currentElement.addClass('available-card-clicked');
+    $('.section-main-board').addClass('available-card-clicked-js');
+}

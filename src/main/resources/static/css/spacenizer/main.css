@@ -39,6 +39,12 @@ input[type="submit"]:hover {
     display: none !important;
 }
 
+.available-card-clicked {
+    border-color: green !important;
+    border-style: dashed !important;
+    border-width: thick !important;
+}
+
 .clearfix::after {
   content: "";
   display: table;

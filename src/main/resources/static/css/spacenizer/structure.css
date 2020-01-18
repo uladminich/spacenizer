@@ -35,6 +35,9 @@ div {
     margin-left: 10px;
     vertical-align: top;
 }
+.available-card-clicked-js .main-board-player-zone:hover {
+    box-shadow: 0 0 20px rgba(68, 70, 109, 1);
+}
 
 .card-available {
     margin-left: 10px;

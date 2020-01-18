@@ -12,8 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-import org.springframework.web.socket.server.standard.SpringConfigurator;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -65,6 +63,7 @@ public class ServerWebSocket {
                 } else {
                     if (listeners.size() >= ROOM_SIZE_LIMIT) {
                         session.close();
+                        return;
                     } else {
                         listeners.add(this);
                     }
@@ -78,7 +77,7 @@ public class ServerWebSocket {
 
     @OnMessage
     public void onMessage(Board state) {
-        if ("start".equals(state.getAction())) {
+        if ("start".equals(state.getAction().getName())) {
             Board updatedState = startGameInitialization(state);
             broadcast(updatedState);
             return;
@@ -123,7 +122,7 @@ public class ServerWebSocket {
             }
         }
         board.setRedResourceCount(board.getPlayers().size() * 5 + random.nextInt(11) + 10);
-        board.setAction("start_completed");
+        board.getAction().setName("start_completed");
         return board;
     }
 }
