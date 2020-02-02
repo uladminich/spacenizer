@@ -4,13 +4,10 @@ import com.minich.project.training.spacenizer.config.ApplicationContextProvider;
 import com.minich.project.training.spacenizer.core.server.formatter.BoardDecoder;
 import com.minich.project.training.spacenizer.core.server.formatter.BoardEncoder;
 import com.minich.project.training.spacenizer.core.service.BoardsManager;
+import com.minich.project.training.spacenizer.core.service.GameManager;
 import com.minich.project.training.spacenizer.model.Board;
-import com.minich.project.training.spacenizer.model.Player;
-import com.minich.project.training.spacenizer.model.cards.Card;
-import com.minich.project.training.spacenizer.model.cards.CardType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -29,9 +26,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class ServerWebSocket {
     private static final int ROOM_SIZE_LIMIT = 2;
 
-    @Autowired
     private BoardsManager boardsManager;
-    @Autowired
+    private GameManager gameManager;
     private ConnectionManager connectionManager;
 
     private Session session;
@@ -40,6 +36,7 @@ public class ServerWebSocket {
     public ServerWebSocket() {
         connectionManager = ApplicationContextProvider.getApplicationContext().getBean(ConnectionManager.class);
         boardsManager = ApplicationContextProvider.getApplicationContext().getBean(BoardsManager.class);
+        gameManager = ApplicationContextProvider.getApplicationContext().getBean(GameManager.class);
     }
 
     @OnOpen
@@ -77,17 +74,14 @@ public class ServerWebSocket {
 
     @OnMessage
     public void onMessage(Board state) {
-        if ("start".equals(state.getAction().getName())) {
-            Board updatedState = startGameInitialization(state);
-            broadcast(updatedState);
-            return;
-        }
-        broadcast(state);
+        String currentAction = state.getAction().getName();
+        Board updatedState = gameManager.doAction(currentAction, state);
+        broadcast(updatedState);
     }
 
     @OnClose
     public void onClose(Session session) {
-            connectionManager.getRoomById(roomId).remove(this);
+        connectionManager.getRoomById(roomId).remove(this);
     }
 
     private void broadcast(Board state) {
@@ -102,27 +96,5 @@ public class ServerWebSocket {
         } catch (EncodeException | IOException e) {
             log.error("Error during send message to client", e);
         }
-    }
-
-    private Board startGameInitialization(Board board) {
-        final int initialCardAmount = 5;
-        Map<Integer, CardType> cardMap = new HashMap<>();
-        cardMap.put(0, CardType.BAR);
-        cardMap.put(1, CardType.LABORATORY);
-        cardMap.put(2, CardType.MINE);
-        cardMap.put(3, CardType.ROAD);
-        cardMap.put(4, CardType.WASTE_RECYCLE);
-        Random random = new Random();
-        for(Player player : board.getPlayers()) {
-            for (int i = 0; i < initialCardAmount; i++) {
-                int cardIndex = random.nextInt(5);
-                Card card = new Card(cardMap.get(cardIndex));
-                card.setId(player.getName() + "-" +card.getId() + "-" + i);
-                player.getAvailableCards().add(card);
-            }
-        }
-        board.setRedResourceCount(board.getPlayers().size() * 5 + random.nextInt(11) + 10);
-        board.getAction().setName("start_completed");
-        return board;
     }
 }

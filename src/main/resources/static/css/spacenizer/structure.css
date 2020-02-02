@@ -53,7 +53,9 @@ div {
 }
 
 .active-card-item {
+    width: inherit;
     max-width: 35px;
+    display: inline-block;
     height: 35px;
     border-radius: 20px;
     text-align: center;

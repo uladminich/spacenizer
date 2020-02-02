@@ -9,8 +9,6 @@ function joinToChat() {
         if (!CLIENT.socket) {
             CLIENT.initConnection();
         }
-
-        //$('#section-user-cards_player-name').text(CLIENT.name);
     }
 }
 
@@ -39,6 +37,22 @@ function createBoard() {
 $(document).click(function(e) {
     let $target = $(e.target);
     if (!$target.is(".available-card-clicked")) {
+
+        if ($target.is(".main-board-player-zone")) {
+            let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+            let targetPlayerId = $target.attr('data-player-id');
+
+            let action = {};
+            action.name = CLIENT.COMMAND_PLAY_CARD;
+            action.fromPlayer = currentPlayer.name;
+            action.toPlayer = targetPlayerId;
+            action.fromCard = $('.available-card-clicked').attr('data-card-id');
+            action.toCard = '';
+            CLIENT.state.action = action;
+            CLIENT.sendAction();
+
+        }
+
         $('.available-card-clicked').removeClass('available-card-clicked');
         $('.section-main-board').removeClass('available-card-clicked-js');
     }

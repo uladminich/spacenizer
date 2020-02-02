@@ -1,5 +1,9 @@
 let CLIENT = {};
 
+CLIENT.COMMAND_START_GAME = 'start';
+CLIENT.COMMAND_START_GAME_COMPLETED = 'start_completed';
+CLIENT.COMMAND_PLAY_CARD = 'play_card';
+
 CLIENT.initConnection = function () {
     console.log("initConnection start ");
 
@@ -10,55 +14,29 @@ CLIENT.initConnection = function () {
 
     CLIENT.socket.onmessage = function(event) {
         CLIENT.state = JSON.parse(event.data);
-        if (CLIENT.state.action && CLIENT.state.action.name === 'start_completed') {
+        if (CLIENT.state.action && CLIENT.state.action.name === CLIENT.COMMAND_START_GAME_COMPLETED) {
 
             // init game stat
             $('#start-game-button').addClass('hidden');
             $('#game-stat-red-amount-wrapper').removeClass('hidden');
             $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
-
-            // init players info
-            $('#user-cards-resource-info').removeClass('hidden');
-            let currentPlayer = getCurrentPlayer(CLIENT.state.players);
-            for (let i = 0; i < currentPlayer.availableCards.length; i++) {
-                let card =  currentPlayer.availableCards[i];
-                $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.id}" onclick="chooseAvailableCard(this);">${card.name}</span>`)
-            }
-
-            // init board zone
-            for (let i = 0; i < CLIENT.state.players.length; i++) {
-                let zone = $('#main-board-zone-' + i);
-                let playerForZone = CLIENT.state.players[i];
-                zone.attr('data-player-id', playerForZone.name);
-
-                zone.append(`<div>
-                      [<span>${playerForZone.name}</span>] |
-                      КР:
-                      З - <span title="Запас">${playerForZone.redAmount}</span>;
-                      П - <span title="Производство">${playerForZone.redProduction}</span>;
-                      Р - <span title="Расход">${playerForZone.redConsumption}</span>;
-                </div>`);
-
-                for(let i = 0; i < playerForZone.activeCards.length; i++) {
-                    let currentActiveCard = playerForZone.activeCards[i];
-                    zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.id}">S</div>`)
-                }
-            }
-            let availCards = $('.card-available');
-            for (let i = 0; i < availCards.length; i++) {
-                availCards[i].addEventListener("blur", function( event ) {
-                     $(event.target).removeClass('available-card-clicked');
-                }, true);
-            }
-            return;
+        }
+        // init players info
+        updatePlayerInfoSection();
+        // init board zone
+        updatePlayerZones();
+        let availCards = $('.card-available');
+        for (let i = 0; i < availCards.length; i++) {
+            availCards[i].addEventListener("blur", function( event ) {
+                 $(event.target).removeClass('available-card-clicked');
+            }, true);
         }
 
         let playerCount = CLIENT.state.players.length;
         $('#game-stat-player-count').text(playerCount);
         if (isCreator(CLIENT.state.players)) {
-            $('#start-game-button').removeClass('hidden');
+            $('#start-game-button').removeClass('hidden'); // TODO fix
         }
-
     };
 
     CLIENT.socket.onopen = function(event) {
@@ -79,10 +57,14 @@ CLIENT.disconnect = function() {
     CLIENT.socket.close();
 }
 
+CLIENT.sendAction = function() {
+    CLIENT.socket.send(JSON.stringify(CLIENT.state));
+}
+
 CLIENT.startGame = function() {
     CLIENT.state.action = {};
-    CLIENT.state.action.name = 'start';
-    CLIENT.socket.send(JSON.stringify(CLIENT.state));
+    CLIENT.state.action.name = CLIENT.COMMAND_START_GAME;
+    CLIENT.sendAction();
 }
 
 function isCreator(players) {
@@ -93,4 +75,33 @@ function getCurrentPlayer(players) {
     return players.find((p) => p.name === CLIENT.name);
 }
 
+function updatePlayerZones() {
+    for (let i = 0; i < CLIENT.state.players.length; i++) {
+        let zone = $('#main-board-zone-' + i);
+        zone.empty();
+        let playerForZone = CLIENT.state.players[i];
+        zone.attr('data-player-id', playerForZone.name);
 
+        zone.append(`<div>
+              [<span>${playerForZone.name}</span>] |
+              КР:
+              З - <span title="Запас">${playerForZone.redAmount}</span>;
+              П - <span title="Производство">${playerForZone.redProduction}</span>;
+              Р - <span title="Расход">${playerForZone.redConsumption}</span>;
+        </div>`);
+
+        for(let i = 0; i < playerForZone.activeCards.length; i++) {
+            let currentActiveCard = playerForZone.activeCards[i];
+            zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.id}">S</div>`)
+        }
+    }
+}
+
+function updatePlayerInfoSection() {
+    let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+    $('#section-user-cards').empty();
+    for (let i = 0; i < currentPlayer.availableCards.length; i++) {
+        let card =  currentPlayer.availableCards[i];
+        $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.id}" onclick="chooseAvailableCard(this);">${card.name}</span>`)
+    }
+}

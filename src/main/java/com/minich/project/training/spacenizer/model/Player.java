@@ -23,4 +23,11 @@ public class Player implements Serializable {
     private int redConsumption;
     private int redProduction;
 
+    public void addRedConsumption(int val) {
+        redConsumption+=val;
+    }
+
+    public void addRedProduction(int val) {
+        redProduction+=val;
+    }
 }
