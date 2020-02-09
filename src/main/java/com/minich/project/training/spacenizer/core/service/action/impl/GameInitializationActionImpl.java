@@ -7,6 +7,7 @@ import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -14,9 +15,10 @@ import java.util.Random;
 @Service(GameAction.START_GAME)
 public class GameInitializationActionImpl implements GameAction {
 
+    private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 5;
     @Override
     public Board doAction(Board state) {
-        final int initialCardAmount = 5;
+
         Map<Integer, CardType> cardMap = new HashMap<>();
         cardMap.put(0, CardType.BAR);
         cardMap.put(1, CardType.LABORATORY);
@@ -25,14 +27,18 @@ public class GameInitializationActionImpl implements GameAction {
         cardMap.put(4, CardType.WASTE_RECYCLE);
         Random random = new Random();
         for (Player player : state.getPlayers()) {
-            for (int i = 0; i < initialCardAmount; i++) {
-                int cardIndex = random.nextInt(5);
+            for (int i = 0; i < INITIAL_AVAILABLE_CARD_AMOUNT; i++) {
+                int cardIndex = random.nextInt(INITIAL_AVAILABLE_CARD_AMOUNT);
                 Card card = new Card(cardMap.get(cardIndex));
                 card.setId(player.getName() + "-" + card.getId() + "-" + i);
                 player.getAvailableCards().add(card);
             }
         }
-        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 10);
+        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 10); //TODO improve formula
+
+        //shuffle player before game as first turn will be for the first player
+        Collections.shuffle(state.getPlayers());
+        state.getPlayers().get(0).setActiveTurn(true);
         state.getAction().setName(GameAction.START_GAME_COMPLETED);
         return state;
     }

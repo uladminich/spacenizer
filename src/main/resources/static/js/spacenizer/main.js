@@ -36,6 +36,9 @@ function createBoard() {
 
 $(document).click(function(e) {
     let $target = $(e.target);
+    if(!isActiveTurn()) {
+        return;
+    }
     if (!$target.is(".available-card-clicked")) {
 
         if ($target.is(".main-board-player-zone")) {
@@ -59,8 +62,19 @@ $(document).click(function(e) {
 });
 
 function chooseAvailableCard(el) {
+    if(!isActiveTurn()) {
+        return;
+    }
     let currentElement = $(el);
     $('.available-card-clicked').removeClass('available-card-clicked');
     currentElement.addClass('available-card-clicked');
     $('.section-main-board').addClass('available-card-clicked-js');
+}
+
+function isActiveTurn() {
+    if(CLIENT && CLIENT.state && CLIENT.state.players) {
+        let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+        return currentPlayer.activeTurn;
+    }
+    return false;
 }

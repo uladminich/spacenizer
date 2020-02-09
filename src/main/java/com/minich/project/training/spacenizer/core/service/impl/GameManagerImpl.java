@@ -25,6 +25,7 @@ public class GameManagerImpl implements GameManager {
     }
 
     private GameAction getAction(String name) {
+        //TODO rewrite with map of injects if possible
         switch (name) {
             case GameAction.START_GAME:
                 return startGameAction;

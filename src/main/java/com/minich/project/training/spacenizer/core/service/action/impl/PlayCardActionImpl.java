@@ -29,6 +29,7 @@ public class PlayCardActionImpl implements GameAction {
         toPlayer.addRedConsumption(fromCard.getRedConsumption());
         toPlayer.addRedProduction(fromCard.getRedProduction());
 
+        changeActivePlayer(state, fromPlayer);
         return state;
     }
 
@@ -45,5 +46,20 @@ public class PlayCardActionImpl implements GameAction {
                 .filter(c -> c.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    private void changeActivePlayer(Board state, Player currentPlayer) {
+        List<Player> players = state.getPlayers();
+        currentPlayer.setActiveTurn(false);
+        for (int i = 0; i < players.size(); i++) {
+            if (players.get(i).getName().equals(currentPlayer.getName())) {
+                if (i == players.size() - 1) {
+                    players.get(0).setActiveTurn(true);
+                } else {
+                    players.get(i + 1).setActiveTurn(true);
+                }
+                break;
+            }
+        }
     }
 }
