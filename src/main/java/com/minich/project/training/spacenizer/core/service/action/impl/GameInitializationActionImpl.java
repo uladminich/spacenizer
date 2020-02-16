@@ -36,9 +36,10 @@ public class GameInitializationActionImpl implements GameAction {
         }
         state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 10); //TODO improve formula
 
-        //shuffle player before game as first turn will be for the first player
-        Collections.shuffle(state.getPlayers());
+        // shuffle player before game as first turn will be for the first player
+        // Collections.shuffle(state.getPlayers()); some UI issues
         state.getPlayers().get(0).setActiveTurn(true);
+        state.setFirstPlayerId(state.getPlayers().get(0).getName());
         state.getAction().setName(GameAction.START_GAME_COMPLETED);
         return state;
     }

@@ -5,7 +5,6 @@ import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
-import lombok.Getter;
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
 

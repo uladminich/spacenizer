@@ -19,8 +19,10 @@ CLIENT.initConnection = function () {
             // init game stat
             $('#start-game-button').addClass('hidden');
             $('#game-stat-red-amount-wrapper').removeClass('hidden');
-            $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
         }
+
+        $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
+
         // init players info
         updatePlayerInfoSection();
         // init board zone
@@ -36,6 +38,11 @@ CLIENT.initConnection = function () {
         $('#game-stat-player-count').text(playerCount);
         if (isCreator(CLIENT.state.players)) {
             $('#start-game-button').removeClass('hidden'); // TODO fix
+        }
+
+        if(CLIENT.state.finished) {
+            CLIENT.disconnect();
+            setTimeout(() => { alert('Выиграл ' + CLIENT.state.winner)}, 1000);
         }
     };
 
@@ -81,7 +88,9 @@ function updatePlayerZones() {
         zone.empty();
         let playerForZone = CLIENT.state.players[i];
         zone.attr('data-player-id', playerForZone.name);
-
+        if (CLIENT.name === playerForZone.name) {
+            zone.addClass('board-player-zone--current-player');
+        }
         zone.append(`<div>
               [<span>${playerForZone.name}</span>] |
               КР:
@@ -89,7 +98,12 @@ function updatePlayerZones() {
               П - <span title="Производство">${playerForZone.redProduction}</span>;
               Р - <span title="Расход">${playerForZone.redConsumption}</span>;
         </div>`);
-
+        if (!playerForZone.alive) {
+            // player finished game as can't produce enough red resource
+            zone.append(`<div> Колония игрока <b>[${playerForZone.name}]</b> вымерла из-за нехватки ресурсов...</div>`);
+            zone.addClass('board-player-zone--player-lose')
+            continue;
+        }
         for(let i = 0; i < playerForZone.activeCards.length; i++) {
             let currentActiveCard = playerForZone.activeCards[i];
             zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.id}">S</div>`)

@@ -16,10 +16,17 @@ public class Board implements Serializable {
     private List<Player> players;
     private Action action;
     private int redResourceCount;
+    private String firstPlayerId;
+    private boolean isFinished;
+    private String winner;
 
     public void addPlayer(Player player) {
         if (players != null && player != null && player.getBoardId().equals(boardId)) {
             players.add(player);
         }
+    }
+
+    public Player fetchActivePlayer() {
+        return players.stream().filter(Player::isActiveTurn).findFirst().orElse(null);
     }
 }

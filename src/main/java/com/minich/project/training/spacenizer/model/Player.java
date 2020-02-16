@@ -18,6 +18,7 @@ public class Player implements Serializable {
     private String name;
     private boolean isCreator;
     private boolean isActiveTurn;
+    private boolean isAlive = true;
     private List<Card> availableCards;
     private List<Card> activeCards;
     private int redAmount;

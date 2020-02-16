@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 
 /**
  * Hack to init javax.websocket instances with spring bean, example ServerWebSocket.ServerWebSocket()
- * */
+ */
 @Component
 public class ApplicationContextProvider implements ApplicationContextAware {
 

@@ -52,7 +52,7 @@ public class PlayCardActionImpl implements GameAction {
         List<Player> players = state.getPlayers();
         currentPlayer.setActiveTurn(false);
         for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getName().equals(currentPlayer.getName())) {
+            if (players.get(i).getName().equals(currentPlayer.getName()) && players.get(i).isAlive()) {
                 if (i == players.size() - 1) {
                     players.get(0).setActiveTurn(true);
                 } else {
