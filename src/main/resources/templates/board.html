@@ -23,8 +23,9 @@
             <div class="section-game-stat">
                 <span>Количество игроков: </span><span id="game-stat-player-count">0</span>
                 <div id="game-stat-red-amount-wrapper" class="hidden">
-                    Общий запас КР: <span id="game-stat-red-count">0</span>
+                    Общий запас КР: <b id="game-stat-red-count">0</b>
                 </div>
+                <div id="game-stat-active-player-wrapper" class="hidden">Текущий ход: <b id="game-stat-active-player"></b></div>
                 <input type="submit" value="Начать" class="hidden" id="start-game-button" onclick="CLIENT.startGame()">
             </div>
             <div class="section-user-cards" id="section-user-cards">

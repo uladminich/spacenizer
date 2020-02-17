@@ -51,6 +51,7 @@ public class GameManagerImpl implements GameManager {
     private boolean isRoundFinish(String currentAction, Board currentState) {
         return GameAction.PLAY_CARD.equals(currentAction)
                 && currentState.getFirstPlayerId().equals(currentState.fetchActivePlayer().getName());
+        // TODO bug when >2 players and one is dead
     }
 
     private void updatePlayerRedAmountStored(Board state) {

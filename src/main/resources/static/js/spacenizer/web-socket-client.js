@@ -22,6 +22,11 @@ CLIENT.initConnection = function () {
         }
 
         $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
+        let activePlayer = getActivePlayer();
+        if (activePlayer) {
+            $('#game-stat-active-player-wrapper').removeClass('hidden');
+            $('#game-stat-active-player').text(activePlayer.name);
+        }
 
         // init players info
         updatePlayerInfoSection();
@@ -36,7 +41,7 @@ CLIENT.initConnection = function () {
 
         let playerCount = CLIENT.state.players.length;
         $('#game-stat-player-count').text(playerCount);
-        if (isCreator(CLIENT.state.players)) {
+        if (isCreator(CLIENT.state.players) && !CLIENT.state.action) {
             $('#start-game-button').removeClass('hidden'); // TODO fix
         }
 
@@ -80,6 +85,10 @@ function isCreator(players) {
 
 function getCurrentPlayer(players) {
     return players.find((p) => p.name === CLIENT.name);
+}
+
+function getActivePlayer(players) {
+    return CLIENT.state.players.find((p) => p.activeTurn);
 }
 
 function updatePlayerZones() {

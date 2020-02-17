@@ -24,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
         encoders = BoardEncoder.class,
         decoders = BoardDecoder.class)
 public class ServerWebSocket {
-    private static final int ROOM_SIZE_LIMIT = 2;
+    private static final int ROOM_SIZE_LIMIT = 4;
 
     private BoardsManager boardsManager;
     private GameManager gameManager;
