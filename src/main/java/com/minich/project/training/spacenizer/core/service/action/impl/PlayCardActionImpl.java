@@ -26,10 +26,12 @@ public class PlayCardActionImpl implements GameAction {
 
         fromPlayer.getAvailableCards().remove(fromCard);
         toPlayer.getActiveCards().add(fromCard);
+
         toPlayer.addRedConsumption(fromCard.getRedConsumption());
         toPlayer.addRedProduction(fromCard.getRedProduction());
+        updateNegativeValueWithZero(toPlayer);
 
-        changeActivePlayer(state, fromPlayer);
+        state.getAction().setName(GameAction.PLAY_CARD_FINISHED);
         return state;
     }
 
@@ -48,18 +50,13 @@ public class PlayCardActionImpl implements GameAction {
                 .orElse(null);
     }
 
-    private void changeActivePlayer(Board state, Player currentPlayer) {
-        List<Player> players = state.getPlayers();
-        currentPlayer.setActiveTurn(false);
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).getName().equals(currentPlayer.getName()) && players.get(i).isAlive()) {
-                if (i == players.size() - 1) {
-                    players.get(0).setActiveTurn(true);
-                } else {
-                    players.get(i + 1).setActiveTurn(true);
-                }
-                break;
-            }
+    private void updateNegativeValueWithZero(Player player){
+        if (player.getRedProduction() < 0) {
+            player.setRedConsumption(0);
+        }
+
+        if (player.getRedConsumption() < 0) {
+            player.setRedConsumption(0);
         }
     }
 }

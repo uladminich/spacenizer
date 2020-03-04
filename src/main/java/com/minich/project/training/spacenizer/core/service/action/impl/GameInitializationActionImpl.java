@@ -7,7 +7,6 @@ import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
@@ -50,7 +51,7 @@ public class BoardsManagerImpl implements BoardsManager {
         activeCards.add(card);
         player.setActiveCards(activeCards);
         player.setAvailableCards(new ArrayList<>());
-        player.setRedAmount(0);
+        player.setRedAmount(new Random().nextInt(3) + 2);// start amount from 2 to 5
         player.setRedConsumption(CardType.STATION.getRedConsumption());
         player.setRedProduction(CardType.STATION.getRedProduction());
         return player;
