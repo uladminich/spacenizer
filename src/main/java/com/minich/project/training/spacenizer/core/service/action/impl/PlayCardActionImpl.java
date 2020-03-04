@@ -14,7 +14,7 @@ public class PlayCardActionImpl implements GameAction {
     @Override
     public Board doAction(Board state) {
         String fromPlayerId = state.getAction().getFromPlayer();
-        String toPlayerId = state.getAction().getFromPlayer();
+        String toPlayerId = state.getAction().getToPlayer();
         String fromCardId = state.getAction().getFromCard();
 //        String toCardId = state.getAction().getFromCard(); TODO if card play to another card
 

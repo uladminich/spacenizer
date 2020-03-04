@@ -41,7 +41,7 @@ $(document).click(function(e) {
     }
     if (!$target.is(".available-card-clicked")) {
 
-        if ($target.is(".main-board-player-zone")) {
+        if ($target.is(".main-board-player-zone") && !$target.is('.board-player-zone--player-lose')) {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
             let targetPlayerId = $target.attr('data-player-id');
 
