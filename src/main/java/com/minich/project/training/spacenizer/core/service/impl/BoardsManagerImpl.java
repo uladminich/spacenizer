@@ -47,7 +47,7 @@ public class BoardsManagerImpl implements BoardsManager {
         player.setCreator(isCreator);
         List<Card> activeCards = new ArrayList<>();
         Card card = new Card(CardType.STATION);
-        card.setId(player.getName() + "-" +card.getId() + "-0");
+        card.setIdUI(player.getName() + "-" +card.getId() + "-0");
         activeCards.add(card);
         player.setActiveCards(activeCards);
         player.setAvailableCards(new ArrayList<>());

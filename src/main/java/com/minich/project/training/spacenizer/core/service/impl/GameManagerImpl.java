@@ -13,12 +13,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class GameManagerImpl implements GameManager {
+
+    @Autowired
+    private PostRoundServiceImpl postRoundService;
 
     @Autowired
     @Qualifier(GameAction.START_GAME)
@@ -37,10 +39,9 @@ public class GameManagerImpl implements GameManager {
             updatedState.getTurnPerRound().incrementAndGet();
         }
 
-
-        if (isRoundFinish(updatedState)) {
-            updatePlayerRedAmountStored(updatedState);
-            updatedState.setTurnPerRound(new AtomicInteger(0));
+        if (postRoundService.isRoundFinish(updatedState)) {
+            postRoundService.updatePlayerRedAmountStored(updatedState);
+            postRoundService.resetTurnsPerRound(updatedState);
         }
 
         changeActivePlayer(updatedState);
@@ -63,36 +64,6 @@ public class GameManagerImpl implements GameManager {
             default:
                 return null;
         }
-    }
-
-    private boolean isRoundFinish(Board currentState) {
-        return GameAction.PLAY_CARD_FINISHED.equals(currentState.getAction().getName())
-                && currentState.getTurnPerRound().get() >= currentState.countActivePlayers();
-    }
-
-    private void updatePlayerRedAmountStored(Board state) {
-        state.getPlayers().forEach(player -> {
-            int increaseAmount = player.getRedProduction();
-            int decreaseAmount = player.getRedConsumption();
-            int totalAmount = state.getRedResourceCount();
-
-            int amountToAdd;
-            if (totalAmount - increaseAmount >= 0) {
-                amountToAdd = increaseAmount - decreaseAmount;
-                state.setRedResourceCount(totalAmount - increaseAmount);
-            } else {
-                state.setRedResourceCount(0);
-                amountToAdd = totalAmount - decreaseAmount;
-            }
-
-            player.setRedAmount(player.getRedAmount() + amountToAdd);
-
-            if (player.getRedAmount() < 0) {
-                player.setAlive(false);
-                player.setRedConsumption(0);
-                player.setRedProduction(0);
-            }
-        });
     }
 
     private boolean isGameFinish(Board state) {

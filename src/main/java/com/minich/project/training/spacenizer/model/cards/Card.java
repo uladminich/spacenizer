@@ -11,17 +11,16 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Card {
 
-    private String id;
+    private String title;
     private String name;
     private String description;
-    private int redProduction;
-    private int redConsumption;
+    private String idUI;
+    private long id;
 
     public Card(CardType type) {
         id = type.getId();
+        title = type.getTitle();
         name = type.getName();
         description = type.getDescription();
-        redProduction = type.getRedProduction();
-        redConsumption = type.getRedConsumption();
     }
 }

@@ -19,9 +19,11 @@ CLIENT.initConnection = function () {
             // init game stat
             $('#start-game-button').addClass('hidden');
             $('#game-stat-red-amount-wrapper').removeClass('hidden');
+            $('#game-stat-blue-amount-wrapper').removeClass('hidden');
         }
 
         $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
+        $('#game-stat-blue-count').text(CLIENT.state.blueResourceCount);
         let activePlayer = getActivePlayer();
         if (activePlayer) {
             $('#game-stat-active-player-wrapper').removeClass('hidden');
@@ -115,7 +117,7 @@ function updatePlayerZones() {
         }
         for(let i = 0; i < playerForZone.activeCards.length; i++) {
             let currentActiveCard = playerForZone.activeCards[i];
-            zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.id}">S</div>`)
+            zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.idUI}">S</div>`)
         }
     }
 }
@@ -125,6 +127,6 @@ function updatePlayerInfoSection() {
     $('#section-user-cards').empty();
     for (let i = 0; i < currentPlayer.availableCards.length; i++) {
         let card =  currentPlayer.availableCards[i];
-        $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.id}" onclick="chooseAvailableCard(this);">${card.name}</span>`)
+        $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.idUI}" onclick="chooseAvailableCard(this);">${card.title}</span>`)
     }
 }

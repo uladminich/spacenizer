@@ -27,7 +27,6 @@ function createBoard() {
         success: function(response) {
             if (response) {
                 let jsonResponse = JSON.parse(response);
-                console.log(jsonResponse.id);
                 window.location.href = '/board?id=' + jsonResponse.id;
             }
         }
