@@ -6,7 +6,7 @@ public interface PostRoundService {
 
     boolean isRoundFinish(Board currentState);
 
-    void updatePlayerRedAmountStored(Board state);
+    void updatePlayerResourceAmountStored(Board state);
 
     void resetTurnsPerRound(Board state);
 }

@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
@@ -23,7 +22,7 @@ public class Board implements Serializable {
     private String firstPlayerId;
     private boolean isFinished;
     private String winner;
-    private AtomicInteger turnPerRound = new AtomicInteger(0);
+    private int turnPerRound = 0;
 
     public void addPlayer(Player player) {
         if (players != null && player != null && player.getBoardId().equals(boardId)) {

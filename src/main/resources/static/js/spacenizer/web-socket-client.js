@@ -104,10 +104,17 @@ function updatePlayerZones() {
         }
         zone.append(`<div>
               [<span>${playerForZone.name}</span>] |
-              КР:
-              З - <span title="Запас">${playerForZone.redAmount}</span>;
-              П - <span title="Производство">${playerForZone.redProduction}</span>;
-              Р - <span title="Расход">${playerForZone.redConsumption}</span>;
+                  <span style="color: red; font-weight: bold;"> КР:
+                      З - <span title="Запас КР">${playerForZone.redAmount}</span>;
+                      П - <span title="Производство КР">${playerForZone.redProduction}</span>;
+                      Р - <span title="Расход КР">${playerForZone.redConsumption}</span>
+                  </span>
+                  ;
+                  <span style="color: blue; font-weight: bold;"> СР:
+                      З - <span title="Запас СР">${playerForZone.blueAmount}</span>;
+                      П - <span title="Производство СР">${playerForZone.blueProduction}</span>;
+                      Р - <span title="Расход СР">${playerForZone.blueConsumption}</span>
+                  </span>
         </div>`);
         if (!playerForZone.alive) {
             // player finished game as can't produce enough red resource

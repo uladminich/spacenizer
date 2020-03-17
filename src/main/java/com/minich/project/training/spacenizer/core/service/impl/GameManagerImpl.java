@@ -36,11 +36,11 @@ public class GameManagerImpl implements GameManager {
         Board updatedState = action != null ? action.doAction(currentState) : currentState;
 
         if (GameAction.PLAY_CARD_FINISHED.equals(updatedState.getAction().getName())) {
-            updatedState.getTurnPerRound().incrementAndGet();
+            updatedState.setTurnPerRound(updatedState.getTurnPerRound() + 1);
         }
 
         if (postRoundService.isRoundFinish(updatedState)) {
-            postRoundService.updatePlayerRedAmountStored(updatedState);
+            postRoundService.updatePlayerResourceAmountStored(updatedState);
             postRoundService.resetTurnsPerRound(updatedState);
         }
 
