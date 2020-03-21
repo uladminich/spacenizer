@@ -5,11 +5,10 @@ import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
+import com.minich.project.training.spacenizer.utils.CardUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -18,14 +17,7 @@ public class GameInitializationActionImpl implements GameAction {
 
     private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 5;
     private static final int RANDOM_CARD_INDEX_MAX = 8;
-    private static final List<CardType> ONE_CARD_PER_PLAYER_LIST = new ArrayList<>();
-    static {
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.ADVERSE_TERRAIN);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.NANO_TECHNOLOGIES);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.ROBOTS);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.SECURITY_GUARDS);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.BARRACK);
-    }
+
 
     @Override
     public Board doAction(Board state) {
@@ -44,7 +36,7 @@ public class GameInitializationActionImpl implements GameAction {
             for (int i = 0; i < INITIAL_AVAILABLE_CARD_AMOUNT; i++) {
                 int cardIndex = random.nextInt(RANDOM_CARD_INDEX_MAX);
                 CardType cardForPlayer = cardMap.get(cardIndex);
-                if (ONE_CARD_PER_PLAYER_LIST.contains(cardForPlayer) && hasOneCardPerPlayer(player.getAvailableCards(), cardForPlayer)) {
+                if (CardUtils.isOnePerPlayerCard(cardForPlayer.getId()) && CardUtils.hasMoreThanOneCardPerPlayer(player.getAvailableCards(), cardForPlayer.getId())) {
                     i--;
                     continue;
                 }
@@ -64,8 +56,4 @@ public class GameInitializationActionImpl implements GameAction {
         return state;
     }
 
-    private boolean hasOneCardPerPlayer(List<Card> availableCards, CardType cardForPlayer) {
-        return availableCards.stream()
-                .anyMatch(card -> card.getName().equals(cardForPlayer.getName()));
-    }
 }

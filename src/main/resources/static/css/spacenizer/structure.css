@@ -73,3 +73,7 @@ div {
     font-weight: bold;
     margin: 5px;
 }
+
+.active-card-item--disabled {
+    background-color: grey;
+}

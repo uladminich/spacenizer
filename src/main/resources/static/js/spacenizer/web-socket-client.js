@@ -124,7 +124,7 @@ function updatePlayerZones() {
         }
         for(let i = 0; i < playerForZone.activeCards.length; i++) {
             let currentActiveCard = playerForZone.activeCards[i];
-            zone.append(`<div class="active-card-item" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.idUI}">S</div>`)
+            zone.append(`<div class="active-card-item ${currentActiveCard.active ? '' : 'active-card-item--disabled'}" title="${currentActiveCard.description}" data-card-id="${currentActiveCard.idUI}">S</div>`)
         }
     }
 }

@@ -66,6 +66,8 @@ public class PlayCardActionImpl implements GameAction {
         fromPlayer.getAvailableCards().remove(fromCard);
         toPlayer.getActiveCards().add(fromCard);
 
+        setNotActiveCardIfRequired(toPlayer, fromCard);
+
         boolean toPlayerHasRobots = CardUtils.isPlayerHasActiveCard(CardType.ROBOTS.getId(), toPlayer);
         int totalRedProduction = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_RED_PRODUCTION);
         int totalRedConsumption = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_RED_CONSUMPTION);
@@ -83,9 +85,16 @@ public class PlayCardActionImpl implements GameAction {
         return state;
     }
 
+    private void setNotActiveCardIfRequired(Player toPlayer, Card fromCard) {
+        if (CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.hasMoreThanOneCardPerPlayer(toPlayer.getActiveCards(), fromCard.getId())) {
+            fromCard.setActive(false);
+        }
+    }
+
     private int getTotalResourceStat(Player player, boolean isToPlayerHasRobots, BiFunction<Card, Boolean, Integer> calculateFunction) {
         return player.getActiveCards()
                 .stream()
+                .filter(Card::isActive)
                 .mapToInt(card -> calculateFunction.apply(card, isToPlayerHasRobots))
                 .sum();
     }

@@ -16,6 +16,7 @@ public class Card {
     private String description;
     private String idUI;
     private long id;
+    private boolean isActive = true;
 
     public Card(CardType type) {
         id = type.getId();
