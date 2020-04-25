@@ -21,6 +21,9 @@ public class BoardRestController {
 
     @RequestMapping(value = "/api/v1/spacenizer/board", method = RequestMethod.POST)
     public ResponseEntity<String> createBoard(@RequestParam String login, @RequestParam String pass) {
+        if (!"minich".equals(login) || !"u".equals(pass)) {
+            return ResponseEntity.ok("{\"error\":\"error\"}");
+        }
         byte[] loginPassAsBytes = login.concat(pass).getBytes();
         String token = DigestUtils.md5DigestAsHex(loginPassAsBytes);
         if (connectionManager.getGameTokens().contains(token)) {

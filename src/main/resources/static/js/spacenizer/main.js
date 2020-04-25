@@ -27,7 +27,9 @@ function createBoard() {
         success: function(response) {
             if (response) {
                 let jsonResponse = JSON.parse(response);
-                window.location.href = '/board?id=' + jsonResponse.id;
+                if(jsonResponse.id) {
+                    window.location.href = '/board?id=' + jsonResponse.id;
+                }
             }
         }
     });
