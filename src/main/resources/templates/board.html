@@ -9,10 +9,8 @@
     <body>
         <div class="main-wrapper clearfix">
             <div class="section-header">
-                <span class="hidden">
-                    <span>Ходит </span>
-                    <span id="current-player-turn"></span>
-                </span>
+                <span>Количество игроков: </span><span id="game-stat-player-count">0</span>
+                <div id="game-stat-active-player-wrapper" class="hidden">Текущий ход: <b id="game-stat-active-player"></b></div>
             </div>
             <div class="section-main-board clearfix" >
                 <div id="main-board-zone-0" class="main-board-player-zone"></div>
@@ -21,14 +19,18 @@
                 <div id="main-board-zone-3" class="main-board-player-zone"></div>
             </div>
             <div class="section-game-stat">
-                <span>Количество игроков: </span><span id="game-stat-player-count">0</span>
                 <div id="game-stat-red-amount-wrapper" class="hidden" style="color: red;">
                     Общий запас КР: <b id="game-stat-red-count" >0</b>
                 </div>
                 <div id="game-stat-blue-amount-wrapper" class="hidden" style="color: blue;">
                     Общий запас СР: <b id="game-stat-blue-count">0</b>
                 </div>
-                <div id="game-stat-active-player-wrapper" class="hidden">Текущий ход: <b id="game-stat-active-player"></b></div>
+                <div id="game-stat-global-cards-wrapper" class="hidden">
+                    <span>Мир:</span>
+                    <span id="game-stat-global-default-description"> без особенностей. </span><br>
+                    <div id="game-stat-global-cards-list" class="hidden">
+                    </div>
+                </div>
                 <input type="submit" value="Начать" class="hidden" id="start-game-button" onclick="CLIENT.startGame()">
             </div>
             <div class="section-user-cards" id="section-user-cards">

@@ -1,6 +1,7 @@
 package com.minich.project.training.spacenizer.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.minich.project.training.spacenizer.model.cards.Card;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class Board implements Serializable {
     private boolean isFinished;
     private String winner;
     private int turnPerRound = 0;
+    private Player globalPlayer;
 
     public void addPlayer(Player player) {
         if (players != null && player != null && player.getBoardId().equals(boardId)) {

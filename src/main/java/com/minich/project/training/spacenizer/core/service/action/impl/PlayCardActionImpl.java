@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 
 @Service(GameAction.PLAY_CARD)
 public class PlayCardActionImpl implements GameAction {
@@ -59,25 +60,47 @@ public class PlayCardActionImpl implements GameAction {
 
         List<Player> players = state.getPlayers();
         Player fromPlayer = getPlayerById(fromPlayerId, players);
-        Player toPlayer = fromPlayerId.equals(toPlayerId) ? fromPlayer : getPlayerById(toPlayerId, players);
+        Player toPlayer;
+        boolean isGlobalCardPlayed = Player.GLOBAL_PLAYER_ID.equals(toPlayerId);
+        if(isGlobalCardPlayed) {
+            toPlayer = state.getGlobalPlayer();
+        } else {
+            toPlayer = fromPlayerId.equals(toPlayerId) ? fromPlayer : getPlayerById(toPlayerId, players);
 
+        }
         Card fromCard = getAvailableCardById(fromCardIdUI, fromPlayer);
 
         fromPlayer.getAvailableCards().remove(fromCard);
         toPlayer.getActiveCards().add(fromCard);
-
+        if (isGlobalCardPlayed) {
+            toPlayer.setActiveCards(toPlayer.getActiveCards().stream().distinct().collect(Collectors.toList()));
+        }
         setNotActiveCardIfRequired(toPlayer, fromCard);
 
-        boolean toPlayerHasRobots = CardUtils.isPlayerHasActiveCard(CardType.ROBOTS.getId(), toPlayer);
-        int totalRedProduction = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_RED_PRODUCTION);
-        int totalRedConsumption = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_RED_CONSUMPTION);
-        int totalBlueProduction = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_BLUE_PRODUCTION);
-        int totalBlueConsumption = getTotalResourceStat(toPlayer, toPlayerHasRobots, GET_CARD_BLUE_CONSUMPTION);
+        state.getPlayers().stream()
+                .filter(Player::isAlive)
+                .forEach(player -> {
+                    boolean playerHasRobots = CardUtils.isPlayerHasActiveCard(CardType.ROBOTS.getId(), player);
+                    int totalRedProduction = getTotalResourceStat(player, playerHasRobots, GET_CARD_RED_PRODUCTION);
+                    int totalRedConsumption = getTotalResourceStat(player, playerHasRobots, GET_CARD_RED_CONSUMPTION);
+                    int totalBlueProduction = getTotalResourceStat(player, playerHasRobots, GET_CARD_BLUE_PRODUCTION);
+                    int totalBlueConsumption = getTotalResourceStat(player, playerHasRobots, GET_CARD_BLUE_CONSUMPTION);
 
-        toPlayer.setRedProduction(totalRedProduction);
-        toPlayer.setRedConsumption(totalRedConsumption);
-        toPlayer.setBlueProduction(totalBlueProduction);
-        toPlayer.setBlueConsumption(totalBlueConsumption);
+                    player.setRedProduction(totalRedProduction);
+                    player.setRedConsumption(totalRedConsumption);
+                    player.setBlueProduction(totalBlueProduction);
+                    player.setBlueConsumption(totalBlueConsumption);
+
+                    if (!state.getGlobalPlayer().getActiveCards().isEmpty()) {
+                        state.getGlobalPlayer().getActiveCards().forEach(globalCard -> {
+                            CardType cardType = CardUtils.getCardTypeById(globalCard.getId());
+                            player.setRedProduction(player.getRedProduction() + cardType.getRedProduction());
+                            player.setRedConsumption(player.getRedConsumption() + cardType.getRedConsumption());
+                            player.setBlueProduction(player.getBlueProduction() + cardType.getBlueProduction());
+                            player.setBlueConsumption(player.getBlueConsumption() + cardType.getBlueConsumption());
+                        });
+                    }
+                });
 
         updateNegativeValueWithZero(toPlayer);
 
@@ -86,7 +109,7 @@ public class PlayCardActionImpl implements GameAction {
     }
 
     private void setNotActiveCardIfRequired(Player toPlayer, Card fromCard) {
-        if (CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.hasMoreThanOneCardPerPlayer(toPlayer.getActiveCards(), fromCard.getId())) {
+        if (CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.isPlayerHasAlreaydActiveCard(fromCard.getId(), toPlayer)) {
             fromCard.setActive(false);
         }
     }

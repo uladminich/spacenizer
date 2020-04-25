@@ -39,8 +39,20 @@ $(document).click(function(e) {
         return;
     }
     if (!$target.is(".available-card-clicked")) {
+        let isGlobalCard = $(".available-card-clicked").attr("data-card-global");
+        if (isGlobalCard && $target.is(".section-game-stat")) {
+            let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+            let targetPlayerId = $target.attr('data-player-id');
 
-        if ($target.is(".main-board-player-zone") && !$target.is('.board-player-zone--player-lose')) {
+            let action = {};
+            action.name = CLIENT.COMMAND_PLAY_CARD;
+            action.fromPlayer = currentPlayer.name;
+            action.toPlayer = CLIENT.GAME_STAT_SECTION_ID;
+            action.fromCard = $('.available-card-clicked').attr('data-card-id');
+            action.toCard = '';
+            CLIENT.state.action = action;
+            CLIENT.sendAction();
+        } else if ($target.is(".main-board-player-zone") && !$target.is('.board-player-zone--player-lose')) {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
             let targetPlayerId = $target.attr('data-player-id');
 
@@ -52,7 +64,6 @@ $(document).click(function(e) {
             action.toCard = '';
             CLIENT.state.action = action;
             CLIENT.sendAction();
-
         }
 
         $('.available-card-clicked').removeClass('available-card-clicked');

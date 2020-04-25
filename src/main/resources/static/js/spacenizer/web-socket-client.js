@@ -3,6 +3,7 @@ let CLIENT = {};
 CLIENT.COMMAND_START_GAME = 'start';
 CLIENT.COMMAND_START_GAME_COMPLETED = 'start_completed';
 CLIENT.COMMAND_PLAY_CARD = 'play_card';
+CLIENT.GAME_STAT_SECTION_ID = 'GLOBAL';
 
 CLIENT.initConnection = function () {
     console.log("initConnection start ");
@@ -10,30 +11,24 @@ CLIENT.initConnection = function () {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    CLIENT.socket = new WebSocket("ws://localhost:8080/board/" + id + '/' + CLIENT.name);
+    CLIENT.socket = new WebSocket("ws://" + window.location.host + "/board/" + id + '/' + CLIENT.name);
 
     CLIENT.socket.onmessage = function(event) {
         CLIENT.state = JSON.parse(event.data);
+
         if (CLIENT.state.action && CLIENT.state.action.name === CLIENT.COMMAND_START_GAME_COMPLETED) {
-
             // init game stat
-            $('#start-game-button').addClass('hidden');
-            $('#game-stat-red-amount-wrapper').removeClass('hidden');
-            $('#game-stat-blue-amount-wrapper').removeClass('hidden');
+            postInitGameAction();
         }
 
-        $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
-        $('#game-stat-blue-count').text(CLIENT.state.blueResourceCount);
-        let activePlayer = getActivePlayer();
-        if (activePlayer) {
-            $('#game-stat-active-player-wrapper').removeClass('hidden');
-            $('#game-stat-active-player').text(activePlayer.name);
-        }
-
+        // init global stat info
+        updateGlobalStatInfoSection();
         // init players info
         updatePlayerInfoSection();
         // init board zone
         updatePlayerZones();
+
+        // add click handler for available player's cards
         let availCards = $('.card-available');
         for (let i = 0; i < availCards.length; i++) {
             availCards[i].addEventListener("blur", function( event ) {
@@ -85,6 +80,13 @@ function isCreator(players) {
     return players.some(el => el.name == CLIENT.name && el.creator);
 }
 
+function postInitGameAction() {
+    // init game stat
+    $('#start-game-button').addClass('hidden');
+    $('#game-stat-red-amount-wrapper').removeClass('hidden');
+    $('#game-stat-blue-amount-wrapper').removeClass('hidden');
+}
+
 function getCurrentPlayer(players) {
     return players.find((p) => p.name === CLIENT.name);
 }
@@ -134,6 +136,29 @@ function updatePlayerInfoSection() {
     $('#section-user-cards').empty();
     for (let i = 0; i < currentPlayer.availableCards.length; i++) {
         let card =  currentPlayer.availableCards[i];
-        $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.idUI}" onclick="chooseAvailableCard(this);">${card.title}</span>`)
+        $('#section-user-cards').append(`<span title="${card.description}" class="card-available" data-card-id="${card.idUI}" data-card-global="${card.global}" onclick="chooseAvailableCard(this);">${card.title}</span>`)
+    }
+}
+
+function updateGlobalStatInfoSection() {
+    $('#game-stat-red-count').text(CLIENT.state.redResourceCount);
+    $('#game-stat-blue-count').text(CLIENT.state.blueResourceCount);
+    let activePlayer = getActivePlayer();
+    if (activePlayer) {
+        $('#game-stat-active-player-wrapper').removeClass('hidden');
+        $('#game-stat-active-player').text(activePlayer.name);
+        $('#game-stat-global-cards-wrapper').removeClass('hidden');
+    }
+
+    $('#game-stat-global-cards-list').empty();
+    let activeGlobalCards = CLIENT.state.globalPlayer.activeCards;
+    if (!activeGlobalCards) {
+        return;
+    }
+    $('#game-stat-global-default-description').addClass('hidden');
+    $('#game-stat-global-cards-list').removeClass('hidden');
+    for (let i = 0; i < CLIENT.state.globalPlayer.activeCards.length; i++) {
+        let card = CLIENT.state.globalPlayer.activeCards[i];
+        $('#game-stat-global-cards-list').append(`<span title="${card.description}" class="card-global" data-card-id="${card.idUI}">${card.title}</span>`)
     }
 }

@@ -15,8 +15,8 @@ import java.util.Random;
 @Service(GameAction.START_GAME)
 public class GameInitializationActionImpl implements GameAction {
 
-    private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 5;
-    private static final int RANDOM_CARD_INDEX_MAX = 8;
+    private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 6;
+    private static final int RANDOM_CARD_INDEX_MAX = 9;
 
 
     @Override
@@ -31,12 +31,15 @@ public class GameInitializationActionImpl implements GameAction {
         cardMap.put(5, CardType.NANO_TECHNOLOGIES);
         cardMap.put(6, CardType.ADVERSE_TERRAIN);
         cardMap.put(7, CardType.ROBOTS);
+        cardMap.put(8, CardType.DANGEROUS_WORLD);
         Random random = new Random();
         for (Player player : state.getPlayers()) {
             for (int i = 0; i < INITIAL_AVAILABLE_CARD_AMOUNT; i++) {
                 int cardIndex = random.nextInt(RANDOM_CARD_INDEX_MAX);
                 CardType cardForPlayer = cardMap.get(cardIndex);
-                if (CardUtils.isOnePerPlayerCard(cardForPlayer.getId()) && CardUtils.hasMoreThanOneCardPerPlayer(player.getAvailableCards(), cardForPlayer.getId())) {
+                boolean isOnePerPlayerCard = CardUtils.isOnePerPlayerCard(cardForPlayer.getId());
+                boolean isCardAlreadyPresent = CardUtils.hasMoreThanOneCardPerPlayer(player.getAvailableCards(), cardForPlayer.getId());
+                if (isOnePerPlayerCard && isCardAlreadyPresent) {
                     i--;
                     continue;
                 }
@@ -45,8 +48,8 @@ public class GameInitializationActionImpl implements GameAction {
                 player.getAvailableCards().add(card);
             }
         }
-        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 10); //TODO improve formula
-        state.setBlueResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 10); //TODO improve formula
+        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 15); //TODO improve formula
+        state.setBlueResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 15); //TODO improve formula
 
         // shuffle player before game as first turn will be for the first player
         // Collections.shuffle(state.getPlayers()); some UI issues

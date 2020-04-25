@@ -11,13 +11,14 @@ import java.util.Optional;
 
 public final class CardUtils {
 
-    public static final List<CardType> ONE_CARD_PER_PLAYER_LIST = new ArrayList<>();
+    private static final List<CardType> ONE_CARD_PER_PLAYER_LIST = new ArrayList<>();
     static {
         ONE_CARD_PER_PLAYER_LIST.add(CardType.ADVERSE_TERRAIN);
         ONE_CARD_PER_PLAYER_LIST.add(CardType.NANO_TECHNOLOGIES);
         ONE_CARD_PER_PLAYER_LIST.add(CardType.ROBOTS);
         ONE_CARD_PER_PLAYER_LIST.add(CardType.SECURITY_GUARDS);
         ONE_CARD_PER_PLAYER_LIST.add(CardType.BARRACK);
+        ONE_CARD_PER_PLAYER_LIST.add(CardType.DANGEROUS_WORLD);
     }
 
     private CardUtils() {
@@ -42,6 +43,12 @@ public final class CardUtils {
 
     public static boolean hasMoreThanOneCardPerPlayer(List<Card> availableCards, long cardTypeId) {
         return availableCards.stream()
+                .filter(card -> card.getId() == cardTypeId)
+                .count() >= 1;
+    }
+
+    public static boolean isPlayerHasAlreaydActiveCard(long cardTypeId, Player player) {
+        return player.getActiveCards().stream()
                 .filter(card -> card.getId() == cardTypeId)
                 .count() > 1;
     }

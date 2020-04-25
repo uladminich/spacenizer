@@ -1,5 +1,6 @@
 package com.minich.project.training.spacenizer.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import lombok.Getter;
@@ -14,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Player implements Serializable {
+    @JsonIgnore
+    public static final String GLOBAL_PLAYER_ID = "GLOBAL";
     private String boardId;
     private String name;
     private boolean isCreator;

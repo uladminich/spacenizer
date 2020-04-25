@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,6 +31,10 @@ public class BoardsManagerImpl implements BoardsManager {
             isCreator = true;
         }
         Player player = initPlayer(gameId, userName, isCreator);
+        Player globalPlayer = board.getGlobalPlayer();
+        if (Objects.isNull(globalPlayer)) {
+            board.setGlobalPlayer(getGlobalPlayer(gameId));
+        }
         board.addPlayer(player);
         return board;
     }
@@ -54,6 +59,14 @@ public class BoardsManagerImpl implements BoardsManager {
         player.setRedAmount(new Random().nextInt(3) + 2);// start amount from 2 to 5
         player.setRedConsumption(CardType.STATION.getRedConsumption());
         player.setRedProduction(CardType.STATION.getRedProduction());
+        return player;
+    }
+
+    private Player getGlobalPlayer(String id) {
+        Player player = new Player();
+        player.setBoardId(id);
+        List<Card> activeCards = new ArrayList<>();
+        player.setActiveCards(activeCards);
         return player;
     }
 
