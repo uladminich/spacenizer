@@ -2,6 +2,7 @@ package com.minich.project.training.spacenizer.core.server.impl;
 
 import com.minich.project.training.spacenizer.core.server.ConnectionManager;
 import com.minich.project.training.spacenizer.core.server.ServerWebSocket;
+import com.minich.project.training.spacenizer.core.service.MockProvider;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,11 @@ public class ConnectionManagerImpl implements ConnectionManager {
 
     private final Map<String, Set<ServerWebSocket>> rooms = new ConcurrentHashMap<>();
     private Set<String> gameTokens = new CopyOnWriteArraySet<>();
+
+    //Mock game ids initialisation
+    {
+        gameTokens.addAll(MockProvider.MOCK_GAME_IDS);
+    }
 
     @Override
     public Set<String> getGameTokens() {

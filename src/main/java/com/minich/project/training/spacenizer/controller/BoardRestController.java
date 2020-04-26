@@ -31,10 +31,10 @@ public class BoardRestController {
             log.debug("Token already exists.");
         }
         Set<String> ids = connectionManager.getGameTokens();
-        synchronized (ids) {
+        //synchronized (ids) {
             ids.add(token);
             connectionManager.setGameTokens(ids);
-        }
+        //}
         return ResponseEntity.ok("{\"id\":\"" + token + "\"}");
     }
 }

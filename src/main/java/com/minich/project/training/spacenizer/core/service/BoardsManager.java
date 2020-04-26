@@ -8,4 +8,5 @@ public interface BoardsManager {
 
     void addBoard(String gameId, Board board);
 
+    boolean isBoardPresent(String gameId);
 }

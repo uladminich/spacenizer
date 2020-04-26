@@ -12,7 +12,7 @@ import javax.websocket.EndpointConfig;
 @Slf4j
 public class BoardEncoder implements Encoder.Text<Board> {
 
-    public static final String EMPTY_JSON = "{}";
+    private static final String EMPTY_JSON = "{}";
     private ObjectMapper MAPPER = new ObjectMapper();
 
     @Override

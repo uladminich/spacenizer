@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -30,7 +31,8 @@ public class BoardsManagerImpl implements BoardsManager {
             board.setPlayers(new ArrayList<>());
             isCreator = true;
         }
-        Player player = initPlayer(gameId, userName, isCreator);
+
+        Player player = getOrCreatePlayer(board, gameId, userName, isCreator);
         Player globalPlayer = board.getGlobalPlayer();
         if (Objects.isNull(globalPlayer)) {
             board.setGlobalPlayer(getGlobalPlayer(gameId));
@@ -45,7 +47,18 @@ public class BoardsManagerImpl implements BoardsManager {
         boards.put(gameId, board);
     }
 
-    private Player initPlayer(String id, String name, boolean isCreator) {
+    @Override
+    public boolean isBoardPresent(String gameId) {
+        return boards.containsKey(gameId);
+    }
+
+    private Player getOrCreatePlayer(Board board, String id, String name, boolean isCreator) {
+        Optional<Player> optPlayer = board.getPlayers().stream()
+                .filter(playerId -> playerId.getName().equals(name))
+                .findAny();
+        if (optPlayer.isPresent()) {
+            return optPlayer.get();
+        }
         Player player = new Player();
         player.setBoardId(id);
         player.setName(name);
@@ -56,7 +69,7 @@ public class BoardsManagerImpl implements BoardsManager {
         activeCards.add(card);
         player.setActiveCards(activeCards);
         player.setAvailableCards(new ArrayList<>());
-        player.setRedAmount(new Random().nextInt(3) + 2);// start amount from 2 to 5
+        player.setRedAmount(new Random().nextInt(2) + 3);// start amount from 3 to 5
         player.setRedConsumption(CardType.STATION.getRedConsumption());
         player.setRedProduction(CardType.STATION.getRedProduction());
         return player;

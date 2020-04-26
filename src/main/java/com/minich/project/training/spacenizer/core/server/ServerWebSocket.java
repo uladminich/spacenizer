@@ -5,6 +5,7 @@ import com.minich.project.training.spacenizer.core.server.formatter.BoardDecoder
 import com.minich.project.training.spacenizer.core.server.formatter.BoardEncoder;
 import com.minich.project.training.spacenizer.core.service.BoardsManager;
 import com.minich.project.training.spacenizer.core.service.GameManager;
+import com.minich.project.training.spacenizer.core.service.MockProvider;
 import com.minich.project.training.spacenizer.model.Board;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -25,10 +26,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
         decoders = BoardDecoder.class)
 public class ServerWebSocket {
     private static final int ROOM_SIZE_LIMIT = 4;
+    private static final String SLASH = "/";
 
     private BoardsManager boardsManager;
     private GameManager gameManager;
     private ConnectionManager connectionManager;
+    private MockProvider mockProvider;
 
     private Session session;
     private String roomId;
@@ -37,6 +40,7 @@ public class ServerWebSocket {
         connectionManager = ApplicationContextProvider.getApplicationContext().getBean(ConnectionManager.class);
         boardsManager = ApplicationContextProvider.getApplicationContext().getBean(BoardsManager.class);
         gameManager = ApplicationContextProvider.getApplicationContext().getBean(GameManager.class);
+        mockProvider = ApplicationContextProvider.getApplicationContext().getBean(MockProvider.class);
     }
 
     @OnOpen
@@ -44,7 +48,7 @@ public class ServerWebSocket {
         this.session = session;
         String path = session.getRequestURI().getPath();
         if (StringUtils.isNotEmpty(path)) {
-            String[] pathSplitted = path.split("/");
+            String[] pathSplitted = path.split(SLASH);
             String id = pathSplitted[pathSplitted.length - 2];
             if (StringUtils.isNotEmpty(path)) {
                 roomId = id;
@@ -65,11 +69,21 @@ public class ServerWebSocket {
                         listeners.add(this);
                     }
                 }
-                Board board = boardsManager.getOrCreateBoard(roomId, name);
+                Board board = getBoard(name);
                 boardsManager.addBoard(roomId, board);
                 broadcast(board);
             }
         }
+    }
+
+    private Board getBoard(String name) {
+        boolean isMock = mockProvider.isMockId(roomId);
+        boolean isGamePresent = boardsManager.isBoardPresent(roomId);
+        Board board = isMock && !isGamePresent ? mockProvider.getMockGame(roomId): boardsManager.getOrCreateBoard(roomId, name);
+        if (Objects.isNull(board) && isMock) {
+            board = boardsManager.getOrCreateBoard(roomId, name);
+        }
+        return board;
     }
 
     @OnMessage

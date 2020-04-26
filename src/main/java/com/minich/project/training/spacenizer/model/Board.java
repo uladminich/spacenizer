@@ -1,8 +1,10 @@
 package com.minich.project.training.spacenizer.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.minich.project.training.spacenizer.model.cards.Card;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,7 +29,7 @@ public class Board implements Serializable {
     private Player globalPlayer;
 
     public void addPlayer(Player player) {
-        if (players != null && player != null && player.getBoardId().equals(boardId)) {
+        if (players != null && player != null && player.getBoardId().equals(boardId) && !isPlayerPresent(player)) {
             players.add(player);
         }
     }
@@ -38,5 +40,9 @@ public class Board implements Serializable {
 
     public long countActivePlayers(){
         return players.stream().filter(Player::isAlive).count();
+    }
+
+    private boolean isPlayerPresent(Player player) {
+        return players.stream().anyMatch(p -> p.getName().equals(player.getName()));
     }
 }
