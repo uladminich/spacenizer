@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Board</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/css/spacenizer/main.css">
+    <link rel="stylesheet" href="/css/spacenizer/structure.css">
+</head>
+<body>
+<div class="main-wrapper clearfix">
+    <div class="section-header">
+        <span>Количество игроков: </span><span id="game-stat-player-count">4</span>
+        <div id="game-stat-active-player-wrapper" class="">Текущий ход: <b id="game-stat-active-player">Player4</b>
+        </div>
+    </div>
+    <div class="section-main-board clearfix">
+        <div id="main-board-zone-0" class="main-board-player-zone" data-player-id="Player1">
+            <div>
+                [<span>Player1</span>] |
+                <span style="color: red; font-weight: bold;"> КР:
+                      З - <span title="Запас КР">4</span>;
+                      П - <span title="Производство КР">4</span>;
+                      Р - <span title="Расход КР">4</span>
+                  </span>
+                ;
+                <span style="color: blue; font-weight: bold;"> СР:
+                      З - <span title="Запас СР">0</span>;
+                      П - <span title="Производство СР">0</span>;
+                      Р - <span title="Расход СР">2</span>
+                  </span>
+            </div>
+            <div class="active-card-item " title="СТАНЦИЯ. Начальная постройка. Добыча - 2 КР, расход - 2 КР."
+                 data-card-id="Player1-0-0">S
+            </div>
+            <div class="active-card-item " title="НАНО ТЕХНОЛОГИИ. Увеличивает добычу КР на 2."
+                 data-card-id="Player1-5-0">S
+            </div>
+        </div>
+        <div id="main-board-zone-1" class="main-board-player-zone" data-player-id="Player2">
+            <div>
+                [<span>Player2</span>] |
+                <span style="color: red; font-weight: bold;"> КР:
+                      З - <span title="Запас КР">2</span>;
+                      П - <span title="Производство КР">3</span>;
+                      Р - <span title="Расход КР">4</span>
+                  </span>
+                ;
+                <span style="color: blue; font-weight: bold;"> СР:
+                      З - <span title="Запас СР">0</span>;
+                      П - <span title="Производство СР">0</span>;
+                      Р - <span title="Расход СР">2</span>
+                  </span>
+            </div>
+            <div class="active-card-item " title="СТАНЦИЯ. Начальная постройка. Добыча - 2 КР, расход - 2 КР."
+                 data-card-id="Player2-0-0">S
+            </div>
+            <div class="active-card-item " title="ДОРОГА. Увеличивает добычу КР на 1." data-card-id="Player2-1-3">S
+            </div>
+        </div>
+        <div id="main-board-zone-2" class="main-board-player-zone" data-player-id="Player3">
+            <div>
+                [<span>Player3</span>] |
+                <span style="color: red; font-weight: bold;"> КР:
+                      З - <span title="Запас КР">2</span>;
+                      П - <span title="Производство КР">2</span>;
+                      Р - <span title="Расход КР">4</span>
+                  </span>
+                ;
+                <span style="color: blue; font-weight: bold;"> СР:
+                      З - <span title="Запас СР">0</span>;
+                      П - <span title="Производство СР">0</span>;
+                      Р - <span title="Расход СР">2</span>
+                  </span>
+            </div>
+            <div class="active-card-item " title="СТАНЦИЯ. Начальная постройка. Добыча - 2 КР, расход - 2 КР."
+                 data-card-id="Player3-0-0">S
+            </div>
+        </div>
+        <div id="main-board-zone-3" class="main-board-player-zone board-player-zone--current-player"
+             data-player-id="Player4">
+            <div>
+                [<span>Player4</span>] |
+                <span style="color: red; font-weight: bold;"> КР:
+                      З - <span title="Запас КР">3</span>;
+                      П - <span title="Производство КР">2</span>;
+                      Р - <span title="Расход КР">4</span>
+                  </span>
+                ;
+                <span style="color: blue; font-weight: bold;"> СР:
+                      З - <span title="Запас СР">0</span>;
+                      П - <span title="Производство СР">0</span>;
+                      Р - <span title="Расход СР">2</span>
+                  </span>
+            </div>
+            <div class="active-card-item " title="СТАНЦИЯ. Начальная постройка. Добыча - 2 КР, расход - 2 КР."
+                 data-card-id="Player4-0-0">S
+            </div>
+        </div>
+    </div>
+    <div class="section-game-stat">
+        <div id="game-stat-red-amount-wrapper" class="" style="color: red;">
+            Общий запас КР: <b id="game-stat-red-count">44</b>
+        </div>
+        <div id="game-stat-blue-amount-wrapper" class="" style="color: blue;">
+            Общий запас СР: <b id="game-stat-blue-count">35</b>
+        </div>
+        <div id="game-stat-global-cards-wrapper" class="">
+            <span>Мир:</span>
+            <span id="game-stat-global-default-description" class="hidden"> без особенностей. </span><br>
+            <div id="game-stat-global-cards-list" class=""><span title="ВРАЖДЕБНЫЙ МИР. Уменьшает всю добычу на 2"
+                                                                 class="card-global" data-card-id="Player3-9-2">Враждебный мир</span>
+            </div>
+        </div>
+        <input type="submit" value="Начать" class="hidden" id="start-game-button" onclick="CLIENT.startGame()">
+    </div>
+    <div class="section-user-cards" id="section-user-cards"><span title="ДОРОГА. Увеличивает добычу КР на 1."
+                                                                  class="card-available" data-card-id="Player4-1-0"
+                                                                  data-card-global="false"
+                                                                  onclick="chooseAvailableCard(this);">Дорога</span><span
+            title="ЛАБОРАТОРИЯ. Увеличивает расход КР на 1. Добывает по 2 CР." class="card-available"
+            data-card-id="Player4-7-1" data-card-global="false"
+            onclick="chooseAvailableCard(this);">Лаборатория</span><span title="ДОРОГА. Увеличивает добычу КР на 1."
+                                                                         class="card-available"
+                                                                         data-card-id="Player4-1-2"
+                                                                         data-card-global="false"
+                                                                         onclick="chooseAvailableCard(this);">Дорога</span><span
+            title="НАНО ТЕХНОЛОГИИ. Увеличивает добычу КР на 2." class="card-available" data-card-id="Player4-5-3"
+            data-card-global="false" onclick="chooseAvailableCard(this);">Нано технологии</span><span
+            title="ЛАБОРАТОРИЯ. Увеличивает расход КР на 1. Добывает по 2 CР." class="card-available"
+            data-card-id="Player4-7-4" data-card-global="false"
+            onclick="chooseAvailableCard(this);">Лаборатория</span><span
+            title="БАР. Уменьшает добычу КР на 1, увеличивает расход КР на 1." class="card-available"
+            data-card-id="Player4-3-5" data-card-global="false" onclick="chooseAvailableCard(this);">Бар</span></div>
+</div>
+
+
+<script type="text/javascript" src="/js/spacenizer/web-socket-client.js"></script>
+<script type="text/javascript" src="/js/spacenizer/main.js"></script>
+</body>
+</html>

@@ -12,6 +12,11 @@ public class DispatcherController {
         return "board";
     }
 
+    @RequestMapping(value = {"/board-mock-design"}, method = RequestMethod.GET)
+    public String toMockBoardDesign() {
+        return "board-mock-design";
+    }
+
     @RequestMapping(value = {"/", "/lobby"}, method = RequestMethod.GET)
     public String toHome() {
         return "lobby";
