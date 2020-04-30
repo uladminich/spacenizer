@@ -22,6 +22,7 @@ public class Board implements Serializable {
     private int redResourceCount;
     // blue - used for some card for action, used when no red resource, 2 blue = 1 red by default
     private int blueResourceCount;
+    private int totalResourceCount;
     private String firstPlayerId;
     private boolean isFinished;
     private String winner;

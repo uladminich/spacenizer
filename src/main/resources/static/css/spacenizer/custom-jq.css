@@ -1,0 +1,68 @@
+* {
+  font-size: 18px;
+}
+
+body {
+    margin: 1rem 10rem;
+}
+
+.col-sm {
+    padding-top: .3rem;
+    padding-bottom: .3rem;
+    background-color: rgba(86, 61, 124, 0.15);
+    border: 1px solid rgba(86, 61, 124, 0.2);
+}
+
+.hidden {
+  display: none;
+}
+
+.card-body {
+    padding: 0.5rem;
+    background-color: aliceblue;
+}
+
+h5.card-title, .h5.card-title {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid grey;
+}
+
+p.card-text {
+    font-size: 0.8rem;
+}
+
+.badge-danger,
+.badge-primary {
+    min-width: 43px;
+}
+
+.main-board-zone {
+    min-height: 550px;
+}
+
+.main-board-zone--two-row {
+    min-height: 290px;
+}
+
+.card, .card-body {
+    border-radius: 1.5rem;
+}
+
+.card-available--clicked-js {
+    /*border-color: green !important;
+    border-style: dashed !important;
+    border-width: thick !important;*/
+    box-shadow: 0 0 15px rgba(0, 255, 24, 0.82)
+}
+
+.section-main__board--available-card-clicked-js .main-board-zone:hover,
+.section-header__game-globals-wrapper--available-card-clicked-js:hover {
+    box-shadow: 0 0 20px #afbd06cc;
+    cursor: pointer;
+}
+
+#section-main__user-cards-list .card {
+    cursor: pointer;
+}

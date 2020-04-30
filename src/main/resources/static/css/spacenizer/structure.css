@@ -44,7 +44,7 @@ div {
     background-color: lightgray;
 }
 
-.available-card-clicked-js .main-board-player-zone:hover {
+.available-card-clicked-js .main-board-zone:hover {
     box-shadow: 0 0 20px rgba(68, 70, 109, 1);
 }
 

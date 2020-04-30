@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Random;
 import java.util.Set;
 
 @Slf4j
@@ -24,7 +25,7 @@ public class BoardRestController {
         if (!"minich".equals(login) || !"u".equals(pass)) {
             return ResponseEntity.ok("{\"error\":\"error\"}");
         }
-        byte[] loginPassAsBytes = login.concat(pass).getBytes();
+        byte[] loginPassAsBytes = login.concat(pass).concat(String.valueOf(new Random().nextInt(500))).getBytes();
         String token = DigestUtils.md5DigestAsHex(loginPassAsBytes);
         if (connectionManager.getGameTokens().contains(token)) {
             // generate another token TODO

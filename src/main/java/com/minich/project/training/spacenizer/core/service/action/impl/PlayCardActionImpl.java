@@ -109,7 +109,7 @@ public class PlayCardActionImpl implements GameAction {
     }
 
     private void setNotActiveCardIfRequired(Player toPlayer, Card fromCard) {
-        if (CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.isPlayerHasAlreaydActiveCard(fromCard.getId(), toPlayer)) {
+        if (fromCard != null && CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.isPlayerHasAlreaydActiveCard(fromCard.getId(), toPlayer)) {
             fromCard.setActive(false);
         }
     }

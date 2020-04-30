@@ -48,9 +48,9 @@ public class GameInitializationActionImpl implements GameAction {
                 player.getAvailableCards().add(card);
             }
         }
-        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 15); //TODO improve formula
+        state.setRedResourceCount(state.getPlayers().size() * 5 + random.nextInt(20) + 25); //TODO improve formula
         state.setBlueResourceCount(state.getPlayers().size() * 5 + random.nextInt(11) + 15); //TODO improve formula
-
+        state.setTotalResourceCount(state.getBlueResourceCount( ) + state.getRedResourceCount());
         // shuffle player before game as first turn will be for the first player
         // Collections.shuffle(state.getPlayers()); some UI issues
         state.getPlayers().get(0).setActiveTurn(true);

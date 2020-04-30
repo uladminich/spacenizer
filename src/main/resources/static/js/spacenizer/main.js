@@ -1,3 +1,5 @@
+let availableCardClicked = false;
+
 function joinToChat() {
     let value = $('#chat-name').val() ? $('#chat-name').val().trim() : '';
     if (value) {
@@ -5,7 +7,7 @@ function joinToChat() {
             return;
         };
         CLIENT.name = value;
-        $('#join-wrapper').addClass('hidden');
+        $('#section-header__join-wrapper').addClass('d-none');
         if (!CLIENT.socket) {
             CLIENT.initConnection();
         }
@@ -28,7 +30,7 @@ function createBoard() {
             if (response) {
                 let jsonResponse = JSON.parse(response);
                 if(jsonResponse.id) {
-                    window.location.href = '/board?id=' + jsonResponse.id;
+                    window.location.href = '/board-ui?id=' + jsonResponse.id;
                 }
             }
         }
@@ -40,9 +42,9 @@ $(document).click(function(e) {
     if(!isActiveTurn()) {
         return;
     }
-    if (!$target.is(".available-card-clicked")) {
-        let isGlobalCard = $(".available-card-clicked").attr("data-card-global");
-        if (isGlobalCard && $target.is(".section-game-stat")) {
+    if (!$target.is(".card-available--clicked-js")) {
+        let isGlobalCard = $(".card-available--clicked-js").attr("data-card-global");
+        if (isGlobalCard == 'true' && $target.is("#section-header__game-globals-wrapper")) {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
             let targetPlayerId = $target.attr('data-player-id');
 
@@ -50,11 +52,11 @@ $(document).click(function(e) {
             action.name = CLIENT.COMMAND_PLAY_CARD;
             action.fromPlayer = currentPlayer.name;
             action.toPlayer = CLIENT.GAME_STAT_SECTION_ID;
-            action.fromCard = $('.available-card-clicked').attr('data-card-id');
+            action.fromCard = $('.card-available--clicked-js').attr('data-card-id');
             action.toCard = '';
             CLIENT.state.action = action;
             CLIENT.sendAction();
-        } else if ($target.is(".main-board-player-zone") && !$target.is('.board-player-zone--player-lose')) {
+        } else if ($target.is(".main-board-zone") && !$target.is('.board-player-zone--player-lose') && isGlobalCard != 'true') {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
             let targetPlayerId = $target.attr('data-player-id');
 
@@ -62,25 +64,40 @@ $(document).click(function(e) {
             action.name = CLIENT.COMMAND_PLAY_CARD;
             action.fromPlayer = currentPlayer.name;
             action.toPlayer = targetPlayerId;
-            action.fromCard = $('.available-card-clicked').attr('data-card-id');
+            action.fromCard = $('.card-available--clicked-js').attr('data-card-id');
             action.toCard = '';
             CLIENT.state.action = action;
             CLIENT.sendAction();
         }
 
-        $('.available-card-clicked').removeClass('available-card-clicked');
-        $('.section-main-board').removeClass('available-card-clicked-js');
+        if (!availableCardClicked) {
+            $('.section-header__game-globals').removeClass('section-header__game-globals-wrapper--available-card-clicked-js');
+            $('#section-main__board').removeClass('section-main__board--available-card-clicked-js');
+            $('.card-available--clicked-js').removeClass('card-available--clicked-js');
+        } else {
+            availableCardClicked = false;
+        }
     }
 });
 
-function chooseAvailableCard(el) {
+function chooseAvailableCard(el, event) {
+    event.preventDefault();
     if(!isActiveTurn()) {
         return;
     }
     let currentElement = $(el);
-    $('.available-card-clicked').removeClass('available-card-clicked');
-    currentElement.addClass('available-card-clicked');
-    $('.section-main-board').addClass('available-card-clicked-js');
+    $('.card-available--clicked-js').removeClass('card-available--clicked-js');
+    if (currentElement.attr('data-card-global') == 'true') {
+        $('.section-header__game-globals').addClass('section-header__game-globals-wrapper--available-card-clicked-js');
+        $('#section-main__board').removeClass('section-main__board--available-card-clicked-js');
+
+    } else {
+        $('#section-main__board').addClass('section-main__board--available-card-clicked-js');
+        $('.section-header__game-globals').removeClass('section-header__game-globals-wrapper--available-card-clicked-js');
+    }
+    currentElement.addClass('card-available--clicked-js');
+    availableCardClicked = true;
+    return true;
 }
 
 function isActiveTurn() {
