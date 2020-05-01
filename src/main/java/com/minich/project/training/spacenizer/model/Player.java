@@ -30,4 +30,5 @@ public class Player implements Serializable {
     private int blueAmount;
     private int blueConsumption;
     private int blueProduction;
+    private int changeCardAmount;
 }

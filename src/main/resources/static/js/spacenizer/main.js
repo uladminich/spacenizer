@@ -74,6 +74,7 @@ $(document).click(function(e) {
             $('.section-header__game-globals').removeClass('section-header__game-globals-wrapper--available-card-clicked-js');
             $('#section-main__board').removeClass('section-main__board--available-card-clicked-js');
             $('.card-available--clicked-js').removeClass('card-available--clicked-js');
+            $('#section-main__user-cards-change-card-button').addClass('d-none');
         } else {
             availableCardClicked = false;
         }
@@ -97,6 +98,10 @@ function chooseAvailableCard(el, event) {
     }
     currentElement.addClass('card-available--clicked-js');
     availableCardClicked = true;
+    let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+    if (currentPlayer.changeCardAmount > 0) {
+        $('#section-main__user-cards-change-card-button').removeClass('d-none');
+    }
     return true;
 }
 
@@ -106,4 +111,17 @@ function isActiveTurn() {
         return currentPlayer.activeTurn;
     }
     return false;
+}
+
+function changeAvailableCard() {
+    event.preventDefault();
+    let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+    let action = {};
+    action.name = CLIENT.COMMAND_CHANGE_CARD;
+    action.fromPlayer = currentPlayer.name;
+    action.toPlayer = '';
+    action.fromCard = $('.card-available--clicked-js').attr('data-card-id');
+    action.toCard = '';
+    CLIENT.state.action = action;
+    CLIENT.sendAction();
 }

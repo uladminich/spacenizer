@@ -3,6 +3,7 @@ let CLIENT = {};
 CLIENT.COMMAND_START_GAME = 'start';
 CLIENT.COMMAND_START_GAME_COMPLETED = 'start_completed';
 CLIENT.COMMAND_PLAY_CARD = 'play_card';
+CLIENT.COMMAND_CHANGE_CARD = 'change_card';
 CLIENT.GAME_STAT_SECTION_ID = 'GLOBAL';
 
 CLIENT.initConnection = function () {
@@ -118,6 +119,8 @@ function updatePlayerZones() {
                                 <div class="row">
                                     <div class="col-sm text-center">
                                         <b>${playerForZone.name}</b> (${playerForZone.availableCards.length})
+                                        <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                                        <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
                                     </div>
                                     <div class="col-sm text-center">
                                         <span class="card-global badge badge-danger">

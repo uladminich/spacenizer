@@ -68,6 +68,7 @@ public class BoardsManagerImpl implements BoardsManager {
         card.setIdUI(player.getName() + "-" +card.getId() + "-0");
         activeCards.add(card);
         player.setActiveCards(activeCards);
+        player.setChangeCardAmount(2);
         player.setAvailableCards(new ArrayList<>());
         player.setRedAmount(new Random().nextInt(2) + 3);// start amount from 3 to 5
         player.setRedConsumption(CardType.STATION.getRedConsumption());

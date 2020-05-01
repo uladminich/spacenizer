@@ -30,6 +30,10 @@ public class GameManagerImpl implements GameManager {
     @Qualifier(GameAction.PLAY_CARD)
     private GameAction playCardAction;
 
+    @Autowired
+    @Qualifier(GameAction.CHANGE_CARD)
+    private GameAction changeCardAction;
+
     @Override
     public Board doAction(String currentAction, Board currentState) {
         GameAction action = getAction(currentAction);
@@ -61,6 +65,8 @@ public class GameManagerImpl implements GameManager {
                 return startGameAction;
             case GameAction.PLAY_CARD:
                 return playCardAction;
+            case GameAction.CHANGE_CARD:
+                return changeCardAction;
             default:
                 return null;
         }

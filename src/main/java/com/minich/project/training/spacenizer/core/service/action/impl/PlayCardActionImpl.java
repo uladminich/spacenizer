@@ -129,21 +129,6 @@ public class PlayCardActionImpl implements GameAction {
                 || cardType == CardType.ROAD;
     }
 
-    private Player getPlayerById(String id, List<Player> players) {
-        return players.stream()
-                .filter(p -> id.equals(p.getName()))
-                .findFirst()
-                .orElse(null);
-    }
-
-    private Card getAvailableCardById(String idUI, Player player) {
-        return player.getAvailableCards()
-                .stream()
-                .filter(c -> c.getIdUI().equals(idUI))
-                .findFirst()
-                .orElse(null);
-    }
-
     private void updateNegativeValueWithZero(Player player){
         if (player.getRedProduction() < 0) {
             player.setRedProduction(0);
