@@ -1,20 +1,25 @@
 package com.minich.project.training.spacenizer.core.service.action.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service(GameAction.PLAY_CARD)
 public class PlayCardActionImpl implements GameAction {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final BiFunction<Card, Boolean, Integer> GET_CARD_RED_PRODUCTION = (card, toPlayerHasRobots) -> {
         CardType cardType = CardUtils.getCardTypeById(card.getId());
         int cardRedProduction = cardType.getRedProduction();
@@ -51,8 +56,11 @@ public class PlayCardActionImpl implements GameAction {
         return cardBlueConsumption;
     };
 
+    @SneakyThrows
     @Override
     public Board doAction(Board state) {
+        log.info("State: {}", MAPPER.writeValueAsString(state));
+
         String fromPlayerId = state.getAction().getFromPlayer();
         String toPlayerId = state.getAction().getToPlayer();
         String fromCardIdUI = state.getAction().getFromCard();

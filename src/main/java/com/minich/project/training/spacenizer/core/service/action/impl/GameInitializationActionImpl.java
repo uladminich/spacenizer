@@ -17,7 +17,6 @@ import java.util.Random;
 public class GameInitializationActionImpl implements GameAction {
     private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 6;
     private static final Random RANDOM = new Random();
-    private static final String DASH = "-";
 
     @Autowired
     private CardGenerator cardGenerator;

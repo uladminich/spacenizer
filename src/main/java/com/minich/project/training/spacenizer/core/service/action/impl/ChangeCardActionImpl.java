@@ -37,6 +37,7 @@ public class ChangeCardActionImpl implements GameAction {
             }
         } while (needGetCard);
         Card card = new Card(cardType);
+        card.setIdUI(fromPlayer.getName() + DASH + card.getId() + DASH + fromCardIdUI.charAt(fromCardIdUI.length() - 1));
         fromPlayer.getAvailableCards().add(card);
         fromPlayer.setChangeCardAmount(fromPlayer.getChangeCardAmount() - 1);
         state.getAction().setName(GameAction.CHANGE_CARD_FINISHED);

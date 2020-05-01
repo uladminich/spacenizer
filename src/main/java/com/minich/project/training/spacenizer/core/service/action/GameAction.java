@@ -13,6 +13,7 @@ public interface GameAction {
     String PLAY_CARD_FINISHED = "play_card_finished";
     String CHANGE_CARD = "change_card";
     String CHANGE_CARD_FINISHED = "change_card_finished";
+    String DASH = "-";
 
     Board doAction(Board state);
 
