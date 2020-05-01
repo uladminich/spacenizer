@@ -114,36 +114,12 @@ function updatePlayerZones() {
         let rowElem = $(".row-single-line-js");
         for (let i = 0; i < playerAmount; i++) {
             let playerForZone = CLIENT.state.players[i];
-            rowElem.append(`<div class="col-sm main-board-zone main-board-zone-${i} ${CLIENT.name === playerForZone.name ? 'board-player-zone--current-player' : '' }"
-                                data-player-id="${playerForZone.name}">
-                                <div class="row">
-                                    <div class="col-sm text-center">
-                                        <b>${playerForZone.name}</b> (${playerForZone.availableCards.length})
-                                        <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
-                                        <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
-                                    </div>
-                                    <div class="col-sm text-center">
-                                        <span class="card-global badge badge-danger">
-                                            Red: ${playerForZone.redAmount} | ${playerForZone.redProduction > 0 ? '+' + playerForZone.redProduction : 0 } | ${playerForZone.redConsumption > 0 ? '-' + playerForZone.redConsumption : 0 }
-                                        </span>
-                                    </div>
-                                    <div class="col-sm text-center">
-                                        <span class="card-global badge badge-primary">
-                                            Blue: ${playerForZone.blueAmount} | ${playerForZone.blueProduction > 0 ? '+' + playerForZone.blueProduction : 0 } | ${playerForZone.blueConsumption > 0 ? '-' + playerForZone.blueConsumption : 0 }
-                                        </span>
-                                   </div>
-                                </div>
-                            </div>`);
+            addPlayerZoneHeader(rowElem, playerForZone, i);
             let playerZone = $(".main-board-zone-" + i);
 
             // player finished game as can't produce enough red resource
             if (!playerForZone.alive) {
-                playerZone.append(`<div class="row">
-                                <div class="col-sm">
-                                    <div> The colony of <b>[${playerForZone.name}]</b> died as couldn't reproduce enough resources... </div>
-                                </div>
-                            <div>`);
-                playerZone.addClass('board-player-zone--player-lose')
+                addDeadPlayerZoneDescription(playerZone, playerForZone);
                 continue;
             }
             playerZone.append(`<div class="row row-active-cards-${i}">`)
@@ -151,31 +127,101 @@ function updatePlayerZones() {
 
             for(let j = 0; j < playerForZone.activeCards.length; j++) {
                 let currentActiveCard = playerForZone.activeCards[j];
-                rowActiveCards.append(`<div class="col-sm">
-                                            <div class="card text-center" style="width: 6rem;">
-                                                <div class="card-body ${currentActiveCard.active ? '' : 'active-card-item--disabled'}"
-                                                    title="${currentActiveCard.description}"
-                                                    data-card-id="${currentActiveCard.idUI}">
-                                                    <h5 class="card-title">${currentActiveCard.title}</h5>
-                                                    <p class="card-text">
-                                                        TBD
-                                                    </P>
-                                                        <!-- // TODO no data at the moment on UI
-                                                            <p class="card-text">
-                                                                <span class="badge badge-danger"> +2 | -2 </span>
-                                                                <span class="badge badge-primary" style=""> 0 | 0 </span>
-                                                            </p>
-                                                         -->
-                                                    </div>
-                                                </div>
-                                            </div>
-                                       </div>`)
-
+                addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
             }
         }
     } else if (playerAmount <= 6 && playerAmount > 3){
-        // TODO if 4-6 player two row required, move to function element creation ^
+        let playerIndex = 0;
+        for (let rowIndex = 0; rowIndex < 2; rowIndex++) {
+            boardElem.append(`<div class="row row-multi-line row-multi-line-js-${rowIndex}">`);
+            let rowElem = $(".row-multi-line-js-" + rowIndex);
+            let rowLimit = getRowLimit(playerAmount, rowIndex);
+            for (let i = 0; i < rowLimit; i++) {
+                let playerForZone = CLIENT.state.players[playerIndex];
+                addPlayerZoneHeader(rowElem, playerForZone, playerIndex);
+                let playerZone = $(".main-board-zone-" + playerIndex);
+
+                // player finished game as can't produce enough red resource
+                if (!playerForZone.alive) {
+                    addDeadPlayerZoneDescription(playerZone, playerForZone);
+                    continue;
+                }
+
+                playerZone.append(`<div class="row row-active-cards-${playerIndex}">`)
+                let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex);
+                for(let j = 0; j < playerForZone.activeCards.length; j++) {
+                    let currentActiveCard = playerForZone.activeCards[j];
+                    addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
+                }
+                playerIndex++;
+            }
+        }
     }
+}
+
+function getRowLimit(playerAmount, multiRowIndex) {
+    if (playerAmount == 4) {
+        return 2;
+    } else if (playerAmount == 5 && multiRowIndex == 0) {
+        return 3;
+    } else if (playerAmount == 5 && multiRowIndex == 1) {
+        return 2;
+    }
+    return 3;
+}
+
+function addPlayerZoneHeader(rowElem, playerForZone, i) {
+    rowElem.append(`<div class="col-sm main-board-zone main-board-zone-${i} ${CLIENT.name === playerForZone.name ? 'board-player-zone--current-player' : '' }"
+                        data-player-id="${playerForZone.name}">
+                        <div class="row">
+                            <div class="col-sm text-center">
+                                <b>${playerForZone.name}</b> (${playerForZone.availableCards.length})
+                                <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                                <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                            </div>
+                            <div class="col-sm text-center">
+                                <span class="card-global badge badge-danger">
+                                    Red: ${playerForZone.redAmount} | ${playerForZone.redProduction > 0 ? '+' + playerForZone.redProduction : 0 } | ${playerForZone.redConsumption > 0 ? '-' + playerForZone.redConsumption : 0 }
+                                </span>
+                            </div>
+                            <div class="col-sm text-center">
+                                <span class="card-global badge badge-primary">
+                                    Blue: ${playerForZone.blueAmount} | ${playerForZone.blueProduction > 0 ? '+' + playerForZone.blueProduction : 0 } | ${playerForZone.blueConsumption > 0 ? '-' + playerForZone.blueConsumption : 0 }
+                                </span>
+                           </div>
+                        </div>
+                    </div>`)
+}
+
+function addDeadPlayerZoneDescription(playerZone, playerForZone) {
+    playerZone.append(`<div class="row">
+                            <div class="col-sm">
+                                <div> The colony of <b>[${playerForZone.name}]</b> died as couldn't reproduce enough resources... </div>
+                            </div>
+                        <div>`);
+    playerZone.addClass('board-player-zone--player-lose');
+}
+
+function addActiveCardToPlayerZone(rowActiveCards, currentActiveCard) {
+    rowActiveCards.append(`<div class="col-sm">
+                                <div class="card text-center" style="width: 6rem;">
+                                    <div class="card-body ${currentActiveCard.active ? '' : 'active-card-item--disabled'}"
+                                        title="${currentActiveCard.description}"
+                                        data-card-id="${currentActiveCard.idUI}">
+                                        <h5 class="card-title">${currentActiveCard.title}</h5>
+                                        <p class="card-text">
+                                            TBD
+                                        </P>
+                                            <!-- // TODO no data at the moment on UI
+                                                <p class="card-text">
+                                                    <span class="badge badge-danger"> +2 | -2 </span>
+                                                    <span class="badge badge-primary" style=""> 0 | 0 </span>
+                                                </p>
+                                             -->
+                                        </div>
+                                    </div>
+                                </div>
+                           </div>`);
 }
 
 function updatePlayerInfoSection() {

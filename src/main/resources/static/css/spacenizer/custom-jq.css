@@ -42,7 +42,7 @@ p.card-text {
     min-height: 550px;
 }
 
-.main-board-zone--two-row {
+.row-multi-line .main-board-zone {
     min-height: 290px;
 }
 
