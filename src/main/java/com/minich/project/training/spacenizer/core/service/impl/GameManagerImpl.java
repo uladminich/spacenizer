@@ -84,7 +84,11 @@ public class GameManagerImpl implements GameManager {
         if (alivePlayerCount(state) > 1) {
             state.getPlayers().stream()
                 .filter(Player::isAlive)
-                .max(Comparator.comparing(Player::getRedAmount))
+                .max((p1, p2) -> {
+                    int pTotalOne = p1.getRedAmount() + p1.getBlueAmount() /2;
+                    int pTotalTwo = p2.getRedAmount() + p2.getBlueAmount() /2;
+                    return Integer.compare(pTotalOne, pTotalTwo);
+                })
                 .ifPresent( player -> state.setWinner(player.getName()));
             return;
         }

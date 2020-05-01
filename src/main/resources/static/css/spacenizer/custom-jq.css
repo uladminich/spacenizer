@@ -70,3 +70,7 @@ p.card-text {
 #section-main__user-cards-change-card-button {
     padding: 0 .2rem;
 }
+
+.active-card-item--disabled {
+    background-color: grey;
+}
