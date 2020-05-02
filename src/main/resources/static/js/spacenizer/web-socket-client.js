@@ -122,7 +122,7 @@ function updatePlayerZones() {
                 addDeadPlayerZoneDescription(playerZone, playerForZone);
                 continue;
             }
-            playerZone.append(`<div class="row row-active-cards-${i}">`)
+            playerZone.append(`<div class="row row-active-cards row-active-cards-${i}">`)
             let rowActiveCards = $('.main-board-zone-' + i + ' .row-active-cards-' + i);
 
             for(let j = 0; j < playerForZone.activeCards.length; j++) {
@@ -147,7 +147,7 @@ function updatePlayerZones() {
                     continue;
                 }
 
-                playerZone.append(`<div class="row row-active-cards-${playerIndex}">`)
+                playerZone.append(`<div class="row row-active-cards row-active-cards-${playerIndex}">`)
                 let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex);
                 for(let j = 0; j < playerForZone.activeCards.length; j++) {
                     let currentActiveCard = playerForZone.activeCards[j];
@@ -241,7 +241,7 @@ function updatePlayerInfoSection() {
                              <div class="card-body">
                                  <h5 class="card-title">${card.title}</h5>
                                  <p class="card-text">
-                                    ${card.global ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning">GLOBAL</span>' : '' }
+                                    ${card.global ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning">GLOBAL</span><br>' : '' }
                                     ${card.description}
                                  </p>
                              </div>

@@ -22,9 +22,9 @@ function drawResourceChart(redResource, blueResource, totalResourceAmount) {
                 {
                     data: [redResource,blueResource, mined],
                     backgroundColor: [
-                        'red',
-                        'blue',
-                        'grey'
+                        '#ce1616',
+                        '#0d45d2',
+                        '#65645b'
                     ],
                     borderColor: [
                         'black',
