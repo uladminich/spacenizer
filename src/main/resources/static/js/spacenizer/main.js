@@ -114,6 +114,9 @@ function isActiveTurn() {
 }
 
 function changeAvailableCard() {
+    if(!isActiveTurn()) {
+        return;
+    }
     event.preventDefault();
     let currentPlayer = getCurrentPlayer(CLIENT.state.players);
     let action = {};
@@ -121,6 +124,22 @@ function changeAvailableCard() {
     action.fromPlayer = currentPlayer.name;
     action.toPlayer = '';
     action.fromCard = $('.card-available--clicked-js').attr('data-card-id');
+    action.toCard = '';
+    CLIENT.state.action = action;
+    CLIENT.sendAction();
+}
+
+function skipTurn() {
+    if(!isActiveTurn()) {
+        return;
+    }
+    event.preventDefault();
+    let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+    let action = {};
+    action.name = CLIENT.COMMAND_SKIP_TURN;
+    action.fromPlayer = currentPlayer.name;
+    action.toPlayer = '';
+    action.fromCard = '';
     action.toCard = '';
     CLIENT.state.action = action;
     CLIENT.sendAction();

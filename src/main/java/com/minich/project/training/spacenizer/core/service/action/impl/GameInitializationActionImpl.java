@@ -37,8 +37,8 @@ public class GameInitializationActionImpl implements GameAction {
                 player.getAvailableCards().add(card);
             }
         }
-        state.setRedResourceCount(state.getPlayers().size() * 5 + RANDOM.nextInt(20) + 25); //TODO improve formula
-        state.setBlueResourceCount(state.getPlayers().size() * 5 + RANDOM.nextInt(11) + 15); //TODO improve formula
+        state.setRedResourceCount(state.getPlayers().size() * 6 + RANDOM.nextInt(20) + 25); //TODO improve formula
+        state.setBlueResourceCount(state.getPlayers().size() * 4 + RANDOM.nextInt(11) + 15); //TODO improve formula
         state.setTotalResourceCount(state.getBlueResourceCount( ) + state.getRedResourceCount());
         // shuffle player before game as first turn will be for the first player
         Collections.shuffle(state.getPlayers());

@@ -4,6 +4,7 @@ CLIENT.COMMAND_START_GAME = 'start';
 CLIENT.COMMAND_START_GAME_COMPLETED = 'start_completed';
 CLIENT.COMMAND_PLAY_CARD = 'play_card';
 CLIENT.COMMAND_CHANGE_CARD = 'change_card';
+CLIENT.COMMAND_SKIP_TURN = 'skip_turn';
 CLIENT.GAME_STAT_SECTION_ID = 'GLOBAL';
 
 CLIENT.initConnection = function () {
@@ -29,24 +30,17 @@ CLIENT.initConnection = function () {
         // init board zone
         updatePlayerZones();
 
-        // add click handler for available player's cards
-        //for (let i = 0; i < availCards.length; i++) {
-//            $('.card-available').on( "click", function(event) {
-//                 return chooseAvailableCard($(this), event);
-//            });
-//            availCards.on( "click", function(event) {
-//                event.preventDefault();
-//                $(event.target).removeClass('available-card-clicked');
-//            }, true);
-
-        //}
-
-
-
         let playerCount = CLIENT.state.players.length;
         $('#game-stat-player-count').text(playerCount);
         if (isCreator(CLIENT.state.players) && !CLIENT.state.action) {
             $('#section-header__start-game-button').removeClass('d-none');
+        }
+        let currentPlayer = getCurrentPlayer(CLIENT.state.players);
+        let skipTurnButton = $('#section-main__user-cards-skip-turn-button');
+        if (currentPlayer.availableCards.length == 0 && CLIENT.state.action && !CLIENT.state.finished) {
+            skipTurnButton.removeClass('d-none');
+        } else if (!skipTurnButton.hasClass('d-none')) {
+            skipTurnButton.addClass('d-none');
         }
 
         if(CLIENT.state.finished) {

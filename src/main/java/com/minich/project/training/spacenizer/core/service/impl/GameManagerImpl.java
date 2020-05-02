@@ -1,15 +1,16 @@
 package com.minich.project.training.spacenizer.core.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minich.project.training.spacenizer.core.service.GameManager;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class GameManagerImpl implements GameManager {
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Autowired
     private PostRoundServiceImpl postRoundService;
@@ -34,8 +36,15 @@ public class GameManagerImpl implements GameManager {
     @Qualifier(GameAction.CHANGE_CARD)
     private GameAction changeCardAction;
 
+    @Autowired
+    @Qualifier(GameAction.SKIP_TURN)
+    private GameAction skipTurnAction;
+
+    @SneakyThrows
     @Override
     public Board doAction(String currentAction, Board currentState) {
+        log.info("State: {}", MAPPER.writeValueAsString(currentState));
+
         GameAction action = getAction(currentAction);
         Board updatedState = action != null ? action.doAction(currentState) : currentState;
 
@@ -67,6 +76,8 @@ public class GameManagerImpl implements GameManager {
                 return playCardAction;
             case GameAction.CHANGE_CARD:
                 return changeCardAction;
+            case GameAction.SKIP_TURN:
+                return skipTurnAction;
             default:
                 return null;
         }

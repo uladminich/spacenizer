@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service(GameAction.PLAY_CARD)
 public class PlayCardActionImpl implements GameAction {
 
-    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final BiFunction<Card, Boolean, Integer> GET_CARD_RED_PRODUCTION = (card, toPlayerHasRobots) -> {
         CardType cardType = CardUtils.getCardTypeById(card.getId());
         int cardRedProduction = cardType.getRedProduction();
@@ -56,11 +55,8 @@ public class PlayCardActionImpl implements GameAction {
         return cardBlueConsumption;
     };
 
-    @SneakyThrows
     @Override
     public Board doAction(Board state) {
-        log.info("State: {}", MAPPER.writeValueAsString(state));
-
         String fromPlayerId = state.getAction().getFromPlayer();
         String toPlayerId = state.getAction().getToPlayer();
         String fromCardIdUI = state.getAction().getFromCard();
