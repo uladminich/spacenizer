@@ -1,25 +1,40 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Board</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-        <link rel="stylesheet" th:href="@{/css/spacenizer/main.css}"/>
+        <title>Landing</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- background theme - https://codepen.io/amiangie/pen/RRdQAb -->
+        <link rel="stylesheet" th:href="@{/css/spacenizer/background-theme-blue.css}">
+        <!-- custom style -->
+        <link rel="stylesheet" th:href="@{/css/spacenizer/custom-jq.css}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     </head>
     <body>
-        <div class="main">
-            <div class="board-create-form">
-                <span> Придумайте логин и пароль, чтобы создать комнату для вас с друзьями.</span>
-                <br>
-                <span>Название: </span><input type="text" id="board-form-login">
-                <br>
-                <span>Пароль: </span><input type="text" id="board-name-password">
-                <br>
-                <input type="submit" value="Создать" onclick="createBoard();">
+        <div class="stars large"></div>
+        <div class="stars medium"></div>
+        <div class="stars small"></div>
+        <main>
+            <div class="container margin-top-10r">
+                <div class="row justify-content-md-center">
+                    <div class="col col-lg-5 ">
+                        <div class="form-group">
+                            <label for="board-form-login">Username</label>
+                            <input type="email" class="form-control" id="board-form-login" aria-describedby="emailHelp" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <label for="board-name-password">Password</label>
+                            <input type="password" class="form-control" id="board-name-password" placeholder="Password">
+                            <small id="login-password-hint" class="form-text"> Username and password for game creation to play with friends </small>
+                        </div>
+                        <button type="submit" class="btn btn-primary" onclick="createBoard();">Submit</button>
+                    </div>
+                </div>
             </div>
-        </div>
-
+        </main>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
+        <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
     </body>
-
-    <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
-    <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
 </html>
