@@ -95,7 +95,13 @@ public class ServerWebSocket {
 
     @OnClose
     public void onClose(Session session) {
-        connectionManager.getRoomById(roomId).remove(this);
+        Set<ServerWebSocket> room = connectionManager.getRoomById(roomId);
+        if (Objects.nonNull(room)) {
+            room.remove(this);
+            if (room.isEmpty()) {
+                connectionManager.removeRoomById(roomId);
+            }
+        }
     }
 
     private void broadcast(Board state) {

@@ -39,11 +39,11 @@ p.card-text {
 }
 
 .main-board-zone {
-    min-height: 540px;
+    min-height: 520px;
 }
 
 .row-multi-line .main-board-zone {
-    min-height: 290px;
+    min-height: 270px;
 }
 
 .card, .card-body {

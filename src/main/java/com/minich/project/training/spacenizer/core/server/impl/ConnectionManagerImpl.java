@@ -48,4 +48,10 @@ public class ConnectionManagerImpl implements ConnectionManager {
     public Set<ServerWebSocket> getRoomById(@NonNull String roomId) {
         return rooms.get(roomId);
     }
+
+    @Override
+    public void removeRoomById(@NonNull String id) {
+        rooms.remove(id);
+        gameTokens.remove(id);
+    }
 }

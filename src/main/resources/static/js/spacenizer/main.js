@@ -30,7 +30,7 @@ function createBoard() {
             if (response) {
                 let jsonResponse = JSON.parse(response);
                 if(jsonResponse.id) {
-                    window.location.href = '/board-ui?id=' + jsonResponse.id;
+                    window.location.href = '/board?id=' + jsonResponse.id;
                 }
             }
         }

@@ -14,4 +14,6 @@ public interface ConnectionManager {
     void addRoom(String roomId, Set<ServerWebSocket> listeners);
 
     Set<ServerWebSocket> getRoomById(String roomId);
+
+    void removeRoomById(String id);
 }

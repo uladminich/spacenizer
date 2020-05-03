@@ -8,8 +8,6 @@ CLIENT.COMMAND_SKIP_TURN = 'skip_turn';
 CLIENT.GAME_STAT_SECTION_ID = 'GLOBAL';
 
 CLIENT.initConnection = function () {
-    console.log("initConnection start ");
-
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
@@ -59,8 +57,6 @@ CLIENT.initConnection = function () {
             console.log('[close] Соединение прервано, код=${event.code} причина=${event.reason}`');
         }
     };
-
-    console.log("initConnection end ");
 }
 
 CLIENT.disconnect = function() {
@@ -198,21 +194,17 @@ function addDeadPlayerZoneDescription(playerZone, playerForZone) {
 
 function addActiveCardToPlayerZone(rowActiveCards, currentActiveCard) {
     rowActiveCards.append(`<div class="col-sm">
-                                <div class="card text-center" style="width: 6rem;">
+                                <div class="card text-center">
                                     <div class="card-body ${currentActiveCard.active ? '' : 'active-card-item--disabled'}"
                                         title="${currentActiveCard.description}"
                                         data-card-id="${currentActiveCard.idUI}">
-                                        <h5 class="card-title">${currentActiveCard.title}</h5>
-                                        <p class="card-text">
-                                            TBD
-                                        </P>
-                                            <!-- // TODO no data at the moment on UI
-                                                <p class="card-text">
-                                                    <span class="badge badge-danger"> +2 | -2 </span>
-                                                    <span class="badge badge-primary" style=""> 0 | 0 </span>
-                                                </p>
-                                             -->
-                                        </div>
+                                        <h5 class="card-title" style="border-bottom: none;">${currentActiveCard.title}</h5>
+                                        <!-- // TODO no data at the moment on UI
+                                            <p class="card-text">
+                                                <span class="badge badge-danger"> +2 | -2 </span>
+                                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                                            </p>
+                                         -->
                                     </div>
                                 </div>
                            </div>`);
@@ -235,7 +227,8 @@ function updatePlayerInfoSection() {
                              <div class="card-body">
                                  <h5 class="card-title">${card.title}</h5>
                                  <p class="card-text">
-                                    ${card.global ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning">GLOBAL</span><br>' : '' }
+                                    ${card.global ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning" title="Играется на зону WORLD." >GLOBAL</span><br>' : '' }
+                                    ${card.id == 6 || card.id == 5 || card.id == 8 || card.id == 9 ? '<span id="section-header__game-globals-cards-default" class="badge badge badge-info" title="Повторяющиеся карты не оказывают эффекта.">ONE ACTIVE</span><br>' : '' }
                                     ${card.description}
                                  </p>
                              </div>

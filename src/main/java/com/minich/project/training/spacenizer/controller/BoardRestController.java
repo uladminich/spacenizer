@@ -17,25 +17,26 @@ import java.util.Set;
 @RestController
 public class BoardRestController {
 
+    private static final String MD5_LOGIN_PASS_EQ = "6c9ef91f381220ef1c83118971caa1b2";
     @Autowired
     private ConnectionManager connectionManager;
 
     @RequestMapping(value = "/api/v1/spacenizer/board", method = RequestMethod.POST)
     public ResponseEntity<String> createBoard(@RequestParam String login, @RequestParam String pass) {
-        if (!"minich".equals(login) || !"u".equals(pass)) {
+        String finalCred = login.concat("_").concat(pass);
+        if (!MD5_LOGIN_PASS_EQ.equals(DigestUtils.md5DigestAsHex(finalCred.getBytes()))) {
             return ResponseEntity.ok("{\"error\":\"error\"}");
         }
-        byte[] loginPassAsBytes = login.concat(pass).concat(String.valueOf(new Random().nextInt(500))).getBytes();
+        byte[] loginPassAsBytes = finalCred.concat(String.valueOf(new Random().nextInt(5000))).getBytes();
         String token = DigestUtils.md5DigestAsHex(loginPassAsBytes);
         if (connectionManager.getGameTokens().contains(token)) {
             // generate another token TODO
-            log.debug("Token already exists.");
+            log.info("Token already exists.");
+            return ResponseEntity.ok("{\"error\":\"error\"}");
         }
         Set<String> ids = connectionManager.getGameTokens();
-        //synchronized (ids) {
-            ids.add(token);
-            connectionManager.setGameTokens(ids);
-        //}
+        ids.add(token);
+        connectionManager.setGameTokens(ids);
         return ResponseEntity.ok("{\"id\":\"" + token + "\"}");
     }
 }
