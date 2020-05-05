@@ -48,7 +48,10 @@ public class GameManagerImpl implements GameManager {
         GameAction action = getAction(currentAction);
         Board updatedState = action != null ? action.doAction(currentState) : currentState;
 
-        if (GameAction.PLAY_CARD_FINISHED.equals(updatedState.getAction().getName())) {
+        String updatedAction = updatedState.getAction().getName();
+        if (GameAction.PLAY_CARD_FINISHED.equals(updatedAction)
+            || GameAction.CHANGE_CARD_FINISHED.equals(updatedAction)
+            || GameAction.SKIP_TURN_FINISHED.equals(updatedAction)) {
             updatedState.setTurnPerRound(updatedState.getTurnPerRound() + 1);
         }
 

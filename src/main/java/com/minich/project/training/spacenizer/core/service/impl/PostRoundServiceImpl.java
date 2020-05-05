@@ -12,7 +12,9 @@ public class PostRoundServiceImpl implements PostRoundService {
 
     @Override
     public boolean isRoundFinish(Board currentState) {
-        return GameAction.PLAY_CARD_FINISHED.equals(currentState.getAction().getName())
+        return (GameAction.PLAY_CARD_FINISHED.equals(currentState.getAction().getName())
+                || GameAction.CHANGE_CARD_FINISHED.equals(currentState.getAction().getName())
+                || GameAction.SKIP_TURN_FINISHED.equals(currentState.getAction().getName()))
                 && currentState.getTurnPerRound() >= currentState.countActivePlayers();
     }
 

@@ -1,13 +1,11 @@
 package com.minich.project.training.spacenizer.core.service.action.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

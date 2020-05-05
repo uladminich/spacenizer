@@ -70,7 +70,7 @@ public class BoardsManagerImpl implements BoardsManager {
         player.setActiveCards(activeCards);
         player.setChangeCardAmount(2);
         player.setAvailableCards(new ArrayList<>());
-        player.setRedAmount(new Random().nextInt(2) + 3);// start amount from 3 to 5
+        player.setRedAmount(new Random().nextInt(2) + 4);// start amount from 4 to 6
         player.setRedConsumption(CardType.STATION.getRedConsumption());
         player.setRedProduction(CardType.STATION.getRedProduction());
         return player;
