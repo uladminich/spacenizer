@@ -44,6 +44,19 @@ public class GameInitializationActionImpl implements GameAction {
         Collections.shuffle(state.getPlayers());
         state.getPlayers().get(0).setActiveTurn(true);
         state.setFirstPlayerId(state.getPlayers().get(0).getName());
+
+        cardGenerator.getRandomGlobalCardType().ifPresent(cardType -> {
+            Card globalCard = new Card(cardType);
+            globalCard.setIdUI("global-card-0");
+            state.getGlobalPlayer().getActiveCards().add(globalCard);
+            state.getPlayers().forEach(player -> {
+                player.setRedProduction(player.getRedProduction() + cardType.getRedProduction());
+                player.setRedConsumption(player.getRedConsumption() + cardType.getRedConsumption());
+                player.setBlueProduction(player.getBlueProduction() + cardType.getBlueProduction());
+                player.setBlueConsumption(player.getBlueConsumption() + cardType.getBlueConsumption());
+            });
+        });
+
         state.getAction().setName(GameAction.START_GAME_COMPLETED);
         return state;
     }

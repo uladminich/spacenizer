@@ -4,11 +4,20 @@ import com.minich.project.training.spacenizer.core.service.PostRoundService;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
+import com.minich.project.training.spacenizer.model.cards.Card;
+import com.minich.project.training.spacenizer.model.cards.CardType;
+import com.minich.project.training.spacenizer.utils.CardUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class PostRoundServiceImpl implements PostRoundService {
     private static final int DEFAULT_BLUE_TO_RED_CONVERT_COEFF = 2;
+    private static final Random RANDOM = new Random();
 
     @Override
     public boolean isRoundFinish(Board currentState) {
@@ -32,6 +41,58 @@ public class PostRoundServiceImpl implements PostRoundService {
     @Override
     public void resetTurnsPerRound(Board state) {
         state.setTurnPerRound(0);
+    }
+
+    @Override
+    public void applySpecialGlobalCardAction(Board state) {
+        List<Card> activeCards = state.getGlobalPlayer().getActiveCards();
+        if (hasEarthquakesCard(activeCards)) {
+            if (RANDOM.nextInt(2) == 1) { // 50% chance to destroy
+                List<Card> activeBuildingCards = state.getPlayers()
+                        .stream()
+                        .filter(Player::isAlive)
+                        .flatMap(player -> player.getActiveCards().stream())
+                        .filter(card -> CardUtils.isBuildingCard(card.getId()))
+                        .collect(Collectors.toList());
+
+//                TODO improve formula for earthquakes
+//                int destroyAmount = activeBuildingCards.size()/3 > 3 ? 3 : activeBuildingCards.size()/3;
+//                if (destroyAmount == 0) {
+//                    state.getAction().setDescription("Землетресение: построек не разрушено.");
+//                    return;
+//                }
+                int destroyAmount = (int) state.getPlayers().stream().filter(Player::isAlive).count();
+
+                state.getAction().setDescription("Землетресение:\n\r");
+                for (int i = 0; i < destroyAmount; i++) {
+                    int cardToRemoveIndex = RANDOM.nextInt(activeBuildingCards.size());
+                    Card card = activeBuildingCards.get(cardToRemoveIndex);
+                    state.getPlayers()
+                            .stream()
+                            .filter(Player::isAlive)
+                            .filter(p -> playerHasCardWithId(p, card.getId()))
+                            .findAny().ifPresent(player -> {
+                                player.getActiveCards().remove(card);
+                                state.getAction().setDescription(state.getAction().getDescription() + " разрушена постройка '" + card.getTitle() + "' у игрока [" + player.getName() + "]\n\r");
+
+                    });
+                    activeBuildingCards.remove(card);
+                }
+            } else if (!GameAction.START_GAME_COMPLETED.equals(state.getAction().getName())){
+                state.getAction().setDescription("Землетресение: построек не разрушено.");
+            }
+        } else {
+            state.getAction().setDescription(StringUtils.EMPTY);
+        }
+    }
+
+    private boolean playerHasCardWithId(Player player, long id) {
+        return player.getActiveCards().stream()
+                .anyMatch(card -> card.getId() == id);
+    }
+    private boolean hasEarthquakesCard(List<Card> activeCards) {
+        return activeCards.stream()
+                .anyMatch(card -> card.getId() == CardType.EARTHQUAKES.getId());
     }
 
     // TODO updateRedResource and updateBlueResource are similar, probably make sense to refactor in more pretty way

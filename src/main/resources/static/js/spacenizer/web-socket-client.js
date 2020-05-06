@@ -260,4 +260,5 @@ function updateGlobalStatInfoSection() {
         let card = CLIENT.state.globalPlayer.activeCards[i];
         globalCardListElem.append(`<span title="${card.description}" class="badge badge-warning"data-card-id="${card.idUI}">${card.title}</span>`)
     }
+    $('#section-header__game-globals-cards-description').text(CLIENT.state.action.description);
 }

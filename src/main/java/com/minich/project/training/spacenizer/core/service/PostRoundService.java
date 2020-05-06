@@ -9,4 +9,6 @@ public interface PostRoundService {
     void updatePlayerResourceAmountStored(Board state);
 
     void resetTurnsPerRound(Board state);
+
+    void applySpecialGlobalCardAction(Board state);
 }

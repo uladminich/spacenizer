@@ -1,25 +1,31 @@
 package com.minich.project.training.spacenizer.utils;
 
+import com.google.common.collect.ImmutableList;
 import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public final class CardUtils {
 
-    private static final List<CardType> ONE_CARD_PER_PLAYER_LIST = new ArrayList<>();
-    static {
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.ADVERSE_TERRAIN);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.NANO_TECHNOLOGIES);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.ROBOTS);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.SECURITY_GUARDS);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.BARRACK);
-        ONE_CARD_PER_PLAYER_LIST.add(CardType.DANGEROUS_WORLD);
-    }
+    private static final List<CardType> ONE_CARD_PER_PLAYER_LIST = ImmutableList.<CardType>builder()
+            .add(CardType.ADVERSE_TERRAIN)
+            .add(CardType.NANO_TECHNOLOGIES)
+            .add(CardType.ROBOTS)
+//            .add(CardType.SECURITY_GUARDS)
+//            .add(CardType.BARRACK)
+            .build();
+
+    private static final List<CardType> BUILDING_CARDS = ImmutableList.<CardType>builder()
+            .add(CardType.MINE)
+            .add(CardType.BAR)
+            .add(CardType.ROAD)
+            .add(CardType.LABORATORY)
+//            .add(CardType.BARRACK)
+            .build();
 
     private CardUtils() {
 
@@ -51,5 +57,10 @@ public final class CardUtils {
         return player.getActiveCards().stream()
                 .filter(card -> card.getId() == cardTypeId)
                 .count() > 1;
+    }
+
+    public static boolean isBuildingCard(long cardTypeId) {
+        return BUILDING_CARDS.stream()
+                .anyMatch(type -> type.getId() == cardTypeId);
     }
 }

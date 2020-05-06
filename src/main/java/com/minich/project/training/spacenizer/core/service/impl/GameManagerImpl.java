@@ -2,6 +2,7 @@ package com.minich.project.training.spacenizer.core.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.minich.project.training.spacenizer.core.service.GameManager;
+import com.minich.project.training.spacenizer.core.service.PostRoundService;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
@@ -22,7 +23,7 @@ public class GameManagerImpl implements GameManager {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Autowired
-    private PostRoundServiceImpl postRoundService;
+    private PostRoundService postRoundService;
 
     @Autowired
     @Qualifier(GameAction.START_GAME)
@@ -58,6 +59,7 @@ public class GameManagerImpl implements GameManager {
         if (postRoundService.isRoundFinish(updatedState)) {
             postRoundService.updatePlayerResourceAmountStored(updatedState);
             postRoundService.resetTurnsPerRound(updatedState);
+            postRoundService.applySpecialGlobalCardAction(updatedState);
         }
 
         changeActivePlayer(updatedState);

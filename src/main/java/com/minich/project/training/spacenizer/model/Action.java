@@ -18,6 +18,7 @@ public class Action implements Serializable {
     private String toPlayer;
     private String fromCard;
     private String toCard;
+    private String description;
 
     public Action(String name) {
         this.name = name;
