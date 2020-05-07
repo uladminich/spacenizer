@@ -6,13 +6,14 @@ import com.minich.project.training.spacenizer.core.service.PostRoundService;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
+import com.minich.project.training.spacenizer.utils.CardUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,25 +27,12 @@ public class GameManagerImpl implements GameManager {
     private PostRoundService postRoundService;
 
     @Autowired
-    @Qualifier(GameAction.START_GAME)
-    private GameAction startGameAction;
-
-    @Autowired
-    @Qualifier(GameAction.PLAY_CARD)
-    private GameAction playCardAction;
-
-    @Autowired
-    @Qualifier(GameAction.CHANGE_CARD)
-    private GameAction changeCardAction;
-
-    @Autowired
-    @Qualifier(GameAction.SKIP_TURN)
-    private GameAction skipTurnAction;
+    private Map<String, GameAction> actions;
 
     @SneakyThrows
     @Override
     public Board doAction(String currentAction, Board currentState) {
-        log.info("State: {}", MAPPER.writeValueAsString(currentState));
+        log.info("State input: {}", MAPPER.writeValueAsString(currentState));
 
         GameAction action = getAction(currentAction);
         Board updatedState = action != null ? action.doAction(currentState) : currentState;
@@ -69,23 +57,12 @@ public class GameManagerImpl implements GameManager {
             updatedState.setFinished(true);
             setWinner(updatedState);
         }
+        log.info("State output: {}", MAPPER.writeValueAsString(currentState));
         return updatedState;
     }
 
     private GameAction getAction(String name) {
-        //TODO rewrite with map of injects if possible
-        switch (name) {
-            case GameAction.START_GAME:
-                return startGameAction;
-            case GameAction.PLAY_CARD:
-                return playCardAction;
-            case GameAction.CHANGE_CARD:
-                return changeCardAction;
-            case GameAction.SKIP_TURN:
-                return skipTurnAction;
-            default:
-                return null;
-        }
+        return actions.get(name);
     }
 
     private boolean isGameFinish(Board state) {
@@ -101,8 +78,11 @@ public class GameManagerImpl implements GameManager {
             state.getPlayers().stream()
                 .filter(Player::isAlive)
                 .max((p1, p2) -> {
-                    int pTotalOne = p1.getRedAmount() + p1.getBlueAmount() /2;
-                    int pTotalTwo = p2.getRedAmount() + p2.getBlueAmount() /2;
+                    int blueToRedCoefficientPlayerOne = CardUtils.getBlueToRedConvertationCoefficient(p1);
+                    int blueToRedCoefficientPlayerTwo = CardUtils.getBlueToRedConvertationCoefficient(p2);
+
+                    int pTotalOne = p1.getRedAmount() + p1.getBlueAmount() / blueToRedCoefficientPlayerOne;
+                    int pTotalTwo = p2.getRedAmount() + p2.getBlueAmount() / blueToRedCoefficientPlayerTwo;
                     return Integer.compare(pTotalOne, pTotalTwo);
                 })
                 .ifPresent( player -> state.setWinner(player.getName()));
@@ -132,7 +112,7 @@ public class GameManagerImpl implements GameManager {
         Player currentPlayer = state.fetchActivePlayer();
 
         if (Objects.isNull(currentPlayer)) {
-            log.debug("Active player is not found");
+            log.info("Active player is not found");
             return;
         }
         // TODO

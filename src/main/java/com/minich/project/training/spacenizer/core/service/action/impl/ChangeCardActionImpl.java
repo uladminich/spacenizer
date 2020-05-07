@@ -15,6 +15,8 @@ import java.util.List;
 @Service(GameAction.CHANGE_CARD)
 public class ChangeCardActionImpl implements GameAction {
 
+    private static final String MESSAGE_FORMAT = "[%s] заменил карту.";
+
     @Autowired
     private CardGenerator cardGenerator;
 
@@ -40,6 +42,7 @@ public class ChangeCardActionImpl implements GameAction {
         card.setIdUI(fromPlayer.getName() + DASH + card.getId() + DASH + fromCardIdUI.charAt(fromCardIdUI.length() - 1));
         fromPlayer.getAvailableCards().add(card);
         fromPlayer.setChangeCardAmount(fromPlayer.getChangeCardAmount() - 1);
+        state.getAction().setDescription(String.format(MESSAGE_FORMAT, fromPlayer.getName()));
         state.getAction().setName(GameAction.CHANGE_CARD_FINISHED);
         return state;
     }

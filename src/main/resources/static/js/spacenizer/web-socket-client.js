@@ -48,8 +48,6 @@ CLIENT.initConnection = function () {
     };
 
     CLIENT.socket.onopen = function(event) {
-        console.log("onopen");
-
     };
 
     CLIENT.socket.onclose = function(event) {

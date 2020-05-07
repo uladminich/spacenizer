@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostRoundServiceImpl implements PostRoundService {
-    private static final int DEFAULT_BLUE_TO_RED_CONVERT_COEFF = 2;
     private static final Random RANDOM = new Random();
 
     @Override
@@ -55,14 +54,7 @@ public class PostRoundServiceImpl implements PostRoundService {
                         .filter(card -> CardUtils.isBuildingCard(card.getId()))
                         .collect(Collectors.toList());
 
-//                TODO improve formula for earthquakes
-//                int destroyAmount = activeBuildingCards.size()/3 > 3 ? 3 : activeBuildingCards.size()/3;
-//                if (destroyAmount == 0) {
-//                    state.getAction().setDescription("Землетресение: построек не разрушено.");
-//                    return;
-//                }
-                int destroyAmount = (int) state.getPlayers().stream().filter(Player::isAlive).count();
-
+                int destroyAmount = getNumberOfBuildingToDestroy(state);
                 state.getAction().setDescription("Землетресение:\n\r");
                 for (int i = 0; i < destroyAmount; i++) {
                     int cardToRemoveIndex = RANDOM.nextInt(activeBuildingCards.size());
@@ -78,12 +70,27 @@ public class PostRoundServiceImpl implements PostRoundService {
                     });
                     activeBuildingCards.remove(card);
                 }
-            } else if (!GameAction.START_GAME_COMPLETED.equals(state.getAction().getName())){
+            } else if (!GameAction.START_GAME_COMPLETED.equals(state.getAction().getName())) {
                 state.getAction().setDescription("Землетресение: построек не разрушено.");
             }
-        } else {
-            state.getAction().setDescription(StringUtils.EMPTY);
         }
+    }
+
+    private int getNumberOfBuildingToDestroy(Board state) {
+        int activePlayerAmount = (int) state.getPlayers().stream().filter(Player::isAlive).count();
+        int randomIntLessNine = RANDOM.nextInt(10);
+        /*
+            Random number is in range [0-9].
+            3: random number is [8 or 9] and 3+ active player
+            2:(random number is [5, 6, 7, 8 or 9] and 2+ active player) or random number is [8 or 9] and less that 3 player
+            1: any other cases
+         */
+        if (randomIntLessNine >= 8 && activePlayerAmount > 2) { //
+            return  3;
+        } else if ((randomIntLessNine > 4 && activePlayerAmount >= 2) || randomIntLessNine >= 8) {
+            return  2;
+        }
+        return 1;
     }
 
     private boolean playerHasCardWithId(Player player, long id) {
@@ -100,7 +107,9 @@ public class PostRoundServiceImpl implements PostRoundService {
         int increaseRedAmount = player.getRedProduction();
         int decreaseRedAmount = player.getRedConsumption();
         int totalRedAmount = state.getRedResourceCount();
-
+        if (decreaseRedAmount < 0) {
+            decreaseRedAmount = 0;
+        }
         int redAmountToAdd;
         if (totalRedAmount - increaseRedAmount >= 0) {
             redAmountToAdd = increaseRedAmount - decreaseRedAmount;
@@ -117,7 +126,9 @@ public class PostRoundServiceImpl implements PostRoundService {
         int increaseBlueAmount = player.getBlueProduction();
         int decreaseBlueAmount = player.getBlueConsumption();
         int totalBlueAmount = state.getBlueResourceCount();
-
+        if (decreaseBlueAmount < 0) {
+            decreaseBlueAmount = 0;
+        }
         int blueAmountToAdd;
         if (totalBlueAmount - increaseBlueAmount >= 0) {
             blueAmountToAdd = increaseBlueAmount - decreaseBlueAmount;
@@ -136,7 +147,8 @@ public class PostRoundServiceImpl implements PostRoundService {
     private void updateAliveStatus(Player player) {
         if (player.getRedAmount() < 0) {
             boolean isAlive = false;
-            if (player.getBlueAmount() >= DEFAULT_BLUE_TO_RED_CONVERT_COEFF) {
+            int minAmountBlueToConvert = CardUtils.getBlueToRedConvertationCoefficient(player);
+            if (player.getBlueAmount() >= minAmountBlueToConvert) {
                 isAlive = convertRedToBlue(player);
             }
 
@@ -154,9 +166,10 @@ public class PostRoundServiceImpl implements PostRoundService {
         int totalAbsRedAmount = Math.abs(player.getRedAmount());
         int totalBlueAmount = player.getBlueAmount();
         boolean isAlive = true;
-        int blueToRed = totalAbsRedAmount * DEFAULT_BLUE_TO_RED_CONVERT_COEFF;
+        int blueToRedCoefficient = CardUtils.getBlueToRedConvertationCoefficient(player);
+        int blueToRed = totalAbsRedAmount * blueToRedCoefficient;
         if (blueToRed > totalBlueAmount) {
-            blueToRed = totalBlueAmount - totalBlueAmount % DEFAULT_BLUE_TO_RED_CONVERT_COEFF;
+            blueToRed = totalBlueAmount - totalBlueAmount % blueToRedCoefficient;
             isAlive =  false;
         }
         player.setRedAmount(player.getRedAmount() + totalAbsRedAmount);

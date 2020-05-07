@@ -7,6 +7,7 @@ import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -106,12 +107,13 @@ public class PlayCardActionImpl implements GameAction {
 
         updateNegativeValueWithZero(toPlayer);
 
+        state.getAction().setDescription(StringUtils.EMPTY);
         state.getAction().setName(GameAction.PLAY_CARD_FINISHED);
         return state;
     }
 
     private void setNotActiveCardIfRequired(Player toPlayer, Card fromCard) {
-        if (fromCard != null && CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.isPlayerHasAlreaydActiveCard(fromCard.getId(), toPlayer)) {
+        if (fromCard != null && CardUtils.isOnePerPlayerCard(fromCard.getId()) &&  CardUtils.isPlayerHasAlreadyActiveCard(fromCard.getId(), toPlayer)) {
             fromCard.setActive(false);
         }
     }

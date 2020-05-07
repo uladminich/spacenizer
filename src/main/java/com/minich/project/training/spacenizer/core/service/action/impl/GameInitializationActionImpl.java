@@ -7,6 +7,7 @@ import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,7 @@ public class GameInitializationActionImpl implements GameAction {
         });
 
         state.getAction().setName(GameAction.START_GAME_COMPLETED);
+        state.getAction().setDescription(StringUtils.EMPTY);
         return state;
     }
 

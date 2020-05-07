@@ -11,8 +11,7 @@ import java.util.Random;
 
 @Service
 public class CardGeneratorImpl implements CardGenerator {
-    private static final int UNIQUE_AVAILABLE_CARD_AMOUNT = 8;
-    private static final int UNIQUE_GLOBAL_CARD_AMOUNT = 7;
+    private static final int UNIQUE_GLOBAL_CARD_AMOUNT = 6;
     private static final Random RANDOM = new Random();
 
     private static final Map<Integer, CardType> UNIQUE_CARS_MAP = ImmutableMap.<Integer, CardType>builder()
@@ -24,6 +23,9 @@ public class CardGeneratorImpl implements CardGenerator {
             .put(5, CardType.NANO_TECHNOLOGIES)
             .put(6, CardType.ADVERSE_TERRAIN)
             .put(7, CardType.ROBOTS)
+            .put(8, CardType.SUN_BATTERY)
+            .put(9, CardType.WIND_GENERATOR)
+            .put(10, CardType.RESOURCE_CONVERTER)
             .build();
 
     private static final Map<Integer, CardType> UNIQUE_GLOBAL_CARS_MAP = ImmutableMap.<Integer, CardType>builder()
@@ -35,7 +37,7 @@ public class CardGeneratorImpl implements CardGenerator {
 
     @Override
     public CardType getRandomCardType() {
-        int cardIndex = RANDOM.nextInt(UNIQUE_AVAILABLE_CARD_AMOUNT);
+        int cardIndex = RANDOM.nextInt(UNIQUE_CARS_MAP.size());
         return UNIQUE_CARS_MAP.get(cardIndex);
     }
 
@@ -44,7 +46,7 @@ public class CardGeneratorImpl implements CardGenerator {
         /*
         * Actual amount of global cards - 4.
         * Get random from 0 to 7.
-        * Chance to no global cards game - 3/7.
+        * Chance to no global cards game - 2/6.
         **/
         int cardIndex = RANDOM.nextInt(UNIQUE_GLOBAL_CARD_AMOUNT);
         return Optional.ofNullable(UNIQUE_GLOBAL_CARS_MAP.get(cardIndex));
