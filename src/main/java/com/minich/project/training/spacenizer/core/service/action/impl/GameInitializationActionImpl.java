@@ -16,7 +16,6 @@ import java.util.Random;
 
 @Service(GameAction.START_GAME)
 public class GameInitializationActionImpl implements GameAction {
-    private static final int INITIAL_AVAILABLE_CARD_AMOUNT = 6;
     private static final Random RANDOM = new Random();
 
     @Autowired
@@ -39,6 +38,7 @@ public class GameInitializationActionImpl implements GameAction {
             }
         }
         state.setRedResourceCount(state.getPlayers().size() * 6 + RANDOM.nextInt(20) + 25); //TODO improve formula
+        state.setInitialRedResourceCount(state.getRedResourceCount()); //TODO improve formula
         state.setBlueResourceCount(state.getPlayers().size() * 4 + RANDOM.nextInt(11) + 15); //TODO improve formula
         state.setTotalResourceCount(state.getBlueResourceCount( ) + state.getRedResourceCount());
         // shuffle player before game as first turn will be for the first player

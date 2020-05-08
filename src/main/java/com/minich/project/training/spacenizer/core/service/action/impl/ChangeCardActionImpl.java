@@ -28,15 +28,13 @@ public class ChangeCardActionImpl implements GameAction {
         Player fromPlayer = getPlayerById(fromPlayerId, players);
         Card fromCard = getAvailableCardById(fromCardIdUI, fromPlayer);
         fromPlayer.getAvailableCards().remove(fromCard);
-        boolean needGetCard = false;
+        boolean needGetCard;
         CardType cardType;
         do {
             cardType = cardGenerator.getRandomCardType();
             boolean isOnePerPlayerCard = CardUtils.isOnePerPlayerCard(cardType.getId());
             boolean isCardAlreadyPresent = CardUtils.hasMoreThanOneCardPerPlayer(fromPlayer.getAvailableCards(), cardType.getId());
-            if (isOnePerPlayerCard && isCardAlreadyPresent) {
-                needGetCard = true;
-            }
+            needGetCard = isOnePerPlayerCard && isCardAlreadyPresent;
         } while (needGetCard);
         Card card = new Card(cardType);
         card.setIdUI(fromPlayer.getName() + DASH + card.getId() + DASH + fromCardIdUI.charAt(fromCardIdUI.length() - 1));

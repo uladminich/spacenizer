@@ -6,6 +6,8 @@ import com.minich.project.training.spacenizer.core.service.PostRoundService;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
 import com.minich.project.training.spacenizer.model.Player;
+import com.minich.project.training.spacenizer.model.cards.Card;
+import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -16,12 +18,49 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 public class GameManagerImpl implements GameManager {
     private static final ObjectMapper MAPPER = new ObjectMapper();
+
+    private static final BiFunction<Card, Boolean, Integer> GET_CARD_RED_PRODUCTION = (card, toPlayerHasRobots) -> {
+        CardType cardType = CardUtils.getCardTypeById(card.getId());
+        int cardRedProduction = cardType.getRedProduction();
+        if (toPlayerHasRobots && CardUtils.isRobotsAffectedCards(cardType)) {
+            cardRedProduction *=  CardType.ROBOTS.getMultiplier();
+        }
+        return cardRedProduction;
+    };
+
+    private static final BiFunction<Card, Boolean, Integer> GET_CARD_RED_CONSUMPTION = (card, toPlayerHasRobots) -> {
+        CardType cardType = CardUtils.getCardTypeById(card.getId());
+        int cardRedConsumption = cardType.getRedConsumption();
+        if (toPlayerHasRobots && CardUtils.isRobotsAffectedCards(cardType)) {
+            cardRedConsumption *=  CardType.ROBOTS.getMultiplier();
+        }
+        return cardRedConsumption;
+    };
+
+    private static final BiFunction<Card, Boolean, Integer> GET_CARD_BLUE_PRODUCTION = (card, toPlayerHasRobots) -> {
+        CardType cardType = CardUtils.getCardTypeById(card.getId());
+        int cardBlueProduction = cardType.getBlueProduction();
+        if (toPlayerHasRobots && CardUtils.isRobotsAffectedCards(cardType)) {
+            cardBlueProduction *=  CardType.ROBOTS.getMultiplier();
+        }
+        return cardBlueProduction;
+    };
+
+    private static final BiFunction<Card, Boolean, Integer> GET_CARD_BLUE_CONSUMPTION = (card, toPlayerHasRobots) -> {
+        CardType cardType = CardUtils.getCardTypeById(card.getId());
+        int cardBlueConsumption = cardType.getBlueConsumption();
+        if (toPlayerHasRobots && CardUtils.isRobotsAffectedCards(cardType)) {
+            cardBlueConsumption *=  CardType.ROBOTS.getMultiplier();
+        }
+        return cardBlueConsumption;
+    };
 
     @Autowired
     private PostRoundService postRoundService;
@@ -38,16 +77,20 @@ public class GameManagerImpl implements GameManager {
         Board updatedState = action != null ? action.doAction(currentState) : currentState;
 
         String updatedAction = updatedState.getAction().getName();
+
+        updatePlayerResourcesStats(updatedState);
+
         if (GameAction.PLAY_CARD_FINISHED.equals(updatedAction)
             || GameAction.CHANGE_CARD_FINISHED.equals(updatedAction)
             || GameAction.SKIP_TURN_FINISHED.equals(updatedAction)) {
             updatedState.setTurnPerRound(updatedState.getTurnPerRound() + 1);
         }
 
-        if (postRoundService.isRoundFinish(updatedState)) {
+        if (postRoundService.isRoundFinish(updatedState)) { // TODO facade?
             postRoundService.updatePlayerResourceAmountStored(updatedState);
             postRoundService.resetTurnsPerRound(updatedState);
             postRoundService.applySpecialGlobalCardAction(updatedState);
+            postRoundService.addOneCardToPlayersIfRequired(updatedState);
         }
 
         changeActivePlayer(updatedState);
@@ -59,6 +102,62 @@ public class GameManagerImpl implements GameManager {
         }
         log.info("State output: {}", MAPPER.writeValueAsString(currentState));
         return updatedState;
+    }
+
+    private void updatePlayerResourcesStats(Board updatedState) {
+        updatedState.getPlayers().stream()
+                .filter(Player::isAlive)
+                .forEach(player -> {
+                    boolean playerHasRobots = CardUtils.isPlayerHasActiveCard(CardType.ROBOTS.getId(), player);
+                    int totalRedProduction = getTotalResourceStat(player, playerHasRobots, GET_CARD_RED_PRODUCTION);
+                    int totalRedConsumption = getTotalResourceStat(player, playerHasRobots, GET_CARD_RED_CONSUMPTION);
+                    int totalBlueProduction = getTotalResourceStat(player, playerHasRobots, GET_CARD_BLUE_PRODUCTION);
+                    int totalBlueConsumption = getTotalResourceStat(player, playerHasRobots, GET_CARD_BLUE_CONSUMPTION);
+
+                    player.setRedProduction(totalRedProduction);
+                    player.setRedConsumption(totalRedConsumption);
+                    player.setBlueProduction(totalBlueProduction);
+                    player.setBlueConsumption(totalBlueConsumption);
+
+                    if (!updatedState.getGlobalPlayer().getActiveCards().isEmpty()) {
+                        updatedState.getGlobalPlayer().getActiveCards().forEach(globalCard -> {
+                            CardType cardType = CardUtils.getCardTypeById(globalCard.getId());
+                            player.setRedProduction(player.getRedProduction() + cardType.getRedProduction());
+                            player.setRedConsumption(player.getRedConsumption() + cardType.getRedConsumption());
+                            player.setBlueProduction(player.getBlueProduction() + cardType.getBlueProduction());
+                            player.setBlueConsumption(player.getBlueConsumption() + cardType.getBlueConsumption());
+                        });
+                    }
+                    updateNegativeValueWithZero(player);
+
+                });
+    }
+
+
+    private int getTotalResourceStat(Player player, boolean isToPlayerHasRobots, BiFunction<Card, Boolean, Integer> calculateFunction) {
+        return player.getActiveCards()
+                .stream()
+                .filter(Card::isActive)
+                .mapToInt(card -> calculateFunction.apply(card, isToPlayerHasRobots))
+                .sum();
+    }
+
+    private void updateNegativeValueWithZero(Player player){
+        if (player.getRedProduction() < 0) {
+            player.setRedProduction(0);
+        }
+
+        if (player.getRedConsumption() < 0) {
+            player.setRedConsumption(0);
+        }
+
+        if (player.getBlueProduction() < 0) {
+            player.setBlueProduction(0);
+        }
+
+        if (player.getBlueConsumption() < 0) {
+            player.setBlueConsumption(0);
+        }
     }
 
     private GameAction getAction(String name) {

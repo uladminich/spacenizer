@@ -75,4 +75,11 @@ public final class CardUtils {
                 ? CardType.RESOURCE_CONVERTER.getMultiplier()
                 : DEFAULT_BLUE_TO_RED_CONVERT_COEFF;
     }
+
+    public static boolean isRobotsAffectedCards(CardType cardType) {
+        return cardType == CardType.MINE
+                || cardType == CardType.WASTE_RECYCLE
+                || cardType == CardType.LABORATORY
+                || cardType == CardType.ROAD;
+    }
 }

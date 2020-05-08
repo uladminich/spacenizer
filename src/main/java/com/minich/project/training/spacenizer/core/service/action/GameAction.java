@@ -16,6 +16,7 @@ public interface GameAction {
     String SKIP_TURN = "skip_turn";
     String SKIP_TURN_FINISHED = "skip_turn_finished";
     String DASH = "-";
+    int INITIAL_AVAILABLE_CARD_AMOUNT = 6;
 
     Board doAction(Board state);
 

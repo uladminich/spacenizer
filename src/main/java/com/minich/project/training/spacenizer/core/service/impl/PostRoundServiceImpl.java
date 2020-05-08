@@ -1,5 +1,6 @@
 package com.minich.project.training.spacenizer.core.service.impl;
 
+import com.minich.project.training.spacenizer.core.service.CardGenerator;
 import com.minich.project.training.spacenizer.core.service.PostRoundService;
 import com.minich.project.training.spacenizer.core.service.action.GameAction;
 import com.minich.project.training.spacenizer.model.Board;
@@ -7,16 +8,23 @@ import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import static com.minich.project.training.spacenizer.core.service.action.GameAction.DASH;
+import static com.minich.project.training.spacenizer.core.service.action.GameAction.INITIAL_AVAILABLE_CARD_AMOUNT;
+
 @Service
 public class PostRoundServiceImpl implements PostRoundService {
+
     private static final Random RANDOM = new Random();
+
+    @Autowired
+    private CardGenerator cardGenerator;
 
     @Override
     public boolean isRoundFinish(Board currentState) {
@@ -55,17 +63,17 @@ public class PostRoundServiceImpl implements PostRoundService {
                         .collect(Collectors.toList());
 
                 int destroyAmount = getNumberOfBuildingToDestroy(state);
-                state.getAction().setDescription("Землетресение:\n\r");
+                state.getAction().setDescription("Землетресение:<br>\n\r");
                 for (int i = 0; i < destroyAmount; i++) {
                     int cardToRemoveIndex = RANDOM.nextInt(activeBuildingCards.size());
                     Card card = activeBuildingCards.get(cardToRemoveIndex);
                     state.getPlayers()
                             .stream()
                             .filter(Player::isAlive)
-                            .filter(p -> playerHasCardWithId(p, card.getId()))
+                            .filter(p -> playerHasCardWithId(p, card.getIdUI()))
                             .findAny().ifPresent(player -> {
                                 player.getActiveCards().remove(card);
-                                state.getAction().setDescription(state.getAction().getDescription() + " разрушена постройка '" + card.getTitle() + "' у игрока [" + player.getName() + "]\n\r");
+                                state.getAction().setDescription(state.getAction().getDescription() + " разрушена постройка '" + card.getTitle() + "' у игрока [" + player.getName() + "]<br>");
 
                     });
                     activeBuildingCards.remove(card);
@@ -74,6 +82,37 @@ public class PostRoundServiceImpl implements PostRoundService {
                 state.getAction().setDescription("Землетресение: построек не разрушено.");
             }
         }
+    }
+
+    @Override
+    public void addOneCardToPlayersIfRequired(Board state) {
+        int initialRedCount = state.getInitialRedResourceCount();
+        int currentRedCount = state.getRedResourceCount();
+        if (initialRedCount - currentRedCount >= currentRedCount && !state.isHalfRedResourceMinedCard()) {
+            state.setHalfRedResourceMinedCard(true);
+            state.getPlayers().stream()
+                    .filter(Player::isAlive)
+                    .forEach(player -> addCardToPlayer(player, INITIAL_AVAILABLE_CARD_AMOUNT + 1));
+        } else if (currentRedCount <= 0 && !state.isAllRedResourceMinedCard()) {
+            state.setAllRedResourceMinedCard(true);
+            state.getPlayers().stream()
+                    .filter(Player::isAlive)
+                    .forEach(player -> addCardToPlayer(player, INITIAL_AVAILABLE_CARD_AMOUNT + 2));
+        }
+    }
+
+    private void addCardToPlayer(Player player, int partId) {
+        boolean needGetCard;
+        CardType cardType;
+        do {
+            cardType = cardGenerator.getRandomCardType();
+            boolean isOnePerPlayerCard = CardUtils.isOnePerPlayerCard(cardType.getId());
+            boolean isCardAlreadyPresent = CardUtils.hasMoreThanOneCardPerPlayer(player.getAvailableCards(), cardType.getId());
+            needGetCard = isOnePerPlayerCard && isCardAlreadyPresent;
+        } while (needGetCard);
+        Card card = new Card(cardType);
+        card.setIdUI(player.getName() + DASH + card.getId() + DASH + partId);
+        player.getAvailableCards().add(card);
     }
 
     private int getNumberOfBuildingToDestroy(Board state) {
@@ -93,9 +132,9 @@ public class PostRoundServiceImpl implements PostRoundService {
         return 1;
     }
 
-    private boolean playerHasCardWithId(Player player, long id) {
+    private boolean playerHasCardWithId(Player player, String idUI) {
         return player.getActiveCards().stream()
-                .anyMatch(card -> card.getId() == id);
+                .anyMatch(card -> card.getIdUI() == idUI);
     }
     private boolean hasEarthquakesCard(List<Card> activeCards) {
         return activeCards.stream()

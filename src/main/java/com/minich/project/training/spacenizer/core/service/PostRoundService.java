@@ -11,4 +11,6 @@ public interface PostRoundService {
     void resetTurnsPerRound(Board state);
 
     void applySpecialGlobalCardAction(Board state);
+
+    void addOneCardToPlayersIfRequired(Board state);
 }
