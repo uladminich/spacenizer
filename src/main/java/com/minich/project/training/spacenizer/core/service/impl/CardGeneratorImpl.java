@@ -17,7 +17,7 @@ public class CardGeneratorImpl implements CardGenerator {
     private static final Map<Integer, CardType> UNIQUE_CARS_MAP = ImmutableMap.<Integer, CardType>builder()
             .put(0, CardType.BAR)
             .put(1, CardType.LABORATORY)
-            .put(2, CardType.MINE)
+            .put(2, CardType.MINE_RED)
             .put(3, CardType.ROAD)
             .put(4, CardType.WASTE_RECYCLE)
             .put(5, CardType.NANO_TECHNOLOGIES)
@@ -26,6 +26,13 @@ public class CardGeneratorImpl implements CardGenerator {
             .put(8, CardType.SUN_BATTERY)
             .put(9, CardType.WIND_GENERATOR)
             .put(10, CardType.RESOURCE_CONVERTER)
+            .put(11, CardType.MINE_BLUE)
+            .put(12, CardType.HOME_HELP_RESOURCES)
+            .put(13, CardType.HOME_HELP_CARD)
+            .put(14, CardType.FIRE_DISASTER)
+            .put(15, CardType.DISEASE_OUTBREAK)
+            .put(16, CardType.INDUSTRIAL_ACTION)
+            .put(17, CardType.HIGH_PRODUCTION)
             .build();
 
     private static final Map<Integer, CardType> UNIQUE_GLOBAL_CARS_MAP = ImmutableMap.<Integer, CardType>builder()

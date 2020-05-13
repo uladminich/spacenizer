@@ -3,7 +3,7 @@
 }
 
 main {
-    margin: 0.8rem 10rem 0.5rem;
+    margin: 0.8rem 7rem 0.5rem;
 }
 
 .col-sm {
@@ -55,8 +55,7 @@ p.card-text {
     box-shadow: 0 0 20px rgba(0, 255, 83, 0.9);
 }
 
-.section-main__board--available-card-clicked-js .main-board-zone:hover,
-.section-header__game-globals-wrapper--available-card-clicked-js:hover {
+.section-main__board--available-card-clicked-js .main-board-zone:hover {
     border: 2px solid rgba(175, 189, 6, 1);
     box-shadow: 0 0 10px 5px rgba(175, 189, 6, 1);
     cursor: pointer;
@@ -70,8 +69,7 @@ p.card-text {
     padding: 0 .2rem;
 }
 
-.active-card-item--disabled,
-.board-player-zone--player-lose{
+.board-player-zone--player-lose {
     background-color: #65645b;
 }
 
@@ -83,10 +81,33 @@ p.card-text {
     background-color: #0d45d2;
 }
 
-.row-active-cards .col-sm {
-    background-color: inherit;
-    border: none;
+/*[start] redesign active cards */
+.row-active-cards .list-group-item:first-child {
+    border-top-left-radius: 1.25rem;
+    border-top-right-radius: 1.25rem;
 }
+
+.row-active-cards .list-group-item:last-child {
+    border-bottom-right-radius: 1.25rem;
+    border-bottom-left-radius: 1.25rem;
+}
+
+.row-active-cards .list-group-item {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: .25rem 1.25rem;
+}
+
+.row-active-cards .col-sm {
+    max-width: 70%;
+    border: none;
+    background-color: inherit;
+}
+
+.tooltip-inner {
+    font-size: 14px;
+}
+/*[end] */
 
 /* [start] lobby page style   */
 .form-group {

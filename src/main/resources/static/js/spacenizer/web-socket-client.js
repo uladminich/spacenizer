@@ -28,6 +28,9 @@ CLIENT.initConnection = function () {
         // init board zone
         updatePlayerZones();
 
+        //init tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+
         let playerCount = CLIENT.state.players.length;
         $('#game-stat-player-count').text(playerCount);
         if (isCreator(CLIENT.state.players) && !CLIENT.state.action) {
@@ -110,15 +113,20 @@ function updatePlayerZones() {
                 addDeadPlayerZoneDescription(playerZone, playerForZone);
                 continue;
             }
-            playerZone.append(`<div class="row row-active-cards row-active-cards-${i}">`)
-            let rowActiveCards = $('.main-board-zone-' + i + ' .row-active-cards-' + i);
+            playerZone.append(`<div class="row justify-content-md-center text-center row-active-cards row-active-cards-${i}">
+                                    <div class="col-sm">
+                                        <ul class="list-group text-center">
+                                        </ul>
+                                    </div>
+                                </div>`);
+            let rowActiveCards = $('.main-board-zone-' + i + ' .row-active-cards-' + i + ' ul');
 
             for(let j = 0; j < playerForZone.activeCards.length; j++) {
                 let currentActiveCard = playerForZone.activeCards[j];
                 addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
             }
         }
-    } else if (playerAmount <= 6 && playerAmount > 3){
+    } else if (playerAmount <= 6 && playerAmount > 3){ //TODO one row with fluid container
         let playerIndex = 0;
         for (let rowIndex = 0; rowIndex < 2; rowIndex++) {
             boardElem.append(`<div class="row row-multi-line row-multi-line-js-${rowIndex}">`);
@@ -135,8 +143,13 @@ function updatePlayerZones() {
                     continue;
                 }
 
-                playerZone.append(`<div class="row row-active-cards row-active-cards-${playerIndex}">`)
-                let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex);
+                playerZone.append(`<div class="row justify-content-md-center text-center row-active-cards row-active-cards-${playerIndex}">
+                                       <div class="col-sm">
+                                           <ul class="list-group text-center">
+                                           </ul>
+                                       </div>
+                                   </div>`)
+                let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex + ' ul');
                 for(let j = 0; j < playerForZone.activeCards.length; j++) {
                     let currentActiveCard = playerForZone.activeCards[j];
                     addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
@@ -167,6 +180,8 @@ function addPlayerZoneHeader(rowElem, playerForZone, i) {
                                 <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
                                 <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-sm text-center">
                                 <span class="card-global badge badge-danger">
                                     Red: ${playerForZone.redAmount} | ${playerForZone.redProduction > 0 ? '+' + playerForZone.redProduction : 0 } | ${playerForZone.redConsumption > 0 ? '-' + playerForZone.redConsumption : 0 }
@@ -191,21 +206,12 @@ function addDeadPlayerZoneDescription(playerZone, playerForZone) {
 }
 
 function addActiveCardToPlayerZone(rowActiveCards, currentActiveCard) {
-    rowActiveCards.append(`<div class="col-sm">
-                                <div class="card text-center">
-                                    <div class="card-body ${currentActiveCard.active ? '' : 'active-card-item--disabled'}"
-                                        title="${currentActiveCard.description}"
-                                        data-card-id="${currentActiveCard.idUI}">
-                                        <h5 class="card-title" style="border-bottom: none;">${currentActiveCard.title}</h5>
-                                        <!-- // TODO no data at the moment on UI
-                                            <p class="card-text">
-                                                <span class="badge badge-danger"> +2 | -2 </span>
-                                                <span class="badge badge-primary" style=""> 0 | 0 </span>
-                                            </p>
-                                         -->
-                                    </div>
-                                </div>
-                           </div>`);
+    rowActiveCards.append(`<li class="list-group-item list-group-item-action ${currentActiveCard.oneRound ? 'list-group-item-warning' : ''} ${currentActiveCard.id == 6 || currentActiveCard.id == 5 || currentActiveCard.id == 8 || currentActiveCard.id == 9 ? 'list-group-item-info' : ''} ${currentActiveCard.active ? '' : 'list-group-item-dark'}"
+                                title="${currentActiveCard.description}"
+                                data-card-id="${currentActiveCard.idUI}"
+                                data-toggle="tooltip">
+                                ${currentActiveCard.title}
+                            </li>`);
 }
 
 function updatePlayerInfoSection() {
@@ -220,18 +226,18 @@ function updatePlayerInfoSection() {
         $('#section-main__user-cards-list')
             .append(`<div class="col-sm" >
                          <div class="card text-center card-available" style="width: 8rem;" title=""
-                             data-card-id="${card.idUI}" data-card-global="${card.global}"
+                             data-card-id="${card.idUI}" data-card-one-round="${card.oneRound}"
                              onclick="chooseAvailableCard(this, event);";>
                              <div class="card-body">
                                  <h5 class="card-title">${card.title}</h5>
                                  <p class="card-text">
-                                    ${card.global ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning" title="Играется на зону WORLD." >GLOBAL</span><br>' : '' }
-                                    ${card.id == 6 || card.id == 5 || card.id == 8 || card.id == 9 ? '<span id="section-header__game-globals-cards-default" class="badge badge badge-info" title="Повторяющиеся карты не оказывают эффекта.">ONE ACTIVE</span><br>' : '' }
+                                    ${card.oneRound ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning" data-toggle="tooltip" title="Одноразовый эффект в конце раунда. Показатели не учитываются в статистику по добыче/расходу ресурсов.">ONE ROUND</span><br>' : '' }
+                                    ${card.id == 6 || card.id == 5 || card.id == 8 || card.id == 9 ? '<span id="section-header__game-globals-cards-default" data-toggle="tooltip" class="badge badge badge-info" title="Повторяющиеся карты не оказывают эффекта.">ONE ACTIVE</span><br>' : '' }
                                     ${card.description}
                                  </p>
                              </div>
                          </div>
-                     </div>`)
+                     </div>`);
     }
 }
 
@@ -256,7 +262,7 @@ function updateGlobalStatInfoSection() {
     globalCardListElem.empty();
     for (let i = 0; i < CLIENT.state.globalPlayer.activeCards.length; i++) {
         let card = CLIENT.state.globalPlayer.activeCards[i];
-        globalCardListElem.append(`<span title="${card.description}" class="badge badge-warning"data-card-id="${card.idUI}">${card.title}</span>`)
+        globalCardListElem.append(`<span title="${card.description}" class="badge badge-warning" data-toggle="tooltip" data-card-id="${card.idUI}">${card.title}</span>`)
     }
     $('#section-header__game-globals-cards-description').html(CLIENT.state.action.description);
 }

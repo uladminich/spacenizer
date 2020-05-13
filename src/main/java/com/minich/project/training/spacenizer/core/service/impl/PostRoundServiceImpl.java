@@ -11,12 +11,12 @@ import com.minich.project.training.spacenizer.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.minich.project.training.spacenizer.core.service.action.GameAction.DASH;
-import static com.minich.project.training.spacenizer.core.service.action.GameAction.INITIAL_AVAILABLE_CARD_AMOUNT;
 
 @Service
 public class PostRoundServiceImpl implements PostRoundService {
@@ -92,16 +92,41 @@ public class PostRoundServiceImpl implements PostRoundService {
             state.setHalfRedResourceMinedCard(true);
             state.getPlayers().stream()
                     .filter(Player::isAlive)
-                    .forEach(player -> addCardToPlayer(player, INITIAL_AVAILABLE_CARD_AMOUNT + 1));
+                    .forEach(this::addCardToPlayer);
         } else if (currentRedCount <= 0 && !state.isAllRedResourceMinedCard()) {
             state.setAllRedResourceMinedCard(true);
             state.getPlayers().stream()
                     .filter(Player::isAlive)
-                    .forEach(player -> addCardToPlayer(player, INITIAL_AVAILABLE_CARD_AMOUNT + 2));
+                    .forEach(this::addCardToPlayer);
         }
     }
 
-    private void addCardToPlayer(Player player, int partId) {
+    @Override
+    public void applyOneRoundCardActions(Board state) {
+        state.getPlayers().stream()
+                .filter(Player::isAlive)
+                .filter(Player::isHasOneRoundCard)
+                .forEach(this::processOneRoundCardForPlayer);
+    }
+
+    private void processOneRoundCardForPlayer(Player player) {
+        List<Card> cardToRemove = new ArrayList<>();
+        player.getActiveCards().stream()
+                .filter(Card::isOneRound)
+                .forEach( card -> {
+                    CardType cardType = CardUtils.getCardTypeById(card.getId());
+                    player.setRedAmount(player.getRedAmount() + cardType.getRedProduction() - cardType.getRedConsumption());
+                    player.setBlueAmount(player.getBlueAmount() + cardType.getBlueProduction() - cardType.getBlueConsumption());
+                    if (CardType.HOME_HELP_CARD == cardType) {
+                        addCardToPlayer(player);
+                    }
+                    cardToRemove.add(card);
+                });
+        cardToRemove.forEach(card -> player.getActiveCards().remove(card));
+        player.setHasOneRoundCard(false);
+    }
+
+    private void addCardToPlayer(Player player) {
         boolean needGetCard;
         CardType cardType;
         do {
@@ -111,7 +136,8 @@ public class PostRoundServiceImpl implements PostRoundService {
             needGetCard = isOnePerPlayerCard && isCardAlreadyPresent;
         } while (needGetCard);
         Card card = new Card(cardType);
-        card.setIdUI(player.getName() + DASH + card.getId() + DASH + partId);
+        int totalPlayerCard = player.getActiveCards().size() + player.getAvailableCards().size();
+        card.setIdUI(player.getName() + DASH + card.getId() + DASH + (totalPlayerCard + 1));
         player.getAvailableCards().add(card);
     }
 
@@ -134,7 +160,7 @@ public class PostRoundServiceImpl implements PostRoundService {
 
     private boolean playerHasCardWithId(Player player, String idUI) {
         return player.getActiveCards().stream()
-                .anyMatch(card -> card.getIdUI() == idUI);
+                .anyMatch(card -> card.getIdUI().equals(idUI));
     }
     private boolean hasEarthquakesCard(List<Card> activeCards) {
         return activeCards.stream()

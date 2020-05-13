@@ -23,7 +23,8 @@ public final class CardUtils {
             .build();
 
     private static final List<CardType> BUILDING_CARDS = ImmutableList.<CardType>builder()
-            .add(CardType.MINE)
+            .add(CardType.MINE_RED)
+            .add(CardType.MINE_BLUE)
             .add(CardType.BAR)
             .add(CardType.ROAD)
             .add(CardType.LABORATORY)
@@ -43,7 +44,7 @@ public final class CardUtils {
         return optType.orElse(null);
     }
 
-    public static boolean isPlayerHasActiveCard(long cardTypeId, Player player) {
+    public static boolean isPlayerHasActiveCard(long cardTypeId, @NonNull Player player) {
         return player.getActiveCards().stream()
                 .anyMatch(card -> card.getId() == cardTypeId);
     }
@@ -53,13 +54,13 @@ public final class CardUtils {
                 .anyMatch(cardType -> cardType.getId() == cardTypeId);
     }
 
-    public static boolean hasMoreThanOneCardPerPlayer(List<Card> availableCards, long cardTypeId) {
+    public static boolean hasMoreThanOneCardPerPlayer(@NonNull List<Card> availableCards, long cardTypeId) {
         return availableCards.stream()
                 .filter(card -> card.getId() == cardTypeId)
                 .count() >= 1;
     }
 
-    public static boolean isPlayerHasAlreadyActiveCard(long cardTypeId, Player player) {
+    public static boolean isPlayerHasAlreadyActiveCard(long cardTypeId, @NonNull Player player) {
         return player.getActiveCards().stream()
                 .filter(card -> card.getId() == cardTypeId)
                 .count() > 1;
@@ -77,9 +78,10 @@ public final class CardUtils {
     }
 
     public static boolean isRobotsAffectedCards(CardType cardType) {
-        return cardType == CardType.MINE
+        return cardType == CardType.MINE_RED
                 || cardType == CardType.WASTE_RECYCLE
                 || cardType == CardType.LABORATORY
-                || cardType == CardType.ROAD;
+                || cardType == CardType.ROAD
+                || cardType == CardType.MINE_BLUE;
     }
 }

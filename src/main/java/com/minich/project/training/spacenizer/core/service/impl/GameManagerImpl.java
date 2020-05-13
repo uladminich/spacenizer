@@ -87,6 +87,7 @@ public class GameManagerImpl implements GameManager {
         }
 
         if (postRoundService.isRoundFinish(updatedState)) { // TODO facade?
+            postRoundService.applyOneRoundCardActions(updatedState);
             postRoundService.updatePlayerResourceAmountStored(updatedState);
             postRoundService.resetTurnsPerRound(updatedState);
             postRoundService.applySpecialGlobalCardAction(updatedState);
@@ -138,6 +139,7 @@ public class GameManagerImpl implements GameManager {
         return player.getActiveCards()
                 .stream()
                 .filter(Card::isActive)
+                .filter(card -> !card.isOneRound())
                 .mapToInt(card -> calculateFunction.apply(card, isToPlayerHasRobots))
                 .sum();
     }

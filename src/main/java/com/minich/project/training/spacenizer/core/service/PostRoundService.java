@@ -13,4 +13,6 @@ public interface PostRoundService {
     void applySpecialGlobalCardAction(Board state);
 
     void addOneCardToPlayersIfRequired(Board state);
+
+    void applyOneRoundCardActions(Board state);
 }

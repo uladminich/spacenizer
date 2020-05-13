@@ -10,12 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service(GameAction.PLAY_CARD)
 public class PlayCardActionImpl implements GameAction {
-
 
     @Override
     public Board doAction(Board state) {
@@ -26,20 +24,15 @@ public class PlayCardActionImpl implements GameAction {
 
         List<Player> players = state.getPlayers();
         Player fromPlayer = getPlayerById(fromPlayerId, players);
-        Player toPlayer;
-        boolean isGlobalCardPlayed = Player.GLOBAL_PLAYER_ID.equals(toPlayerId);
-        if(isGlobalCardPlayed) {
-            toPlayer = state.getGlobalPlayer();
-        } else {
-            toPlayer = fromPlayerId.equals(toPlayerId) ? fromPlayer : getPlayerById(toPlayerId, players);
-        }
+        Player toPlayer = fromPlayerId.equals(toPlayerId) ? fromPlayer : getPlayerById(toPlayerId, players);
+
         Card fromCard = getAvailableCardById(fromCardIdUI, fromPlayer);
 
+        if(fromCard.isOneRound()) {
+            toPlayer.setHasOneRoundCard(true);
+        }
         fromPlayer.getAvailableCards().remove(fromCard);
         toPlayer.getActiveCards().add(fromCard);
-        if (isGlobalCardPlayed) {
-            toPlayer.setActiveCards(toPlayer.getActiveCards().stream().distinct().collect(Collectors.toList()));
-        }
         setNotActiveCardIfRequired(toPlayer, fromCard);
 
         state.getAction().setDescription(StringUtils.EMPTY);

@@ -19,14 +19,14 @@ public class Card {
     private String idUI;
     private long id;
     private boolean isActive = true;
-    private boolean isGlobal;
+    private boolean isOneRound;
 
     public Card(CardType type) {
         id = type.getId();
         title = type.getTitle();
         name = type.getName();
         description = type.getDescription();
-        isGlobal = type.isGlobal();
+        isOneRound = type.isOneRound();
     }
 
     @Override

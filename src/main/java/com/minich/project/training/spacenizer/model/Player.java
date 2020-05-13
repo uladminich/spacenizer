@@ -22,6 +22,7 @@ public class Player implements Serializable {
     private boolean isCreator;
     private boolean isActiveTurn;
     private boolean isAlive = true;
+    private boolean hasOneRoundCard;
     private List<Card> availableCards;
     private List<Card> activeCards;
     private int redAmount;
