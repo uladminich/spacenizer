@@ -60,7 +60,7 @@ CLIENT.initConnection = function () {
 
     CLIENT.socket.onclose = function(event) {
         if (!event.wasClean) {
-            console.log('[close] Соединение прервано, код=${event.code} причина=${event.reason}`');
+            console.log(`[close] Соединение прервано, код=${event.code} причина=${event.reason}`);
         }
     };
 }
@@ -105,7 +105,17 @@ function updatePlayerZones() {
     let playerAmount = CLIENT.state.players.length;
     let boardElem = $('#section-main__board');
     boardElem.empty();
-    if (playerAmount <= 3 ) { // one row required
+    if (playerAmount > 3) {
+        let mainBoard = $('#section-main__board');
+        if(mainBoard.hasClass('container')) {
+            mainBoard.removeClass('container');
+        }
+        if (!mainBoard.hasClass('container-fluid')) {
+            mainBoard.addClass('container-fluid');
+        }
+    }
+
+    if (playerAmount <= 6 ) { // one row required
         boardElem.append('<div class="row row-single-line-js">');
         let rowElem = $(".row-single-line-js");
         for (let i = 0; i < playerAmount; i++) {
@@ -131,38 +141,39 @@ function updatePlayerZones() {
                 addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
             }
         }
-    } else if (playerAmount <= 6 && playerAmount > 3){ //TODO one row with fluid container
-        let playerIndex = 0;
-        for (let rowIndex = 0; rowIndex < 2; rowIndex++) {
-            boardElem.append(`<div class="row row-multi-line row-multi-line-js-${rowIndex}">`);
-            let rowElem = $(".row-multi-line-js-" + rowIndex);
-            let rowLimit = getRowLimit(playerAmount, rowIndex);
-            for (let i = 0; i < rowLimit; i++) {
-                let playerForZone = CLIENT.state.players[playerIndex];
-                addPlayerZoneHeader(rowElem, playerForZone, playerIndex);
-                let playerZone = $(".main-board-zone-" + playerIndex);
-
-                // player finished game as can't produce enough red resource
-                if (!playerForZone.alive) {
-                    addDeadPlayerZoneDescription(playerZone, playerForZone);
-                    continue;
-                }
-
-                playerZone.append(`<div class="row justify-content-md-center text-center row-active-cards row-active-cards-${playerIndex}">
-                                       <div class="col-sm">
-                                           <ul class="list-group text-center">
-                                           </ul>
-                                       </div>
-                                   </div>`)
-                let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex + ' ul');
-                for(let j = 0; j < playerForZone.activeCards.length; j++) {
-                    let currentActiveCard = playerForZone.activeCards[j];
-                    addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
-                }
-                playerIndex++;
-            }
-        }
     }
+//    else if (playerAmount >= 99){ //two rows
+//        let playerIndex = 0;
+//        for (let rowIndex = 0; rowIndex < 2; rowIndex++) {
+//            boardElem.append(`<div class="row row-multi-line row-multi-line-js-${rowIndex}">`);
+//            let rowElem = $(".row-multi-line-js-" + rowIndex);
+//            let rowLimit = getRowLimit(playerAmount, rowIndex);
+//            for (let i = 0; i < rowLimit; i++) {
+//                let playerForZone = CLIENT.state.players[playerIndex];
+//                addPlayerZoneHeader(rowElem, playerForZone, playerIndex);
+//                let playerZone = $(".main-board-zone-" + playerIndex);
+//
+//                // player finished game as can't produce enough red resource
+//                if (!playerForZone.alive) {
+//                    addDeadPlayerZoneDescription(playerZone, playerForZone);
+//                    continue;
+//                }
+//
+//                playerZone.append(`<div class="row justify-content-md-center text-center row-active-cards row-active-cards-${playerIndex}">
+//                                       <div class="col-sm">
+//                                           <ul class="list-group text-center">
+//                                           </ul>
+//                                       </div>
+//                                   </div>`)
+//                let rowActiveCards = $('.main-board-zone-' + playerIndex + ' .row-active-cards-' + playerIndex + ' ul');
+//                for(let j = 0; j < playerForZone.activeCards.length; j++) {
+//                    let currentActiveCard = playerForZone.activeCards[j];
+//                    addActiveCardToPlayerZone(rowActiveCards, currentActiveCard);
+//                }
+//                playerIndex++;
+//            }
+//        }
+//    }
 }
 
 function getRowLimit(playerAmount, multiRowIndex) {
@@ -182,8 +193,8 @@ function addPlayerZoneHeader(rowElem, playerForZone, i) {
                         <div class="row">
                             <div class="col-sm text-center">
                                 <b>${playerForZone.name}</b> (${playerForZone.availableCards.length})
-                                <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
-                                <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                                <img class="${playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" data-toggle="tooltip" title="Player can change one card">
+                                <img class="${playerForZone.changeCardAmount == 1 || playerForZone.changeCardAmount == 2 ? '' : 'd-none'}" src="/svg/change-card-img.svg" width="30px" height="30px" data-toggle="tooltip" title="Player can change one card">
                             </div>
                         </div>
                         <div class="row">
@@ -212,7 +223,7 @@ function addDeadPlayerZoneDescription(playerZone, playerForZone) {
 
 function addActiveCardToPlayerZone(rowActiveCards, currentActiveCard) {
     rowActiveCards.append(`<li class="list-group-item list-group-item-action ${currentActiveCard.oneRound ? 'list-group-item-warning' : ''} ${currentActiveCard.id == 6 || currentActiveCard.id == 5 || currentActiveCard.id == 8 || currentActiveCard.id == 9 ? 'list-group-item-info' : ''} ${currentActiveCard.active ? '' : 'list-group-item-dark'}"
-                                title="${currentActiveCard.description}"
+                                title="${i18n('card.description.' + currentActiveCard.id)}"
                                 data-card-id="${currentActiveCard.idUI}"
                                 data-toggle="tooltip">
                                 ${currentActiveCard.title}
@@ -224,7 +235,7 @@ function updatePlayerInfoSection() {
         return;
     }
     let currentPlayer = getCurrentPlayer(CLIENT.state.players);
-    $('#section-main__user-cards-title').text(currentPlayer.name + '\'s ');
+    $('#section-main__user-cards-title').text(" " + currentPlayer.name);
     $('#section-main__user-cards-list').empty();
     for (let i = 0; i < currentPlayer.availableCards.length; i++) { //no more that 6 card in the row
         let card =  currentPlayer.availableCards[i];
@@ -238,7 +249,7 @@ function updatePlayerInfoSection() {
                                  <p class="card-text">
                                     ${card.oneRound ? '<span id="section-header__game-globals-cards-default" class="badge badge-warning" data-toggle="tooltip" title="Одноразовый эффект в конце раунда. Показатели не учитываются в статистику по добыче/расходу ресурсов.">ONE ROUND</span><br>' : '' }
                                     ${card.id == 6 || card.id == 5 || card.id == 8 || card.id == 9 ? '<span id="section-header__game-globals-cards-default" data-toggle="tooltip" class="badge badge badge-info" title="Повторяющиеся карты не оказывают эффекта.">ONE ACTIVE</span><br>' : '' }
-                                    ${card.description}
+                                    ${i18n('card.description.' + card.id)}
                                  </p>
                              </div>
                          </div>
@@ -267,7 +278,11 @@ function updateGlobalStatInfoSection() {
     globalCardListElem.empty();
     for (let i = 0; i < CLIENT.state.globalPlayer.activeCards.length; i++) {
         let card = CLIENT.state.globalPlayer.activeCards[i];
-        globalCardListElem.append(`<span title="${card.description}" class="badge badge-warning" data-toggle="tooltip" data-card-id="${card.idUI}">${card.title}</span>`)
+        globalCardListElem.append(`<span title="${i18n('card.description.' + card.id)}" class="badge badge-warning" data-toggle="tooltip" data-card-id="${card.idUI}">${card.title}</span>`)
     }
     $('#section-header__game-globals-cards-description').html(CLIENT.state.action.description);
+}
+
+function i18n(key) {
+    return I18N.messages[key];
 }

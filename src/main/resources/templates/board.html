@@ -24,23 +24,23 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="section-header__game-status-info">
-                            <span>Player amount: </span>
+                            <span th:text="#{header.game.player.amount}">Player amount: </span>
                             <span id="game-stat-player-count">0</span>.
-                            <span>Current round: </span>
+                            <span th:text="#{header.game.current.round}">Current round: </span>
                             <span id="game-stat-current-round">0</span>.
                             <div id="game-status-info__active-player-wrapper" class="d-none">
-                                Current active player: <b id="game-status-info__active-player">Player3</b>
+                                <span th:text="#{header.game.current.active.player}">Current active player: </span> <b id="game-status-info__active-player">Player3</b>
                                 <div id="section-header__game-status-info-action-description" style="font-size: 14px; font-weight: bold;"></div>
                             </div>
-                            <input type="submit" class="btn btn-secondary d-none" value="Start game"
+                            <input type="submit" class="btn btn-secondary d-none" th:value="#{header.button.start.game}"
                                    id="section-header__start-game-button" onclick="CLIENT.startGame()">
                             <div id="section-header__join-wrapper">
                                 <div class="row">
                                     <div class="col-8">
-                                        <input type="text" id="chat-name" class="form-control form-control-sm " placeholder="Enter a player name">
+                                        <input type="text" id="chat-name" class="form-control form-control-sm " th:placeholder="#{header.input.name.placeholder}">
                                     </div>
                                     <div class="col">
-                                        <input type="submit" class="btn btn-secondary " value="Join" onclick="joinToChat();">
+                                        <input type="submit" class="btn btn-secondary " th:value="#{header.button.join.game}" onclick="joinToChat();">
                                     </div>
                                 </div>
                             </div>
@@ -48,8 +48,8 @@
                     </div>
                     <div class="col-sm section-header__game-globals">
                         <div class="d-none" id="section-header__game-globals-wrapper">
-                            <span>World:</span><br>
-                            <span id="section-header__game-globals-cards-default" class="badge badge-warning">No features</span>
+                            <span th:text="#{header.global.world.label}">World:</span><br>
+                            <span id="section-header__game-globals-cards-default" class="badge badge-warning" th:text="#{header.global.world.default}">No features</span>
                             <div id="section-header__game-globals-cards-list">
                                <!-- fill in by js -->
                             </div>
@@ -69,9 +69,9 @@
             <div class="container section-main__user-cards"> <!-- class="section-user-cards" id="section-user-cards"-->
                 <div class="row">
                     <div class="col-sm" style="min-height: 44px;">
-                        <span id="section-main__user-cards-title"></span> available cards
-                        <input type="submit" id="section-main__user-cards-change-card-button" class="btn btn-secondary d-none" value="Change card" onclick="changeAvailableCard();">
-                        <input type="submit" id="section-main__user-cards-skip-turn-button" class="btn btn-secondary d-none" value="Skip turn" onclick="skipTurn();">
+                        <span th:text="#{user.card.available.section.label}"></span><span id="section-main__user-cards-title"></span>
+                        <input type="submit" id="section-main__user-cards-change-card-button" class="btn btn-secondary d-none" th:value="#{user.card.available.button.change.card}" onclick="changeAvailableCard();">
+                        <input type="submit" id="section-main__user-cards-skip-turn-button" class="btn btn-secondary d-none" th:value="#{user.card.available.button.skip.turn}" onclick="skipTurn();">
                     </div>
                 </div>
                 <div class="row" id="section-main__user-cards-list">
@@ -80,14 +80,14 @@
             </div>
 
             <!-- jQuery, pie chart, bootstrap-->
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
             <!-- Custom js -->
             <script type="text/javascript" th:src="@{/js/spacenizer/web-socket-client.js}"></script>
+            <script type="text/javascript" th:src="@{/js/spacenizer/locale.js}"></script>
             <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
             <script type="text/javascript" th:src="@{/js/spacenizer/chart-custom.js}"></script>
         </main>

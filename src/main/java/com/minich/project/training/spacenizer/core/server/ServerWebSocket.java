@@ -62,7 +62,7 @@ public class ServerWebSocket {
                     listeners.add(this);
                     connectionManager.addRoom(roomId, listeners);
                 } else {
-                    if (listeners.size() >= ROOM_SIZE_LIMIT) {
+                    if (listeners.size() > ROOM_SIZE_LIMIT) {
                         session.close();
                         return;
                     } else {

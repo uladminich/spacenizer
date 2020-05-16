@@ -15,7 +15,6 @@ public class Card {
 
     private String title;
     private String name;
-    private String description;
     private String idUI;
     private long id;
     private boolean isActive = true;
@@ -25,7 +24,6 @@ public class Card {
         id = type.getId();
         title = type.getTitle();
         name = type.getName();
-        description = type.getDescription();
         isOneRound = type.isOneRound();
     }
 
