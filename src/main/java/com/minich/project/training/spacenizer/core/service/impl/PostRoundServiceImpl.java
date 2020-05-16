@@ -48,6 +48,7 @@ public class PostRoundServiceImpl implements PostRoundService {
     @Override
     public void resetTurnsPerRound(Board state) {
         state.setTurnPerRound(0);
+        state.setRoundAmount(state.getRoundAmount() + 1);
     }
 
     @Override
@@ -212,7 +213,7 @@ public class PostRoundServiceImpl implements PostRoundService {
     private void updateAliveStatus(Player player) {
         if (player.getRedAmount() < 0) {
             boolean isAlive = false;
-            int minAmountBlueToConvert = CardUtils.getBlueToRedConvertationCoefficient(player);
+            int minAmountBlueToConvert = CardUtils.getBlueToRedConversationCoefficient(player);
             if (player.getBlueAmount() >= minAmountBlueToConvert) {
                 isAlive = convertRedToBlue(player);
             }
@@ -231,7 +232,7 @@ public class PostRoundServiceImpl implements PostRoundService {
         int totalAbsRedAmount = Math.abs(player.getRedAmount());
         int totalBlueAmount = player.getBlueAmount();
         boolean isAlive = true;
-        int blueToRedCoefficient = CardUtils.getBlueToRedConvertationCoefficient(player);
+        int blueToRedCoefficient = CardUtils.getBlueToRedConversationCoefficient(player);
         int blueToRed = totalAbsRedAmount * blueToRedCoefficient;
         if (blueToRed > totalBlueAmount) {
             blueToRed = totalBlueAmount - totalBlueAmount % blueToRedCoefficient;

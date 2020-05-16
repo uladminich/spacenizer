@@ -179,8 +179,8 @@ public class GameManagerImpl implements GameManager {
             state.getPlayers().stream()
                 .filter(Player::isAlive)
                 .max((p1, p2) -> {
-                    int blueToRedCoefficientPlayerOne = CardUtils.getBlueToRedConvertationCoefficient(p1);
-                    int blueToRedCoefficientPlayerTwo = CardUtils.getBlueToRedConvertationCoefficient(p2);
+                    int blueToRedCoefficientPlayerOne = CardUtils.getBlueToRedConversationCoefficient(p1);
+                    int blueToRedCoefficientPlayerTwo = CardUtils.getBlueToRedConversationCoefficient(p2);
 
                     int pTotalOne = p1.getRedAmount() + p1.getBlueAmount() / blueToRedCoefficientPlayerOne;
                     int pTotalTwo = p2.getRedAmount() + p2.getBlueAmount() / blueToRedCoefficientPlayerTwo;

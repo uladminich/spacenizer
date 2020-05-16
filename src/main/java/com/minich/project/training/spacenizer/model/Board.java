@@ -30,6 +30,7 @@ public class Board implements Serializable {
     private boolean isFinished;
     private String winner;
     private int turnPerRound = 0;
+    private int roundAmount = 1;
     private Player globalPlayer;
 
     public void addPlayer(Player player) {

@@ -24,9 +24,13 @@
                 <div class="row">
                     <div class="col-sm">
                         <div class="section-header__game-status-info">
-                            <span>Player amount: </span><span id="game-stat-player-count">0</span>
+                            <span>Player amount: </span>
+                            <span id="game-stat-player-count">0</span>.
+                            <span>Current round: </span>
+                            <span id="game-stat-current-round">0</span>.
                             <div id="game-status-info__active-player-wrapper" class="d-none">
                                 Current active player: <b id="game-status-info__active-player">Player3</b>
+                                <div id="section-header__game-status-info-action-description" style="font-size: 14px; font-weight: bold;"></div>
                             </div>
                             <input type="submit" class="btn btn-secondary d-none" value="Start game"
                                    id="section-header__start-game-button" onclick="CLIENT.startGame()">

@@ -33,9 +33,14 @@ CLIENT.initConnection = function () {
 
         let playerCount = CLIENT.state.players.length;
         $('#game-stat-player-count').text(playerCount);
+        if (CLIENT.state.action) {
+            $('#game-stat-current-round').text(CLIENT.state.roundAmount);
+            $('#section-header__game-status-info-action-description').html(CLIENT.state.action.playerActionDescription);
+        }
         if (isCreator(CLIENT.state.players) && !CLIENT.state.action) {
             $('#section-header__start-game-button').removeClass('d-none');
         }
+
         let currentPlayer = getCurrentPlayer(CLIENT.state.players);
         let skipTurnButton = $('#section-main__user-cards-skip-turn-button');
         if (currentPlayer.availableCards.length == 0 && CLIENT.state.action && !CLIENT.state.finished) {

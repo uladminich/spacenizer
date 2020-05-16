@@ -23,7 +23,7 @@ public enum CardType {
     DANGEROUS_WORLD(9L, "dangerous-world", "Враждебная природа", "Уменьшает всю добычу на 2", -2, 0, -2, 0, 1, false),
     ICE_WORLD(10L, "ice-world", "Ледяная планета", "Увеличивает расход КР на 1, СР на 2.", 0, 1, 0, 2, 1, false),
     RICH_MINERAL_DEPOSIT(11L, "rich-mineral-deposits", "Обширные залежи ресурсов", "Увеличивает всю добычу на 1. ", 1, 0, 1, 0, 1, false), // "Карты 'Шахта' и 'Переработка отходов' приностят дополнительно по 1 КР."
-    EARTHQUAKES(12L, "earthquakes", "Повышенная сейсмическая активность", "С некоторой вероятностью в конце раунда может уничтожить до 3 построек (кроме станции) в конце раунда.", 0, 0, 0, 0, 1, false),
+    EARTHQUAKES(12L, "earthquakes", "Повышенная сейсмическая активность", "С некоторой вероятностью в конце раунда может уничтожить до 3 построек (кроме станции).", 0, 0, 0, 0, 1, false),
     // [end]
     // [start] one time card
     HOME_HELP_RESOURCES(16L, "home-help-resources", "Помощь из дома: ресурсы", "Добавляет игроку по 5 КР и СР.", 5, 0, 5, 0, 1, true),
@@ -31,7 +31,7 @@ public enum CardType {
     FIRE_DISASTER(18L, "fire-disaster", "Пожар", "Игрок теряет по 1 СР и КР.", 0, 1, 0, 1, 1, true),
     DISEASE_OUTBREAK(19L, "disease-outbreak", "Вспышка болезни", "Игрок теряет 2 КР.", 0, 2, 0, 0, 1, true),
     INDUSTRIAL_ACTION(20L, "industrial-action", "Забастовка рабочих", "Игрок теряет 3 СР.", 0, 0, 0, 3, 1, true),
-    HIGH_PRODUCTION(21L, "high-production", "Повышенная продуктивность", "Добавляет игроку по 1 КР и 2 СР.", 1, 0, 2, 0, 1, true);
+    NEAR_INVESTIGATION(21L, "near-investigation", "Разведка округи", "Добавляет игроку по 1 КР и 2 СР.", 1, 0, 2, 0, 1, true);
     // [end]
     // [start] not implemented:
 //    SECURITY_GUARDS(112L, "security-guard", "Охрана", "Защищает от атак других колоний. Расходует 1 КР в конце раунда и 1 СР при отражении атаки.", 0, -1, 0, -1, 1, false),
@@ -48,11 +48,9 @@ public enum CardType {
      * -
      *
      * GLOBAL CARDS:
-     * - DANGEROUS_WORLD: уменьшает добычу на 2
      * - GLOBAL_WARMING: отключает бонус от всех карт-дорог и шахт(?)
      * - PANDEMIC: уменьшает добычу на 1, уведичивает расходы на 1, длиться 5 кругов
      * - TERRA_FORMING: отключает показатели карт: 'Глобальное потепление', 'Опастная планета', 'Плохая местность'
-     * - EARTHQUAKES: случайным образом в конце раунда уничтожает 3 постройки на карте (за исключением станций)
      *
      * COMBINATIONS:
      * - alter energy (sun_buttery, hydrogenation, wind_power)

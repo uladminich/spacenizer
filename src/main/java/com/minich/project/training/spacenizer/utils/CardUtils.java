@@ -71,7 +71,7 @@ public final class CardUtils {
                 .anyMatch(type -> type.getId() == cardTypeId);
     }
 
-    public static int getBlueToRedConvertationCoefficient(@NonNull Player player){
+    public static int getBlueToRedConversationCoefficient(@NonNull Player player){
         return CardUtils.isPlayerHasActiveCard(CardType.RESOURCE_CONVERTER.getId(), player)
                 ? CardType.RESOURCE_CONVERTER.getMultiplier()
                 : DEFAULT_BLUE_TO_RED_CONVERT_COEFF;

@@ -32,7 +32,7 @@ public class CardGeneratorImpl implements CardGenerator {
             .put(14, CardType.FIRE_DISASTER)
             .put(15, CardType.DISEASE_OUTBREAK)
             .put(16, CardType.INDUSTRIAL_ACTION)
-            .put(17, CardType.HIGH_PRODUCTION)
+            .put(17, CardType.NEAR_INVESTIGATION)
             .build();
 
     private static final Map<Integer, CardType> UNIQUE_GLOBAL_CARS_MAP = ImmutableMap.<Integer, CardType>builder()

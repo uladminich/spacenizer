@@ -60,6 +60,7 @@ public class GameInitializationActionImpl implements GameAction {
 
         state.getAction().setName(GameAction.START_GAME_COMPLETED);
         state.getAction().setDescription(StringUtils.EMPTY);
+        state.getAction().setPlayerActionDescription(StringUtils.EMPTY);
         return state;
     }
 

@@ -14,6 +14,7 @@ import java.util.List;
 @Slf4j
 @Service(GameAction.PLAY_CARD)
 public class PlayCardActionImpl implements GameAction {
+    private static final String MESSAGE_FORMAT = "Игрок [%s] сыграл карту '%s' на игрока [%s].";
 
     @Override
     public Board doAction(Board state) {
@@ -35,6 +36,7 @@ public class PlayCardActionImpl implements GameAction {
         toPlayer.getActiveCards().add(fromCard);
         setNotActiveCardIfRequired(toPlayer, fromCard);
 
+        state.getAction().setPlayerActionDescription(String.format(MESSAGE_FORMAT, fromPlayer.getName(), fromCard.getTitle(), toPlayer.getName()));
         state.getAction().setDescription(StringUtils.EMPTY);
         state.getAction().setName(GameAction.PLAY_CARD_FINISHED);
         return state;

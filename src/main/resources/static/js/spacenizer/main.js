@@ -43,9 +43,9 @@ $(document).click(function(e) {
         return;
     }
     if (!$target.is(".card-available--clicked-js")) {
-        if ($target.is(".main-board-zone") && !$target.is('.board-player-zone--player-lose') && $('.card-available--clicked-js').attr('data-card-id')) {
+        if (($target.is(".main-board-zone") || $target.parents(".section-main__board--available-card-clicked-js .main-board-zone").length > 0) && !$target.is('.board-player-zone--player-lose') && $('.card-available--clicked-js').attr('data-card-id')) {
             let currentPlayer = getCurrentPlayer(CLIENT.state.players);
-            let targetPlayerId = $target.attr('data-player-id');
+            let targetPlayerId = $target.attr('data-player-id') || $target.parents(".section-main__board--available-card-clicked-js .main-board-zone").attr('data-player-id');
             let action = {};
             action.name = CLIENT.COMMAND_PLAY_CARD;
             action.fromPlayer = currentPlayer.name;

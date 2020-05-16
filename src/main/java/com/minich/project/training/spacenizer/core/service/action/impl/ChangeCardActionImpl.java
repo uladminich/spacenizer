@@ -7,6 +7,7 @@ import com.minich.project.training.spacenizer.model.Player;
 import com.minich.project.training.spacenizer.model.cards.Card;
 import com.minich.project.training.spacenizer.model.cards.CardType;
 import com.minich.project.training.spacenizer.utils.CardUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,8 @@ public class ChangeCardActionImpl implements GameAction {
         card.setIdUI(fromPlayer.getName() + DASH + card.getId() + DASH + fromCardIdUI.charAt(fromCardIdUI.length() - 1));
         fromPlayer.getAvailableCards().add(card);
         fromPlayer.setChangeCardAmount(fromPlayer.getChangeCardAmount() - 1);
-        state.getAction().setDescription(String.format(MESSAGE_FORMAT, fromPlayer.getName()));
+        state.getAction().setPlayerActionDescription(String.format(MESSAGE_FORMAT, fromPlayer.getName()));
+        state.getAction().setDescription(StringUtils.EMPTY);
         state.getAction().setName(GameAction.CHANGE_CARD_FINISHED);
         return state;
     }
