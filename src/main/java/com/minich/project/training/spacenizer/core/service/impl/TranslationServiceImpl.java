@@ -18,7 +18,7 @@ public class TranslationServiceImpl implements TranslationService {
 
     @PostConstruct
     public void init() {
-        ruMessages = getMessageMap(new Locale("ru"));
+        ruMessages = getMessageMap(new Locale("ru_RU"));
         enMessages = getMessageMap( Locale.US);
     }
 

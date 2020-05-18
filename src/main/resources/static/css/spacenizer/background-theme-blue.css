@@ -8,9 +8,9 @@ body {
 
 body {
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#094c72+98,01293f+100 */
-  background: #094c72;
-  background: radial-gradient(ellipse at bottom, #094c72 0%, #01293f 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#094c72', endColorstr='#01293f',GradientType=1 );
+  background: #01293f;
+  /*background: radial-gradient(ellipse at bottom, #094c72 0%, #01293f 100%);*/
+  /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#094c72', endColorstr='#01293f',GradientType=1 );*/
 }
 
 .stars.large {

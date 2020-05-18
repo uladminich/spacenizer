@@ -14,6 +14,7 @@
             <link rel="stylesheet" th:href="@{/css/spacenizer/background-theme.css}">
         -->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="UTF-8">
     </head>
     <body>
         <div class="stars large" ></div>
@@ -32,7 +33,7 @@
                                 <span th:text="#{header.game.current.active.player}">Current active player: </span> <b id="game-status-info__active-player">Player3</b>
                                 <div id="section-header__game-status-info-action-description" style="font-size: 14px; font-weight: bold;"></div>
                             </div>
-                            <input type="submit" class="btn btn-secondary d-none" th:value="#{header.button.start.game}"
+                            <input type="submit" class="btn btn-secondary btn-sm d-none" th:value="#{header.button.start.game}"
                                    id="section-header__start-game-button" onclick="CLIENT.startGame()">
                             <div id="section-header__join-wrapper">
                                 <div class="row">
@@ -40,7 +41,7 @@
                                         <input type="text" id="chat-name" class="form-control form-control-sm " th:placeholder="#{header.input.name.placeholder}">
                                     </div>
                                     <div class="col">
-                                        <input type="submit" class="btn btn-secondary " th:value="#{header.button.join.game}" onclick="joinToChat();">
+                                        <input type="submit" class="btn btn-sm btn-secondary " th:value="#{header.button.join.game}" onclick="joinToChat();">
                                     </div>
                                 </div>
                             </div>

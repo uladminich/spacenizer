@@ -1,0 +1,48 @@
+.landing .col-sm {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.landing  main {
+    margin-top: 50px;
+}
+
+.landing .jumbotron {
+    border-radius: 0;
+    background-color: #9ec9d2d9;
+    margin-bottom: 0;
+}
+
+.landing .jumbotron-light-brown {
+    background-color: #dfc2a8db;
+}
+
+.landing .jumbotron-red {
+    background-color: #fe6933d6;
+}
+
+.landing .big-title-brand {
+    color: #eace8c;
+    font-style: italic;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+.landing .modal-open .modal {
+   /*overflow-y: scroll;
+   padding-right: -17px !important;*/
+}
+
+.landing #navbar-link-list {
+    margin-left: -3%;
+    visibility: hidden;
+}
+
+.landing .btn-ru-eng {
+    margin-right: 10px;
+}
+
+.landing .landing-img-planet {
+    padding-top: 5%;
+}
