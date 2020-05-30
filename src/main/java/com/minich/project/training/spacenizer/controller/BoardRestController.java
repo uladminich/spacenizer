@@ -34,6 +34,7 @@ public class BoardRestController {
             log.info("Token already exists.");
             return ResponseEntity.ok("{\"error\":\"error\"}");
         }
+        //TODO sync
         Set<String> ids = connectionManager.getGameTokens();
         ids.add(token);
         connectionManager.setGameTokens(ids);

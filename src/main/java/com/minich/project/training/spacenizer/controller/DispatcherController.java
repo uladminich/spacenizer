@@ -34,4 +34,9 @@ public class DispatcherController {
     public String toError() {
         return "error";
     }
+
+    @RequestMapping(value = {"/rules"}, method = RequestMethod.GET)
+    public String toRules() {
+        return "rules";
+    }
 }

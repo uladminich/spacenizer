@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Rules</title>
+        <!-- bootstrap style -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- chart style -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+        <!-- background theme - https://codepen.io/amiangie/pen/RRdQAb -->
+        <link rel="stylesheet" th:href="@{/css/spacenizer/background-theme-blue.css}">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="UTF-8">
+        <style>
+            .jumbotron {
+                background-color: #9ec9d2d9;
+            }
+
+            .lead {
+                font-weight: 400;
+            }
+
+            main {
+               margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark fixed-top ">
+            <a class="navbar-brand" href="#">
+                <img src="./png/planet-yellow-circle.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Spacenizer
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbar-link-list">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Rule</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-inline my-2 my-lg-0" style="visibility: hidden;">
+                <button class="btn btn-secondary btn-ru-eng my-2 my-sm-0" type="submit">РУ</button>
+                <button class="btn btn-secondary  my-2 my-sm-0" type="submit">EN</button>
+            </div>
+        </nav>
+        <div class="stars large" ></div>
+        <div class="stars medium"></div>
+        <div class="stars small"></div>
+        <main>
+            <div class="container">
+                <div class="jumbotron">
+                    <h2 class="display-5"  >Правила игры</h2>
+                    <p class="lead">Небольшая вводная. There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                    <hr class="my-4">
+                    <h2 class="display-5">ОБОЗНАЧЕНИЯ, ИГРОВОЙ ПРОЦЕСС:</h2>
+                    <p class="lead">
+                        # КР - красный ресурс, основной ресурс для выживани (как еда, энергия и т.д.)<br>
+                        # СР - синий ресурс, вспомогательный ресурс (как материалы, топливо и т.д.)
+                        при остуствии КР, 2 единицы СР преорбразуются в 1 единицу КР.<br>
+                        # КР(N/N) - влияет на КРАСНЫЙ ресурс
+                        первый параметр - увеличивает(если положительный) или уменьшает(отрицательный) добычу на N
+                        второй параметр - увеличивает(если положительный) или уменьшает(отрицательный) расход на N<br>
+                        # СР(N/N) - влияет на СИНИЙ ресурс,
+                        первый параметр - увеличивает(если положительный) или уменьшает(отрицательный) добычу на N
+                        второй параметр - увеличивает(если положительный) или уменьшает(отрицательный) расход на N<br>
+                        # После того, как все игроки сделали ход, раунд заканчивается и происходит добыча ресурсов, затем и расход при необходимости<br>
+                        # Игра заканчивается, если:<br>
+                        - остался только один выживший игрок в начале следующего раунда, он победил.<br>
+                        - не осталось выживших игроков, победятиля нету.<br>
+                        - у всех выживших игроков закончились карты для игры, тогда побеждает тот, у кого больше добытых ресурсов:
+                        Сумма КР + половина СР (Если есть карты, влияющие на конвертацию СР в КР, то расчет ковертации идет по их правилам)<br>
+                        # Каждый игрок в свой ход может:<br>
+                        - сыграть карту из своей раздачи<br>
+                        - заменить одну из карт на другую случайную (всего два раза за игру)<br>
+                        - пропустить ход, если у него не осталось карт в руке, а у других игроков они есть<br>
+                        # ГЛОБАЛЬНЫЕ МОДИФИКАТОРЫ - тип планеты, на которой идет игра. Оказывает влияние на всех игроков.<br>
+                        # Есть карты, которые действуют один раунд, потом убираются с поля игроков (см. список ниже)<br>
+                        # Есть карты, которые оказывают эффект единождны,
+                        т.е. если на зоне игрока будет больше одной такой карты, то вторая оказывать эффекта не будет (см. список ниже)
+                    </p>
+                    <hr class="my-4">
+                    <h2 class="display-5">КАРТЫ:</h2>
+                    <p class="lead">
+                        - СТАНЦИЯ: КР(+2/+2)<br>
+                        - ДОРОГА: КР(+1/0)<br>
+                        - ШАХТА[КР]: КР(+2/+1)<br>
+                        - ШАХТА[СР]: СР(+2/+1)<br>
+                        - БАР: КР(-1/+1)<br>
+                        - ПЕРЕРАБОТКА ОТХОДОВ: КР(0/-1), СР(0/-1)<br>
+                        - ЛАБОРАТОРИЯ: КР(0/+1), СР(+2/0)<br>
+                        - СОЛНЕЧНЫЕ БАТАРЕИ: КР (0/-1)<br>
+                        - ВЕТРОГЕНЕРАТОРЫ: СР(0/-1)<br><br>
+
+                        Активна только одна на поле игрока:<br>
+                        - НАНО ТЕХНОЛОГИИ: КР (+2/0)<br>
+                        - ПЛОХАЯ МЕСТНОСТЬ: КР (-1/+1)<br>
+                        - РОБОТИЗАЦИЯ: Увеличивает показатели карт 'Шахта', 'Дорога', 'Переработка отходов', 'Лаборатория' в два раза.<br>
+                        - КОНВЕРТЕР РЕСУРСОВ: СР (0/+1), Преобразование СР в КР идет 1 к 1.<br><br>
+
+                        Активна только один раз в конце раунда, потом убирается с поля:<br>
+                        - ПОМОЩЬ ИЗ ДОМА[РЕСУРСЫ]: Добавляет игроку по 5 КР и СР.<br>
+                        - ПОМОЩЬ ИЗ ДОМА[КАРТА]: Добавляет игроку одну случайную карту.<br>
+                        - ПОЖАР: Игрок теряет по 1 СР и КР.<br>
+                        - ВСПЫШКА БОЛЕЗНИ: Игрок теряет 2 КР.<br>
+                        - ЗАБАСТОВКА РАБОЧИХ: Игрок теряет 3 СР.<br>
+                        - РАЗВЕДКА ОКРУГИ: Добавляет игроку по 1 КР и 2 СР.<br><br>
+
+                        ГЛОБАЛЬНЫЕ МОДИФИКАТОРЫ:<br>
+                        - БЕЗ ОСОБЕННОСТЕЙ: не оказывает никаких эффектов.<br>
+                        - ВРАЖДЕБНАЯ ПРИРОДА: КР(-2/0), СР (-2/0)<br>
+                        - ЛЕДЯНАЯ ПЛАНЕТА: КР(0/+1), СР(0/+2)<br>
+                        - ОБШИРНЫЕ ЗАЛЕЖИ РЕСУРСОВ: КР(+1/0), СР(+1/0)<br>
+                        - ПОВЫШЕННАЯ СЕЙСМИЧЕСКАЯ АКТИВНОСТЬ: С некоторой вероятностью в конце раунда может уничтожить до 3 построек (кроме станции) в конце раунда.<br>
+                    </p>
+                    <hr class="my-4">
+                    <p class="lead">
+                        <button class="btn btn-secondary btn-lg" role="button" onclick="toHomePage();">Go home</button>
+                    </p>
+                </div>
+            </div>
+        </main>
+
+        <nav class="navbar navbar-dark bg-dark navbar-expand-lg justify-content-md-center">
+                <span class="navbar-brand">
+                    Spacenizer, 2020. All right reserved.
+                </span>
+        </nav>
+
+        <!-- jQuery, pie chart, bootstrap-->
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+        <!-- Custom js -->
+        <script type="text/javascript" th:src="@{/js/spacenizer/main.js}"></script>
+    </body>
+</html>

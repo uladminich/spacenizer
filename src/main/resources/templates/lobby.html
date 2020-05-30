@@ -12,26 +12,26 @@
     </head>
     <body class="landing">
         <nav class="navbar navbar-dark bg-dark fixed-top ">
-        <a class="navbar-brand" href="#">
-            <img src="./png/planet-yellow-circle.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            Spacenizer
-        </a>
+            <a class="navbar-brand" href="#">
+                <img src="./png/planet-yellow-circle.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Spacenizer
+            </a>
 
-        <div class="collapse navbar-collapse justify-content-center" id="navbar-link-list">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Rule</a>
-                </li>
-            </ul>
-        </div>
-        <div class="form-inline my-2 my-lg-0" style="visibility: hidden;">
-            <button class="btn btn-secondary btn-ru-eng my-2 my-sm-0" type="submit">РУ</button>
-            <button class="btn btn-secondary  my-2 my-sm-0" type="submit">EN</button>
-        </div>
-    </nav>
+            <div class="collapse navbar-collapse justify-content-center" id="navbar-link-list">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Rule</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-inline my-2 my-lg-0" style="visibility: hidden;">
+                <button class="btn btn-secondary btn-ru-eng my-2 my-sm-0" type="submit">РУ</button>
+                <button class="btn btn-secondary  my-2 my-sm-0" type="submit">EN</button>
+            </div>
+        </nav>
         <div class="stars large"></div>
         <div class="stars medium"></div>
         <div class="stars small"></div>
@@ -62,7 +62,7 @@
                             <hr class="my-4">
                             <p th:text="#{landing.about.game.rule.hint}">You can find full description of rules and cards by the following links:</p>
                             <p class="lead">
-                                <button class="btn btn-secondary btn-lg" role="button" th:text="#{landing.button.read.rule}">Read rule</button>
+                                <button class="btn btn-secondary btn-lg" role="button" onclick="toRulePage();" th:text="#{landing.button.read.rule}">Read rule</button>
                             </p>
                         </div>
                     </div>

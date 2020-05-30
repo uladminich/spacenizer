@@ -14,6 +14,14 @@ function joinToChat() {
     }
 }
 
+function toRulePage() {
+    window.location.href = '/rules';
+}
+
+function toHomePage() {
+    window.location.href = '/';
+}
+
 function createBoard() {
     let login = $('#board-form-login').val() ? $('#board-form-login').val().trim() : '';
     let password = $('#board-name-password').val() ? $('#board-name-password').val().trim() : '';
