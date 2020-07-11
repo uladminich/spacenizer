@@ -1,0 +1,367 @@
+<html><head>
+    <title>Board UI beauty</title>
+    <!-- bootstrap style -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- chart style -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+    <!-- background theme - https://codepen.io/amiangie/pen/RRdQAb -->
+    <link rel="stylesheet" href="/css/spacenizer/background-theme-blue.css">
+    <!-- custom style -->
+    <link rel="stylesheet" href="/css/spacenizer/custom-jq.css">
+    <!-- TODO spike background
+        <link rel="stylesheet" th:href="@{/css/spacenizer/background-theme.css}">
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <style type="text/css">/* Chart.js */
+@keyframes chartjs-render-animation{from{opacity:.99}to{opacity:1}}.chartjs-render-monitor{animation:chartjs-render-animation 1ms}.chartjs-size-monitor,.chartjs-size-monitor-expand,.chartjs-size-monitor-shrink{position:absolute;direction:ltr;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1}.chartjs-size-monitor-expand>div{position:absolute;width:1000000px;height:1000000px;left:0;top:0}.chartjs-size-monitor-shrink>div{position:absolute;width:200%;height:200%;left:0;top:0}</style></head>
+<body data-gr-c-s-loaded="true">
+<div class="stars large"></div>
+<div class="stars medium"></div>
+<div class="stars small"></div>
+<main>
+    <div class="container section-header">
+        <div class="row">
+            <div class="col-sm">
+                <div class="section-header__game-status-info">
+                    <span>Player amount: </span><span id="game-stat-player-count">3</span>
+                    <div id="game-status-info__active-player-wrapper" class="">
+                        Current active player: <b id="game-status-info__active-player">Player2</b>
+                    </div>
+                    <input type="submit" class="btn btn-secondary d-none" value="Start game" id="section-header__start-game-button" onclick="CLIENT.startGame()">
+                    <div id="section-header__join-wrapper" class="d-none">
+                        <div class="row">
+                            <div class="col-8">
+                                <input type="text" id="chat-name" class="form-control form-control-sm " placeholder="Enter a player name">
+                            </div>
+                            <div class="col">
+                                <input type="submit" class="btn btn-secondary " value="Join" onclick="joinToChat();">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm section-header__game-globals">
+                <div class="" id="section-header__game-globals-wrapper">
+                    <span>World:</span><br>
+                    <span id="section-header__game-globals-cards-default" class="badge badge-warning">No features</span>
+                    <div id="section-header__game-globals-cards-list">
+                        <!-- fill in by js -->
+                    </div>
+                    <span id="section-header__game-globals-cards-description" style="font-size: 14px; font-weight: bold;"></span>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="section-header__game-resources"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="myChart" width="348" height="109" style="display: block; width: 348px; height: 109px;" class="chartjs-render-monitor"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="section-main__board"><div class="row row-single-line-js"><div class="col-sm main-board-zone main-board-zone-0 " data-player-id="Player2">
+        <div class="row">
+            <div class="col-sm text-center">
+                <b>Player2</b> (0)
+                <img class="d-none" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                <img class="" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-danger">
+                                    Red: 6 | +5 | -2
+                                </span>
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-primary">
+                                    Blue: 3 | 0 | 0
+                                </span>
+            </div>
+        </div>
+        <div class="row row-active-cards row-active-cards-0"><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Начальная постройка. Добыча - 2 КР, расход - 2 КР." data-card-id="Player2-0-0">
+                    <h5 class="card-title" style="border-bottom: none;">Станция</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Увеличивает добычу КР на 1." data-card-id="Player2-1-3">
+                    <h5 class="card-title" style="border-bottom: none;">Дорога</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  active-card-item--one-active">
+                <div class="card-body " title="Увеличивает добычу КР на 2." data-card-id="Player2-5-4">
+                    <h5 class="card-title" style="border-bottom: none;">Нано технологии</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div></div></div><div class="col-sm main-board-zone main-board-zone-1 " data-player-id="Player3">
+        <div class="row">
+            <div class="col-sm text-center">
+                <b>Player3</b> (0)
+                <img class="" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                <img class="" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-danger">
+                                    Red: 0 | +4 | -3
+                                </span>
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-primary">
+                                    Blue: 1 | +2 | -1
+                                </span>
+            </div>
+        </div>
+        <div class="row row-active-cards row-active-cards-1"><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Начальная постройка. Добыча - 2 КР, расход - 2 КР." data-card-id="Player3-0-0">
+                    <h5 class="card-title" style="border-bottom: none;">Станция</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  active-card-item--one-active">
+                <div class="card-body " title="Увеличивает добычу КР на 2." data-card-id="Player3-5-3">
+                    <h5 class="card-title" style="border-bottom: none;">Нано технологии</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Увеличивает добычу КР на 1." data-card-id="Player3-1-1">
+                    <h5 class="card-title" style="border-bottom: none;">Дорога</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Уменьшает добычу КР на 1, увеличивает расход КР на 1." data-card-id="Player2-3-2">
+                    <h5 class="card-title" style="border-bottom: none;">Бар</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Уменьшает расход КР на 1." data-card-id="Player3-13-8">
+                    <h5 class="card-title" style="border-bottom: none;">Солнечные батареи</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Увеличивает расход КР на 1. Добывает по 2 CР." data-card-id="Player3-7-8">
+                    <h5 class="card-title" style="border-bottom: none;">Лаборатория</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Преобразование СР в КР идет 1 к 1. Увеличивает расход СР на 1." data-card-id="Player3-15-4">
+                    <h5 class="card-title" style="border-bottom: none;">Конвертор ресурсов</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div></div></div><div class="col-sm main-board-zone main-board-zone-2 board-player-zone--current-player" data-player-id="Player1">
+        <div class="row">
+            <div class="col-sm text-center">
+                <b>Player1</b> (0)
+                <img class="d-none" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+                <img class="d-none" src="/svg/change-card-img.svg" width="30px" height="30px" title="Player can change one card">
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-danger">
+                                    Red: 2 | +9 | -3
+                                </span>
+            </div>
+            <div class="col-sm text-center">
+                                <span class="card-global badge badge-primary">
+                                    Blue: 2 | 0 | 0
+                                </span>
+            </div>
+        </div>
+        <div class="row row-active-cards row-active-cards-2"><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Начальная постройка. Добыча - 2 КР, расход - 2 КР." data-card-id="Player1-0-0">
+                    <h5 class="card-title" style="border-bottom: none;">Станция</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Уменьшает расход КР и СР на 1." data-card-id="Player1-4-3">
+                    <h5 class="card-title" style="border-bottom: none;">Переработка отходов</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  active-card-item--one-active">
+                <div class="card-body " title="Увеличивает показатели карт 'Шахта', 'Дорога', 'Переработка отходов', 'Лаборатория' в два раза." data-card-id="Player1-8-2">
+                    <h5 class="card-title" style="border-bottom: none;">Роботизация</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Увеличивает добычу CР на 2. Увеличивает расход СР на 1." data-card-id="Player1-2-4">
+                    <h5 class="card-title" style="border-bottom: none;">Шахта[СР]</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  active-card-item--one-active">
+                <div class="card-body " title="Уменьшает добычу КР на 1, увеличивает расходы КР на 1" data-card-id="Player2-6-1">
+                    <h5 class="card-title" style="border-bottom: none;">Плохая местность</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Уменьшает расход КР и СР на 1." data-card-id="Player1-4-3">
+                    <h5 class="card-title" style="border-bottom: none;">Переработка отходов</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Увеличивает добычу КР на 2. Увеличивает расход КР на 1." data-card-id="Player2-2-8">
+                    <h5 class="card-title" style="border-bottom: none;">Шахта[КР]</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  active-card-item--one-active">
+                <div class="card-body active-card-item--disabled" title="Уменьшает добычу КР на 1, увеличивает расходы КР на 1" data-card-id="Player2-6-7">
+                    <h5 class="card-title" style="border-bottom: none;">Плохая местность</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div><div class="col-sm">
+            <div class="card text-center  ">
+                <div class="card-body " title="Уменьшает расход СР на 1." data-card-id="Player1-14-0">
+                    <h5 class="card-title" style="border-bottom: none;">Ветрогенератор</h5>
+                    <!-- // TODO no data at the moment on UI
+                        <p class="card-text">
+                            <span class="badge badge-danger"> +2 | -2 </span>
+                            <span class="badge badge-primary" style=""> 0 | 0 </span>
+                        </p>
+                     -->
+                </div>
+            </div>
+        </div></div></div></div></div>
+    <div class="container section-main__user-cards"> <!-- class="section-user-cards" id="section-user-cards"-->
+        <div class="row">
+            <div class="col-sm" style="min-height: 44px;">
+                <span id="section-main__user-cards-title">Player1's </span> available cards
+                <input type="submit" id="section-main__user-cards-change-card-button" class="btn btn-secondary d-none" value="Change card" onclick="changeAvailableCard();">
+                <input type="submit" id="section-main__user-cards-skip-turn-button" class="btn btn-secondary d-none" value="Skip turn" onclick="skipTurn();">
+            </div>
+        </div>
+        <div class="row" id="section-main__user-cards-list"></div>
+    </div>
+
+    <!-- jQuery, pie chart, bootstrap-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <!-- Custom js -->
+    <script type="text/javascript" src="/js/spacenizer/web-socket-client.js"></script>
+    <script type="text/javascript" src="/js/spacenizer/main.js"></script>
+    <script type="text/javascript" src="/js/spacenizer/chart-custom.js"></script>
+</main>
+
+</body></html>

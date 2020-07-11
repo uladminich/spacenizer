@@ -1,0 +1,194 @@
+{
+  "boardId": "1ad81efb55a8b5a1fecdb937ebfd482e",
+  "players": [
+    {
+      "boardId": "1ad81efb55a8b5a1fecdb937ebfd482e",
+      "name": "VC",
+      "availableCards": [
+        {
+          "title": "Дорога",
+          "name": "road",
+          "description": "Увеличивает добычу КР на 1.",
+          "idUI": "VC-1-0",
+          "id": 1,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Бар",
+          "name": "bar",
+          "description": "Уменьшает добычу КР на 1, увеличивает расход КР на 1.",
+          "idUI": "VC-3-1",
+          "id": 3,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Плохая местность",
+          "name": "adverse-terrain",
+          "description": "Уменьшает добычу КР на 1, увеличивает расходы КР на 1",
+          "idUI": "VC-6-2",
+          "id": 6,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Конвертор ресурсов",
+          "name": "resource-converter",
+          "description": "Преобразование СР в КР идет 1 к 1. Увеличивает расход СР на 1.",
+          "idUI": "VC-15-3",
+          "id": 15,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Шахта",
+          "name": "mine",
+          "description": "Увеличивает добычу КР на 2, СР на 1. Увеличивает расход КР на 1.",
+          "idUI": "VC-2-4",
+          "id": 2,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Переработка отходов",
+          "name": "waste-recycle",
+          "description": "Уменьшает расход КР и СР на 1.",
+          "idUI": "VC-4-5",
+          "id": 4,
+          "active": true,
+          "global": false
+        }
+      ],
+      "activeCards": [
+        {
+          "title": "Станция",
+          "name": "station",
+          "description": "Начальная постройка. Добыча - 2 КР, расход - 2 КР.",
+          "idUI": "VC-0-0",
+          "id": 0,
+          "active": true,
+          "global": false
+        }
+      ],
+      "redAmount": 5,
+      "redConsumption": 2,
+      "redProduction": 2,
+      "blueAmount": 0,
+      "blueConsumption": 0,
+      "blueProduction": 0,
+      "changeCardAmount": 2,
+      "alive": true,
+      "activeTurn": true,
+      "creator": false
+    },
+    {
+      "boardId": "1ad81efb55a8b5a1fecdb937ebfd482e",
+      "name": "WE",
+      "availableCards": [
+        {
+          "title": "Ветрогенератор",
+          "name": "wind-generator",
+          "description": "Уменьшает расход СР на 1.",
+          "idUI": "WE-14-0",
+          "id": 14,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Конвертор ресурсов",
+          "name": "resource-converter",
+          "description": "Преобразование СР в КР идет 1 к 1. Увеличивает расход СР на 1.",
+          "idUI": "WE-15-1",
+          "id": 15,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Нано технологии",
+          "name": "nano-technologies",
+          "description": "Увеличивает добычу КР на 2.",
+          "idUI": "WE-5-2",
+          "id": 5,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Дорога",
+          "name": "road",
+          "description": "Увеличивает добычу КР на 1.",
+          "idUI": "WE-1-3",
+          "id": 1,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Шахта",
+          "name": "mine",
+          "description": "Увеличивает добычу КР на 2, СР на 1. Увеличивает расход КР на 1.",
+          "idUI": "WE-2-4",
+          "id": 2,
+          "active": true,
+          "global": false
+        },
+        {
+          "title": "Ветрогенератор",
+          "name": "wind-generator",
+          "description": "Уменьшает расход СР на 1.",
+          "idUI": "WE-14-5",
+          "id": 14,
+          "active": true,
+          "global": false
+        }
+      ],
+      "activeCards": [
+        {
+          "title": "Станция",
+          "name": "station",
+          "description": "Начальная постройка. Добыча - 2 КР, расход - 2 КР.",
+          "idUI": "WE-0-0",
+          "id": 0,
+          "active": true,
+          "global": false
+        }
+      ],
+      "redAmount": 5,
+      "redConsumption": 2,
+      "redProduction": 2,
+      "blueAmount": 0,
+      "blueConsumption": 0,
+      "blueProduction": 0,
+      "changeCardAmount": 2,
+      "alive": true,
+      "activeTurn": false,
+      "creator": true
+    }
+  ],
+  "action": {
+    "name": "change_card",
+    "fromPlayer": "VC",
+    "toPlayer": "",
+    "fromCard": "VC-3-1",
+    "toCard": ""
+  },
+  "redResourceCount": 46,
+  "blueResourceCount": 25,
+  "totalResourceCount": 71,
+  "firstPlayerId": "VC",
+  "turnPerRound": 0,
+  "globalPlayer": {
+    "boardId": "1ad81efb55a8b5a1fecdb937ebfd482e",
+    "activeCards": [],
+    "redAmount": 0,
+    "redConsumption": 0,
+    "redProduction": 0,
+    "blueAmount": 0,
+    "blueConsumption": 0,
+    "blueProduction": 0,
+    "changeCardAmount": 0,
+    "alive": true,
+    "activeTurn": false,
+    "creator": false
+  },
+  "finished": false
+}

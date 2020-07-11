@@ -1,0 +1,211 @@
+<html>
+    <head>
+        <title>Home page</title>
+        <!-- bootstrap style -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- chart style -->
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+        <!-- background theme - https://codepen.io/amiangie/pen/RRdQAb -->
+        <link rel="stylesheet" href="../src/main/resources/static/css/spacenizer/background-theme-blue.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="UTF-8">
+        <style>
+            .col-sm {
+                padding-right: 0;
+                padding-left: 0;
+            }
+
+            main {
+                margin-top: 50px;
+            }
+
+            .jumbotron {
+                border-radius: 0;
+                background-color: #9ec9d2d9;
+                margin-bottom: 0;
+            }
+
+            .big-title-brand {
+                color: #eace8c;
+                font-style: italic;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 800;
+                font-size: 3rem;
+            }
+
+            .modal-open .modal {
+               /*overflow-y: scroll;
+               padding-right: -17px !important;*/
+            }
+
+        </style>
+    </head>
+    <body class="landing">
+        <!-- Image and text -->
+        <nav class="navbar navbar-dark bg-dark fixed-top ">
+            <a class="navbar-brand" href="#">
+                <img src="./img/planet-circle-transparent.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                Spacenizer
+            </a>
+
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav" style="margin-left: -3%; visibility: hidden;">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Rule</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form-inline my-2 my-lg-0">
+                <button class="btn btn btn-secondary  my-2 my-sm-0" type="submit" style="margin-right: 10px;">RU</button>
+                <button class="btn btn btn-secondary  my-2 my-sm-0" type="submit">EN</button>
+            </div>
+        </nav>
+        <div class="stars large"></div>
+        <div class="stars medium"></div>
+        <div class="stars small"></div>
+        <main>
+            <div class="container-fluid">
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-sm align-middle" >
+                        <img src="./img/planet-blue.png" style="padding-top: 5%;" width="500px" class="align-middle">
+                        </div>
+                    <div class="col-sm" >
+                        <div class="jumbotron">
+                            <h1 class="display-4">Добро пожаловать!</h1>
+                            <p class="lead">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                            <hr class="my-4">
+                            <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered.</p>
+                            <p class="lead">
+                                <button class="btn btn-secondary btn-lg" role="button" data-toggle="modal" data-target="#modal-game-with-friend">Play with friend</button>
+                                <button class="btn btn-secondary btn-lg" role="button" data-toggle="modal" data-target="#modal-game-queue">Join to the queue</button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-sm" >
+                        <div class="jumbotron" style="background-color: #dfc2a8db;">
+                            <h1 class="display-4">Об игре</h1>
+                            <p class="lead">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</p>
+                            <hr class="my-4">
+                            <p>Подробное описание игрового процесса и карт, доступных для игры по ссылке ниже!</p>
+                            <p class="lead">
+                                <button class="btn btn-secondary btn-lg" role="button">Read rule</button>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <img src="./img/planet-no-circle.png" style="padding-top: 5%;" width="500px">
+                    </div>
+                </div>
+                <div class="row justify-content-md-center text-center">
+                    <div class="col-sm" >
+                        <img src="./img/planet-red.com.png" style="padding-top: 5%;" width="500px">
+                    </div>
+                    <div class="col-sm">
+                        <div class="jumbotron" style="background-color: #fe6933d6; margin-bottom: 0;">
+                            <h2 class="display-4">Обратная связь</h2>
+                            <p class="lead">Остались вопросы? У вас есть идея, как можно улучшить 'Spacenizer'? Что-то работает некорректно? Или же вы просто хотите поблагодарить нас?</p>
+                            <p class="lead">Напишите нам! </p>
+                            <hr class="my-4">
+                            <div class="row justify-content-md-center text-center">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <input type="email" id="feedback-email" class="form-control" aria-describedby="emailHelp" placeholder="Ваш e-mail адрес">
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" id="feedback-message" placeholder="Ваше сообщение" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck">
+                                        <label class="form-check-label" for="gridCheck">
+                                            Я даю согласие на обработку персональных данных
+                                        </label>
+                                    </div>
+                                    <a class="btn btn-secondary btn-lg" href="#" role="button">Отправить</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-lg justify-content-md-center">
+                <span class="navbar-brand">
+                    Spacenizer, 2020. All right reserved.
+                </span>
+        </nav>
+         <!-- Modal With Friend-->
+        <div class="modal fade" id="modal-game-with-friend" tabindex="-1" aria-labelledby="modal-game-with-friend-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-game-with-friend-title">Create room</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row justify-content-md-center">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="board-form-login">Username</label>
+                                        <input type="email" class="form-control" id="board-form-login" aria-describedby="emailHelp" placeholder="Username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="board-name-password">Password</label>
+                                        <input type="password" class="form-control" id="board-name-password" placeholder="Password">
+                                        <small id="login-password-hint" class="form-text"> Username and password for game creation to play with friends. TO BE REMOVED. </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="board-form-login">Player amount</label>
+                                        <input type="email" class="form-control" id="board-form-player-amount" aria-describedby="emailHelp" placeholder="Amount of player">
+                                    </div>
+                                    <small id="other-hint" class="form-text"> TBD other option if required (like time for action for player and etc.)</small>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Join queue-->
+        <div class="modal fade" id="modal-game-queue" tabindex="-1" aria-labelledby="modal-game-queue-title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-game-queue-title">Join to queue</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        TBD
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Join</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

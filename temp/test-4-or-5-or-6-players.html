@@ -1,0 +1,496 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head >
+    <title>Board</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+</head>
+<body>
+
+<style>
+* {
+  font-size: 18px;
+}
+
+main {
+    margin: 1rem 10rem;
+}
+
+.main-wrapper {
+    margin: auto;
+    margin-top: 15px;
+    width: 60%;
+    border: 1px solid black;
+
+}
+.col-sm {
+    padding-top: .3rem;
+    padding-bottom: .3rem;
+    background-color: rgba(181, 206, 220, 0.8);
+    border: 1px solid rgba(16, 20, 29, 0.5);
+}
+.section-header > div {
+  display: inline-block;
+}
+
+.hidden {
+  display: none;
+}
+
+.card-body {
+    padding: 0.5rem;
+    background-color: aliceblue;
+}
+
+h5.card-title, .h5.card-title {
+    font-size: 1rem;
+    margin-bottom: 0.2rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid grey;
+}
+
+p.card-text {
+    font-size: 0.8rem;
+}
+
+.badge-danger,
+.badge-primary {
+    min-width: 43px;
+}
+
+.col-sm.player-zone {
+    min-height: 290px;
+}
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+<link rel="stylesheet" href="./blue-sky.css" >
+
+<div class="stars large" ></div>
+<div class="stars medium"></div>
+<div class="stars small"></div>
+<main>
+<div class="container "> <!-- class="section-header"-->
+    <div class="row">
+        <div class="col-sm">
+            <div class="section-header__game-status-info">
+                <span>Player amount: </span><span id="game-stat-player-count-2">3</span>
+                <div id="game-stat-active-player-wrapper-2" class="">
+                    Current active player: <b id="game-stat-active-player-2">Player3</b>
+                </div>
+                <input type="submit" class="btn btn-secondary" value="Start game"  id="start-game-button" onclick="CLIENT.startGame()">
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="section-header__game-globals">
+                <span>World:</span><br>
+                <div id="game-stat-global-cards-list-2" class="">
+                    <span title="ВРАЖДЕБНЫЙ МИР. Уменьшает всю добычу на 2" class="card-global badge badge-warning" data-card-id="Player3-9-2">
+                        Dangerous nature
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="section-header__game-resources">
+                <canvas id="myChart" width="300" height="90"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid "> <!-- class="section-main-board"-->
+    <div class="row">
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 1 (3)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-danger">Red: 8 | +5 | -3</span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-primary">Blue: 0 | 0 | 0 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Laboratiry</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> 0 | -1</span>
+                                <span class="badge badge-primary" style=""> +2 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 2 (2)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-danger">Red: 6 | +4 | -1 </span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-primary">Blue: 3 | +1 | 0 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Laboratiry</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> 0 | -1</span>
+                                <span class="badge badge-primary" style=""> +2 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 3 (6)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="badge badge-danger">Red: 10 | +6 | -2 </span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="badge badge-primary">Blue: 3 | +1 | -2 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Robots</h5>
+                            <p class="card-text">
+                                <span class="badge badge-info">Special</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 1 (3)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-danger">Red: 8 | +5 | -3</span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-primary">Blue: 0 | 0 | 0 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Laboratiry</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> 0 | -1</span>
+                                <span class="badge badge-primary" style=""> +2 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 2 (2)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-danger">Red: 6 | +4 | -1 </span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="card-global badge badge-primary">Blue: 3 | +1 | 0 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Laboratiry</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> 0 | -1</span>
+                                <span class="badge badge-primary" style=""> +2 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm player-zone"> <!-- id="main-board-zone-{index}"-->
+            <div class="row">
+                <div class="col-sm text-center">
+                    Player 3 (6)
+                </div>
+                <div class="col-sm text-center">
+                    <span class="badge badge-danger">Red: 10 | +6 | -2 </span>
+                </div>
+                <div class="col-sm text-center">
+                    <span class="badge badge-primary">Blue: 3 | +1 | -2 </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Station</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +2 | -2 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Road</h5>
+                            <p class="card-text">
+                                <span class="badge badge-danger"> +1 | 0 </span>
+                                <span class="badge badge-primary" style=""> 0 | 0 </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card text-center" style="width: 6rem;">
+                        <div class="card-body">
+                            <h5 class="card-title">Robots</h5>
+                            <p class="card-text">
+                                <span class="badge badge-info">Special</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="footer">
+    <div class="container navbar-fixed-bottom"> <!-- class="section-user-cards" id="section-user-cards"-->
+        <div class="row">
+            <div class="col-sm">
+                Player's available cards
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="card text-center" style="width: 8rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Card Name</h5>
+                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: ['Red res: 19', 'Blue res: 6', 'Mined: 11'],
+            datasets: [{
+            data: [19, 6, 11],
+            backgroundColor: [
+                'red',
+                'blue',
+                'grey'
+            ],
+            borderColor: [
+                'black',
+                'black',
+                'black'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        legend: {
+            display: true,
+            position: 'right',
+            labels: {
+                fontSize: 16
+            }
+        },
+        animation: {
+            duration: 0
+        }
+    }
+});
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</main>
+</body>
+</html>
